@@ -1,28 +1,28 @@
 let modInfo = {
-	name: "The ??? Tree",
+	name: "The Camellia Tree",
 	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
+	author: "Not Cametek",
+	pointsName: "notes",
 	modFiles: ["layers.js", "tree.js"],
 
-	discordName: "",
-	discordLink: "",
+	discordName: "The Camellia Tree",
+	discordLink: "https://discord.gg/BEa67qjXa4",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	offlineLimit: 24,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.1",
+	name: "A new beginning...",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.1</h3><br>
+		- Added Songs and Albums.<br>
+		- Endgame is Paroxysm Layer.`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `Your songs went viral, too viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -42,7 +42,9 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
+	let gain = new Decimal(0)
+	if (hasUpgrade('s', 11)) gain = new Decimal(1)
+	if (hasUpgrade('s', 12)) gain = gain.times(2)
 	return gain
 }
 
