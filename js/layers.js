@@ -13,7 +13,7 @@ addLayer("s", {
     },
     12: {
         title: "The First Composition",
-        description: "You created ayour first composition because of your friends begging you to make it, so you did. It isn't too good, but your note gain is doubled.",
+        description: "You created your first composition because of your friends begging you to make it, so you did. It isn't too good, but your note gain is doubled.",
         cost: new Decimal(2)
     },
     color: "#426FB8",
