@@ -17,6 +17,15 @@ addLayer("s", {
             description: "You created your first composition because of your friends begging you to make it, so you did. It isn't too good, but your note gain is doubled.",
             cost: new Decimal(2),
         },
+        13: {
+            title: "A Great Discovery",
+            description: "You discovered Vocaloid, and used the most known vocaloid, Hatsune Miku, to help your songs feel more lively. Hatsune Miku also helps you boost your note gain by how many songs you released.",
+            cost: new Decimal(3),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.25)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
+        },
     },
     color: "#426FB8",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
