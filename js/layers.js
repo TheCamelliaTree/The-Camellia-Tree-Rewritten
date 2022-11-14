@@ -22,7 +22,16 @@ addLayer("s", {
             description: "You discovered Vocaloid, and used the most known vocaloid, Hatsune Miku, to help your songs feel more lively. Hatsune Miku also helps you boost your note gain by how many songs you released.",
             cost: new Decimal(3),
             effect() {
-                return player[this.layer].points.add(1).pow(0.25)
+                return player[this.layer].points.add(1).pow(0.35)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
+        },
+        14: {
+            title: "Social Media",
+            description: "You went onto Social Media and created an account under the name 'Cametek,' and soon, your journey begins. Song gain is now boosted by your notes.",
+            cost: new Decimal(5),
+            effect() {
+                return player.points.add(1).pow(0.1)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
@@ -35,7 +44,8 @@ addLayer("s", {
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
+        let mult = new Decimal(1)
+        if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
