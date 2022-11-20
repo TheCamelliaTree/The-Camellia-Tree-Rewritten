@@ -1,0 +1,15 @@
+.theme-default {
+	--color: #dfdfdf;
+	--points: #ffffff;
+	--locked: #bf8f8f;
+	--background: #0f0f0f;
+	--background_tooltip: rgba(0, 0, 0, 0.75);
+}
+
+.theme-blackmagik {
+    --background-img: url('https://pbs.twimg.com/media/EBEo3h4X4AANZGx.png');
+}
+
+.theme-uufo {
+    --background-img: url('https://pbs.twimg.com/media/E58xDClXsAI8QOL.jpg');
+}
