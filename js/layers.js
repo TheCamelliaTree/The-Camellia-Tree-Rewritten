@@ -82,9 +82,15 @@ addLayer("a", {
     upgrades: {
         11: {
             title: "The First Album",
-            description: "Unlock the Paraxysm Layer.",
+            description: "Unlock the Paraxysm Layer and you passively gain 1% of your songs.",
             cost: new Decimal(1)
         },
+    },
+    effect(){
+        return Decimal.pow(10, player[this.layer].points)
+    },
+    effectDescription(){
+        return "multiplying point gain by " + format(tmp[this.layer].effect)
     },
     color: "#FFFFFF",
     requires: new Decimal(200), // Can be a function that takes requirement increases into account
