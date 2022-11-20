@@ -6,7 +6,7 @@ function getStartOptions() {
 	return {
 		autosave: true,
 		msDisplay: "always",
-		theme: "default",
+		theme: "blackmagik",
 		hqTree: false,
 		offlineProd: true,
 		hideChallenges: false,

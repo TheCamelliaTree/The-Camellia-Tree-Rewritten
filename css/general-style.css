@@ -14,6 +14,22 @@ h1, h2, h3, b, input {
 	font-family: "Lucida Console", "Courier New", monospace
 }
 
+.background {
+	background-image: var(--background-img);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	filter: blur(5px);
+	opacity: 0.6;
+
+	position: fixed;
+	width: calc(100vw + 20px);
+	height: calc(100vh + 20px);
+	top: -10px;
+	left: -10px;
+	z-index: -1;
+}
+
 /* These are styles for different states of components. You can make layer-specific versions with .c.locked, for example */
 .locked {
 	background-color: #bf8f8f;
