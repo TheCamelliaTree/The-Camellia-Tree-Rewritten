@@ -85,7 +85,7 @@ addLayer("a", {
     baseResource: "songs", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1000000, // Prestige currency exponent
+    exponent: 10, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
