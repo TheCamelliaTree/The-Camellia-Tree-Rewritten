@@ -34,7 +34,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return player.points.gte(new Decimal("e280000000"))
+	return true
 }
 
 // Calculate points/sec!
@@ -59,7 +59,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return true
+	return player.points.gte(new Decimal("e280000000"))
 }
 
 
