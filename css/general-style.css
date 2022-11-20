@@ -28,6 +28,7 @@ h1, h2, h3, b, input {
 	top: -10px;
 	left: -10px;
 	z-index: -1;
+	animation: bgZoom 1s forwards;
 }
 
 /* These are styles for different states of components. You can make layer-specific versions with .c.locked, for example */
@@ -54,4 +55,14 @@ h1, h2, h3, b, input {
 #points {
 	color: var(--points);
 	text-shadow: 0 0 10px var(--points);
+}
+
+@keyframes bgZoom {
+	0% {
+		scale: 1.1;
+		opacity: 0;
+	}
+	100% {
+		scale: 1;
+	}
 }
