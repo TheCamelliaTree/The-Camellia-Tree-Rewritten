@@ -20,7 +20,6 @@ h1, h2, h3, b, input {
 	background-repeat: no-repeat;
 	background-position: center;
 	filter: blur(5px);
-	opacity: 0.6;
 
 	position: fixed;
 	width: calc(100vw + 20px);
@@ -28,7 +27,13 @@ h1, h2, h3, b, input {
 	top: -10px;
 	left: -10px;
 	z-index: -1;
-	animation: bgZoom 1s forwards;
+	opacity: 0;
+	animation: bgZoom 1s forwards .2s;
+}
+
+#app {
+	opacity: 0;
+	animation: appZoom 1s forwards .2s;
 }
 
 /* These are styles for different states of components. You can make layer-specific versions with .c.locked, for example */
@@ -64,5 +69,17 @@ h1, h2, h3, b, input {
 	}
 	100% {
 		scale: 1;
+		opacity: 0.6;
+	}
+}
+
+@keyframes appZoom {
+	0% {
+		scale: 1.1;
+		opacity: 0;
+	}
+	100% {
+		scale: 1;
+		opacity: 1;
 	}
 }
