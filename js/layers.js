@@ -77,15 +77,15 @@ addLayer("a", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(250),
+		points: new Decimal(0),
     }},
     color: "#FFFFFF",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    requires: new Decimal(200), // Can be a function that takes requirement increases into account
     resource: "albums", // Name of prestige currency
     baseResource: "songs", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.0001, // Prestige currency exponent
+    exponent: 1000000, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
@@ -96,5 +96,5 @@ addLayer("a", {
     hotkeys: [
         {key: "a", description: "A: Create an Album", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return hasUpgrade('s', 22)}
+    layerShown(){return hasUpgrade('s', 22) || player.a.unlocked}
 })
