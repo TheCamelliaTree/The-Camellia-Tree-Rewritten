@@ -35,6 +35,15 @@ addLayer("s", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
+        21: {
+            title: "First Real Song",
+            description: "You posted your first actual real song online! The song doesn't sound good though, but who cares. Note gain is boosting itself.",
+            cost: new Decimal(10),
+            effect() {
+                return player.points.add(1).pow(0.3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
+        },
     },
     color: "#426FB8",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
