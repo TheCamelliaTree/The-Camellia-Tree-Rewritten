@@ -44,6 +44,11 @@ addLayer("s", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
+        22: {
+            title: "CD Disk Time",
+            description: "You decided to do the unthinkable. You decided to release a CD Disk. Unlock Albums.",
+            cost: new Decimal(50)
+        },
     },
     color: "#426FB8",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
