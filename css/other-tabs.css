@@ -58,18 +58,19 @@
 }
 
 #version {
-	position: absolute;
-	right: 4px;
-	top: 4px;
-	text-align: right;
-	color: var(--points);
-	text-shadow: 0 0 10px var(--points);
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	text-align: center;
+	color: white;
 	cursor: pointer;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.6);
+	border-radius: 5px;
 }
 
 #version:hover {
-	transform: scale(1.1, 1.1);
-	right: 4.8px;
+	scale: 1.1;
 }
 
 a {
