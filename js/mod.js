@@ -61,7 +61,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('a', 11)
+	return hasMilestone('a', 0)
 }
 
 
