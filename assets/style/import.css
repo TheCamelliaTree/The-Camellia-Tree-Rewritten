@@ -1,3 +1,5 @@
+/* imports all other css files to keep the html more cleaner */
+
 @import url('bars.css');
 @import url('components.css');
 @import url('general-style.css');
