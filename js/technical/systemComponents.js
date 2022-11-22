@@ -150,28 +150,85 @@ var systemComponents = {
 
     'options-tab': {
         template: `
-        <table>
-            <tr>
-                <td><button class="opt" onclick="save()">Save</button></td>
-                <td><button class="opt" onclick="toggleOpt('autosave')">Autosave: {{ options.autosave?"ON":"OFF" }}</button></td>
-                <td><button class="opt" onclick="hardReset()">HARD RESET</button></td>
-            </tr>
-            <tr>
-                <td><button class="opt" onclick="exportSave()">Export to clipboard</button></td>
-                <td><button class="opt" onclick="importSave()">Import</button></td>
-                <td><button class="opt" onclick="toggleOpt('offlineProd')">Offline Prod: {{ options.offlineProd?"ON":"OFF" }}</button></td>
-            </tr>
-            <tr>
-                <td><button class="opt" onclick="switchTheme()">Theme: {{ getThemeName() }}</button></td>
-                <td><button class="opt" onclick="adjustMSDisp()">Show Milestones: {{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
-                <td><button class="opt" onclick="toggleOpt('hqTree')">High-Quality Tree: {{ options.hqTree?"ON":"OFF" }}</button></td>
-            </tr>
-            <tr>
-                <td><button class="opt" onclick="toggleOpt('hideChallenges')">Completed Challenges: {{ options.hideChallenges?"HIDDEN":"SHOWN" }}</button></td>
-                <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">Single-Tab Mode: {{ options.forceOneTab?"ALWAYS":"AUTO" }}</button></td>
-				<td><button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">Shift-Click to Toggle Tooltips: {{ options.forceTooltips?"ON":"OFF" }}</button></td>
-				</tr> 
-        </table>`
+        <div class="options-tab">
+            <button class="opt" onclick="save()">
+				<div class="key-desc">
+					<div class="key">Save</div>
+					<div class="desc">Save your game</div>
+				</div>
+				<div class="value"></div>
+			</button>
+            <button class="opt" onclick="toggleOpt('autosave')">
+				<div class="key-desc">
+					<div class="key">Autosave</div>
+					<div class="desc">Automatically save your game</div>
+				</div>
+				<div class="value">{{ options.autosave?"ON":"OFF" }}</div>
+			</button>
+            <button class="opt" onclick="hardReset()">
+				<div class="key-desc">
+					<div class="key">Hard Reset</div>
+					<div class="desc">Reset your game</div>
+				</div>
+				<div class="value"></div>
+			</button>
+            <button class="opt" onclick="exportSave()">
+				<div class="key-desc">
+					<div class="key">Export to clipboard</div>
+					<div class="desc">Copy your save to your clipboard</div>
+				</div>
+				<div class="value"></div>
+			</button>
+            <button class="opt" onclick="importSave()">
+				<div class="key-desc">
+					<div class="key">Import</div>
+					<div class="desc">Import a save from your clipboard</div>
+				</div>
+				<div class="value"></div>
+			</button>
+            <button class="opt" onclick="toggleOpt('offlineProd')">
+				<div class="key-desc">
+					<div class="key">Offline Production</div>
+					<div class="desc">Keep producing while the game is closed</div>
+				</div>
+				<div class="value">{{ options.offlineProd?"ON":"OFF" }}</div>
+			</button>
+            <button class="opt" onclick="switchTheme()">
+				<div class="key-desc">
+					<div class="key">Theme</div>
+					<div class="desc">Switch between different themes</div>
+				</div>
+				<div class="value">{{ getThemeName() }}</div>
+			</button>
+            <button class="opt" onclick="adjustMSDisp()">
+				<div class="key-desc">
+					<div class="key">Show Milestones</div>
+					<div class="desc">Show or hide milestones</div>
+				</div>
+				<div class="value">{{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</div>
+			</button>
+            <button class="opt" onclick="toggleOpt('hideChallenges')">
+				<div class="key-desc">
+					<div class="key">Completed Challenges</div>
+					<div class="desc">Show or hide completed challenges</div>
+				</div>
+				<div class="value">{{ options.hideChallenges?"HIDDEN":"SHOWN" }}</div>
+			</button>
+            <button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">
+				<div class="key-desc">
+					<div class="key">Single-Tab Mode</div>
+					<div class="desc">Force the game to only show one tab at a time</div>
+				</div>
+				<div class="value">{{ options.forceOneTab?"ALWAYS":"AUTO" }}</div>
+			</button>
+			<button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">
+				<div class="key-desc">
+					<div class="key">Shift-Click to Toggle Tooltips</div>
+					<div class="desc">Toggle tooltips on or off with shift-clicking</div>
+				</div>
+				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>
+			</button>
+        </div>`
     },
 
     'back-button': {

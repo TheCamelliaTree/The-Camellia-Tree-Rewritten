@@ -1,12 +1,13 @@
 .hoverBox {
 	position: fixed;
-	top: 10px;
+	top: 100vh;
 	left: 10px;
+	transform: translateY(calc(-100% - 10px));
 	padding: 5px;
 	background: rgba(0, 0, 0, 0.6);
 	border-radius: 5px;
 	display: flex;
-	flex-flow: column;
+	flex-flow: row;
 }
 
 #optionWheel {
@@ -25,7 +26,7 @@
 	cursor: pointer;
 	width: 40px;
 	height: 40px;
-	margin-top: 5px;
+	margin-left: 5px;
 	transition-duration: .2s;
 }
 
@@ -36,7 +37,7 @@
 #discord {
 	width: 40px;
 	height: 40px;
-	margin-top: 5px;
+	margin-left: 5px;
 	transition-duration: .2s;
 }
 
@@ -81,21 +82,4 @@ a {
 	transform: scale(1.2, 1.2);
 	text-shadow: 5px 0 10px #02f2f2,
               -3px 0 12px #02f2f2;
-}
-
-.opt {
-	height: 100px;
-	width: 100px;
-	border-radius: 10px;
-	border: none;
-	background-color: rgba(0, 0, 0, 0.6);
-	color: white;
-	cursor: pointer;
-	transition: all .3s ease;
-	margin: 5px;
-}
-
-.opt:hover {
-	background-color: rgba(255, 255, 255, 0.2);
-	scale: 1.1;
 }
