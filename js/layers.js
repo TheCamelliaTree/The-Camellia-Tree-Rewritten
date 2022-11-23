@@ -7,17 +7,17 @@ addLayer("s", {
 		points: new Decimal(0),
     }},
     upgrades: {
-        11: {
+        0: {
             title: "A new artist has risen...",
             description: "You created an account to post your music onto. Gain 1 Note/s",
             cost: new Decimal(1),
         },
-        12: {
+        1: {
             title: "The First Composition",
             description: "You created your first composition because of your friends begging you to make it, so you did. It isn't too good, but your note gain is doubled.",
             cost: new Decimal(2),
         },
-        13: {
+        2: {
             title: "A Great Discovery",
             description: "You discovered Vocaloid, and used the most known vocaloid, Hatsune Miku, to help your songs feel more lively. Hatsune Miku also helps you boost your note gain by how many songs you released.",
             cost: new Decimal(3),
@@ -26,7 +26,7 @@ addLayer("s", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
-        14: {
+        3: {
             title: "Social Media",
             description: "You went onto Social Media and created an account under the name 'Cametek,' and soon, your journey begins. Song gain is now boosted by your notes.",
             cost: new Decimal(5),
@@ -35,7 +35,7 @@ addLayer("s", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
-        21: {
+        4: {
             title: "First Real Song",
             description: "You posted your first actual real song online! The song doesn't sound good though, but who cares. Note gain is boosting itself.",
             cost: new Decimal(10),
@@ -52,6 +52,30 @@ addLayer("s", {
             done() {return player.s.points.gte(50)},
         },
     },
+    tabFormat: {
+        "Upgrades":{
+            content: [
+                ["display-text",
+                    function() { return 'You have created ' + format(player.s.points) + ' songs on your computer'},
+                    { "color": "#426FB8", "font-size": "16px", "font-family": "Inconsolata"},],
+                "prestige-button",
+                "blank",
+                ["row", [
+                    ["upgrade", 0], ["upgrade", 1], ["upgrade", 2], ["upgrade", 3], ["upgrade", 4],
+            ]]
+            ]
+        },
+        "Milestones": {
+            content: [
+                ["display-text",
+                    function() { return 'You have created ' + format(player.s.points) + ' songs on your computer'},
+                    { "color": "#426FB8", "font-size": "16px", "font-family": "Inconsolata"},],
+                "prestige-button",
+                "blank",
+                "milestones",
+            ]
+        },
+    },
     color: "#426FB8",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "songs", // Name of prestige currency
@@ -61,11 +85,14 @@ addLayer("s", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
-        if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
+        if (hasUpgrade('s', 3)) mult = mult.times(upgradeEffect('s', 3))
+        if (hasUpgrade('p', 0)) mult = mult.times(upgradeEffect('p', 0))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        let exp = new Decimal(1)
+        if (hasMilestone('a', 1)) exp = exp.add(0.1)
+        return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -87,6 +114,11 @@ addLayer("a", {
             effectDescription: "Unlock the Paroxysm Layer.",
             done() {return player.a.points.gte(1)},
         },
+        1: {
+            requirementDescription: "2 Albums",
+            effectDescription: "Song gain boosted by ^1.1",
+            done() {return player.a.points.gte(2)}
+        },
     },
     effect(){
         return Decimal.pow(10, player[this.layer].points)
@@ -100,7 +132,7 @@ addLayer("a", {
     baseResource: "songs", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 4, // Prestige currency exponent
+    exponent: 7.27, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
@@ -121,6 +153,17 @@ addLayer("p", {
         unlocked: false,
 		points: new Decimal(0),
     }},
+    upgrades: {
+        0: {
+            title: "Ring",
+            description: "Track 1 of Paroxysm. Boosts song gain by Paroxysms.",
+            cost: new Decimal(1),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.75)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
+        },
+    },
     color: "#DF6079",
     requires: new Decimal(5000), // Can be a function that takes requirement increases into account
     resource: "Paroxysms", // Name of prestige currency

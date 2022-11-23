@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Camellia Tree",
-	id: "mymod",
+	id: "Camellia",
 	author: "Not Cametek (Halloweeb#4371 collabing with Flustix#5433 (foreshadowing something))",
 	pointsName: "notes",
 	modFiles: ["layers.js", "tree.js"],
@@ -45,10 +45,10 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
-	if (hasUpgrade('s', 11)) gain = new Decimal(1)
-	if (hasUpgrade('s', 12)) gain = gain.times(2)
-	if (hasUpgrade('s', 13)) gain = gain.times(upgradeEffect('s', 13))
-	if (hasUpgrade('s', 21)) gain = gain.times(upgradeEffect('s', 21))
+	if (hasUpgrade('s', 0)) gain = new Decimal(1)
+	if (hasUpgrade('s', 1)) gain = gain.times(2)
+	if (hasUpgrade('s', 2)) gain = gain.times(upgradeEffect('s', 2))
+	if (hasUpgrade('s', 4)) gain = gain.times(upgradeEffect('s', 4))
 	gain = gain.times(tmp.a.effect)
 	return gain
 }
@@ -77,7 +77,7 @@ var backgroundStyle = {
 
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
-	return(3600) // Default is 1 hour which is just arbitrarily large
+	return(727) // Default is 1 hour which is just arbitrarily large
 }
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
