@@ -22,7 +22,9 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added Songs and Albums.<br>
 		- Endgame is Paroxysm Layer.`
 
-let winText = `Your songs went viral, too viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)`
+let winText = `Your songs went viral, too viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)<br>
+			Please make sure to join Camellia's Official Discord Server if you support his music and possibly the tree as well!<br>
+			https://discord.gg/camellia`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)

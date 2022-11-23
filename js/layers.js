@@ -44,10 +44,12 @@ addLayer("s", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
-        22: {
-            title: "CD Disk Time",
-            description: "You decided to do the unthinkable. You decided to release a CD Disk. Unlock Albums.",
-            cost: new Decimal(50)
+    },
+    milestones: {
+        0: {
+            requirementDescription: "50 Songs",
+            effectDescription: "Unlock Albums",
+            done() {return player.s.points.gte(50)},
         },
     },
     color: "#426FB8",
@@ -90,7 +92,7 @@ addLayer("a", {
         return Decimal.pow(10, player[this.layer].points)
     },
     effectDescription(){
-        return "multiplying point gain by " + format(tmp[this.layer].effect)
+        return "multiplying note gain by " + format(tmp[this.layer].effect)
     },
     color: "#FFFFFF",
     requires: new Decimal(200), // Can be a function that takes requirement increases into account
@@ -109,7 +111,7 @@ addLayer("a", {
     hotkeys: [
         {key: "a", description: "A: Create an Album", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return hasUpgrade('s', 22) || player.a.unlocked}
+    layerShown(){return hasMilestone('s', 0) || player.a.unlocked}
 })
 addLayer("p", {
     name: "paraxysm", // This is optional, only used in a few places, If absent it just uses the layer id.
