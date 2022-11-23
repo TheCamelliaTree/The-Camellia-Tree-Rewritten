@@ -49,6 +49,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 1)) gain = gain.times(2)
 	if (hasUpgrade('s', 2)) gain = gain.times(upgradeEffect('s', 2))
 	if (hasUpgrade('s', 4)) gain = gain.times(upgradeEffect('s', 4))
+	if (hasUpgrade('p', 1)) gain = gain.pow(1.05)
 	gain = gain.times(tmp.a.effect)
 	return gain
 }
@@ -69,7 +70,7 @@ function isEndgame() {
 
 
 // Less important things beyond this point!
-
+function colored(layer, text, tag='h2') { return `<${tag} style='color:${temp[layer].color};text-shadow:${temp[layer].color} 0px 0px 10px;'>${text}</${tag}>` }
 // Style for the background, can be a function
 var backgroundStyle = {
 

@@ -55,9 +55,7 @@ addLayer("s", {
     tabFormat: {
         "Upgrades":{
             content: [
-                ["display-text",
-                    function() { return 'You have created ' + format(player.s.points) + ' songs on your computer'},
-                    { "color": "#426FB8", "font-size": "16px", "font-family": "Inconsolata"},],
+                ["display-text", () => "You have created " + colored("s", format(player.s.points)) + " songs on your computer."],
                 "prestige-button",
                 "blank",
                 ["row", [
@@ -67,15 +65,20 @@ addLayer("s", {
         },
         "Milestones": {
             content: [
-                ["display-text",
-                    function() { return 'You have created ' + format(player.s.points) + ' songs on your computer'},
-                    { "color": "#426FB8", "font-size": "16px", "font-family": "Inconsolata"},],
+                ["display-text", () => "You have created " + colored("s", format(player.s.points)) + " songs on your computer."],
                 "prestige-button",
                 "blank",
                 "milestones",
             ]
         },
     },
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+      
+        let keep = [];
+        if (hasMilestone(otherLayer, id)) keep.push("upgrades");
+        layerDataReset(this.layer, keep);
+      },
     color: "#426FB8",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "songs", // Name of prestige currency
@@ -162,6 +165,26 @@ addLayer("p", {
                 return player[this.layer].points.add(1).pow(0.75)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
+        },
+        1: {
+            title: "Nuclear Drive",
+            description: "Track 2 of Paroxysm. Note gain boosted by ^1.05.",
+            cost: new Decimal(2),
+        },
+    },
+    milestones: {
+
+    },
+    tabFormat: {
+        "Upgrades":{
+            content: [
+                ["display-text", () => "You have created " + colored("p", format(player.p.points)) + " songs for Paraxysm."],
+                "prestige-button",
+                "blank",
+                ["row", [
+                    ["upgrade", 0], ["upgrade", 1], 
+            ]]
+            ]
         },
     },
     color: "#DF6079",
