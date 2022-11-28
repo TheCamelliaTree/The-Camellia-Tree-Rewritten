@@ -198,7 +198,9 @@ addLayer("p", {
                     return `
                     <br>${data.display}
                     <br>
-                    <br><b>Amount:</b> ${formatWhole(amount))}`
+                    <br><b>Amount:</b> ${formatWhole(amount))}
+                    <br>
+                    `
                 },
                 canAfford() {
                     return player.points.gte(this.cost())
