@@ -196,11 +196,12 @@ addLayer("p", {
                 display() {
                     let amount = getBuyableAmount('p', 11)
                     return `
-                    <br>${data.display}
-                    <br>
-                    <br><b>Amount:</b> ${formatWhole(amount))}
-                    <br>
-                    `
+                    <br /> Your songs are on a Nuclear Driving Ring, causing them to create Nuclear Fusion, which boosts song by 2x due to radiation.
+                    <br /><b>Amount:</b> ${formatWhole(amount)}
+                    <br />
+                    <br /><b>Currently boosting songs by:</b> ${this.effectDisplay(temp.p.buyables[11].effect)}
+                    <br />
+                    <br /><b>Cost:</b> ${format(temp.p.buyables[11].cost)} Paroxysms`
                 },
                 canAfford() {
                     return player.points.gte(this.cost())
@@ -209,7 +210,7 @@ addLayer("p", {
                     player.points = player.points.sub(this.cost())
                     setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
                 },
-                effect() {
+                effect(x) {
                     return Decimal.pow(2, x)
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
