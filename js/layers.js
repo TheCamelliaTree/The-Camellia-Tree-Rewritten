@@ -40,7 +40,7 @@ addLayer("s", {
             description: "You posted your first actual real song online! The song doesn't sound good though, but who cares. Note gain is boosting itself.",
             cost: new Decimal(10),
             effect() {
-                return player.points.add(1).pow(0.3)
+                return player.points.add(1).pow(0.2)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
@@ -87,7 +87,7 @@ addLayer("s", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
-        if (hasUpgrade('p', 0)) mult = mult.times(upgradeEffect('p', 0))
+        if (hasUpgrade('p', 11)) mult = mult.times(upgradeEffect('p', 11))
         if (hasMilestone('p', 0)) mult = mult.times(10)
         mult = mult.times((buyableEffect('p', 11)).times(x))
         return mult
@@ -140,7 +140,9 @@ addLayer("a", {
         return new Decimal(1)
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        let exp = new Decimal(1)
+        if (hasMilestone('p', 2)) exp = exp.add(0.1)
+        return exp
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -171,6 +173,16 @@ addLayer("p", {
             description: "Track 2 of Paroxysm. Note gain boosted by ^1.05.",
             cost: new Decimal(2),
         },
+        13: {
+            title: "[e-]",
+            description: "Track 3 of Paroxysm. Raise song gain by ^1.171 (get it, because e is a function and 1 is taken away because of the minus sign).",
+            cost: new Decimal(4)
+        },
+        14: {
+            title: "Mithril",
+            description: "Track 4 of Paroxysm. Unlock new song upgrades.",
+            cost: new Decimal(6)
+        },
     },
     milestones: {
         0: {
@@ -183,6 +195,16 @@ addLayer("p", {
             effectDescription: "Unlocks a Buyable.",
             done() {return player.p.points.gte(2)}
         },
+        2: {
+            requirementDescription: "This function is useful in math, and a song made it even more useful. (4 Songs in Paroxysm)",
+            effectDescription: "Lower Paroxysm's base cost by 50, and raises Album gain exponent by 0.1.",
+            done() {return player.p.points.gte(4)}
+        },
+        3: {
+            requirementDescription: "This Metal is the strongest in all of Middle Earth, even rare as well. (6 songs in Paroxysm).",
+            effectDescription: "Keep Song upgrades on reset and unlock a buyable.",
+            done() {return player.p.points.gte(6)}
+        },
     },
     buyables: {
         11: {
@@ -191,17 +213,15 @@ addLayer("p", {
                     return hasMilestone('p', 1)
                 },
                 cost(x) {
-                    return ((x.times(2)).times(100))
+                    return Decimal.pow(4, x)
                 },
                 display() {
                     let amount = getBuyableAmount('p', 11)
                     return `
                     <br /> Your songs are on a Nuclear Driving Ring, causing them to create Nuclear Fusion, which boosts song by 2x due to radiation.
-                    <br /><b>Amount:</b> ${formatWhole(amount)}
-                    <br />
-                    <br /><b>Currently boosting songs by:</b> ${this.effectDisplay(temp.p.buyables[11].effect)}
-                    <br />
-                    <br /><b>Cost:</b> ${format(temp.p.buyables[11].cost)} Paroxysms`
+                    <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
+                    <br /><b><h3>Currently boosting songs by:</h3></b> ${this.effectDisplay(temp.p.buyables[11].effect)}
+                    <br /><b><h3>Cost:</h3></b> ${format(temp.p.buyables[11].cost)} Notes`
                 },
                 canAfford() {
                     return player.points.gte(this.cost())
@@ -212,6 +232,34 @@ addLayer("p", {
                 },
                 effect(x) {
                     return Decimal.pow(2, x)
+                },
+                effectDisplay() {return format(buyableEffect(this.layer, this.id))},
+            },
+            12: {
+                title: "Middle-Earth Gifts",
+                unlocked() {
+                    return hasMilestone('p', 3)
+                },
+                cost(y) {
+                    return Decimal.pow(10, y)
+                },
+                display() {
+                    let amount = getBuyableAmount('p', 12)
+                    return `
+                    <br /> Your notes are as hard as Mithril, making them worth 3x more.
+                    <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
+                    <br /><b><h3>Currently notes are selling for </h3></b><h2> ${this.effectDisplay(temp.p.buyables[11].effect)}</h2><h3> times higher than normal.</h3>
+                    <br /><b><h3>Cost:</h3></b> ${format(temp.p.buyables[12].cost)} Notes`
+                },
+                canAfford() {
+                    return player.points.gte(this.cost())
+                },
+                buy() {
+                    player.points = player.points.sub(this.cost())
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                },
+                effect(y) {
+                    return Decimal.pow(3, y)
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
             },
@@ -246,12 +294,16 @@ addLayer("p", {
         },
     },
     color: "#DF6079",
-    requires: new Decimal(5000), // Can be a function that takes requirement increases into account
+    requires() {
+        let requires = new Decimal(5000)
+            if (hasMilestone('p', 2)) requires = requires.sub(50)
+        return requires
+    }, // Can be a function that takes requirement increases into account
     resource: "Paroxysms", // Name of prestige currency
     baseResource: "notes", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1.25, // Prestige currency exponent
+    exponent: 2, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
