@@ -31,7 +31,9 @@ addLayer("s", {
             description: "You went onto Social Media and created an account under the name 'Cametek,' and soon, your journey begins. Song gain is now boosted by your notes.",
             cost: new Decimal(5),
             effect() {
-                return player.points.add(1).pow(0.1)
+                let effect = player.points.add(1).pow(0.1)
+                if (hasUpgrade('s', 21)) effect = effect.times(upgradeEffect('s', 21))
+                return effect
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
         },
@@ -43,6 +45,13 @@ addLayer("s", {
                 return player.points.add(1).pow(0.2)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"},
+        },
+        21: {
+            title: "100 followers",
+            description: "Congrats. You got 100 followers on Social Media. 'Social Media' boosted by 100x.",
+            cost: new Decimal(1e15),
+            unlocked() { return hasUpgrade('p', 14)},
+            effect: 100
         },
     },
     milestones: {
@@ -213,7 +222,7 @@ addLayer("p", {
                     return hasMilestone('p', 1)
                 },
                 cost(x) {
-                    return Decimal.pow(4, x)
+                    return new Decimal(1000).pow(7.27, x)
                 },
                 display() {
                     let amount = getBuyableAmount('p', 11)
@@ -240,8 +249,8 @@ addLayer("p", {
                 unlocked() {
                     return hasMilestone('p', 3)
                 },
-                cost(y) {
-                    return Decimal.pow(10, y)
+                cost(x) {
+                    return new Decimal(10000).pow(10, x)
                 },
                 display() {
                     let amount = getBuyableAmount('p', 12)
@@ -258,8 +267,8 @@ addLayer("p", {
                     player.points = player.points.sub(this.cost())
                     setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
                 },
-                effect(y) {
-                    return Decimal.pow(3, y)
+                effect(x) {
+                    return Decimal.pow(3, x)
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
             },
@@ -303,7 +312,7 @@ addLayer("p", {
     baseResource: "notes", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 2, // Prestige currency exponent
+    exponent: 1.95, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
