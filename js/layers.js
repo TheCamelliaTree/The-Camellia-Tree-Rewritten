@@ -9,18 +9,20 @@ addLayer("s", {
     upgrades: {
         11: {
             title: "A new artist has risen...",
-            description: "You created an account to post your music onto. Gain 1 Note/s",
+            description: "You created an account to post your music onto. Gain 1 Note/s and unlock new upgrades. (done to prevent softlocking)",
             cost: new Decimal(1),
         },
         12: {
             title: "The First Composition",
             description: "You created your first composition because of your friends begging you to make it, so you did. It isn't too good, but your note gain is doubled.",
             cost: new Decimal(2),
+            unlocked() { return hasUpgrade('s', 11)},
         },
         13: {
             title: "A Great Discovery",
             description: "You discovered Vocaloid, and used the most known vocaloid, Hatsune Miku, to help your songs feel more lively. Hatsune Miku also helps you boost your note gain by how many songs you released.",
             cost: new Decimal(3),
+            unlocked() { return hasUpgrade('s', 11)},
             effect() {
                 return player[this.layer].points.add(1).pow(0.35)
             },
@@ -30,6 +32,7 @@ addLayer("s", {
             title: "Social Media",
             description: "You went onto Social Media and created an account under the name 'Cametek,' and soon, your journey begins. Song gain is now boosted by your notes.",
             cost: new Decimal(5),
+            unlocked() { return hasUpgrade('s', 11)},
             effect() {
                 let effect = player.points.add(1).pow(0.1)
                 if (hasUpgrade('s', 21)) effect = effect.times(upgradeEffect('s', 21))
@@ -41,6 +44,7 @@ addLayer("s", {
             title: "First Real Song",
             description: "You posted your first actual real song online! The song doesn't sound good though, but who cares. Note gain is boosting itself.",
             cost: new Decimal(10),
+            unlocked() { return hasUpgrade('s', 11)},
             effect() {
                 return player.points.add(1).pow(0.2)
             },
@@ -52,6 +56,16 @@ addLayer("s", {
             cost: new Decimal(1e15),
             unlocked() { return hasUpgrade('p', 14)},
             effect: 100
+        },
+        22: {
+            title: "Discord Server",
+            description: "You opened a Discord server for all your fans. Unlock Members and boost note gain by Paroxysms.",
+            cost: new Decimal(1e20),
+            unlocked() { return hasUpgrade('p', 14)},
+            effect() {
+                return player.p.points.add(1).pow(2)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"}
         },
     },
     milestones: {
@@ -104,6 +118,7 @@ addLayer("s", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
         if (hasMilestone('a', 1)) exp = exp.add(0.1)
+        if (hasUpgrade('p', 13)) exp = exp.add(0.171)
         return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -222,7 +237,7 @@ addLayer("p", {
                     return hasMilestone('p', 1)
                 },
                 cost(x) {
-                    return new Decimal(1000).pow(7.27, x)
+                    return new Decimal(1000).pow(x)
                 },
                 display() {
                     let amount = getBuyableAmount('p', 11)
@@ -250,7 +265,7 @@ addLayer("p", {
                     return hasMilestone('p', 3)
                 },
                 cost(x) {
-                    return new Decimal(10000).pow(10, x)
+                    return new Decimal(10000).pow(x)
                 },
                 display() {
                     let amount = getBuyableAmount('p', 12)
@@ -324,4 +339,54 @@ addLayer("p", {
         {key: "p", description: "P: Reset for Paraxysms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return hasMilestone('a', 0) || player.p.unlocked}
+})
+addLayer("m", {
+    name: "Members",
+    symbol: "M",
+    startData() { return {                  
+        unlocked: true,                     
+        points: new Decimal(0), 
+        messages: new Decimal(0),            
+    }},
+    milestones: {
+        0: {
+            requirementDescription: "First Member! (1 Member who joined)",
+            effectDescription: "Wow, your first member joined, having the name Halloweeb#4371, and they started chatting in #general! More people started to join, but their typing was slow... Gain Messages based on Members.",
+            done() {return player.m.points.gte(1)},
+        },
+    },
+    tabFormat: {
+        "Member Milestones":{
+            content: [
+                ["display-text", () => "You have " + colored("m", format(player.m.points)) + " people who joined your discord."],
+                "prestige-button",
+                ["display-text", () => "You have " + colored("m", format(player.m.messages)) + " messages in the discord."],
+                "blank",
+                "milestones",
+            ]
+        },
+    },
+    color: "#7289DA",                       
+    resource: "Members",            
+    row: 1,
+    position: 1,                                 
+    baseResource: "Songs",                 
+    baseAmount() { return player.s.points },
+    requires: new Decimal(1e25),              
+    type: "normal",                         
+    exponent: 0.1, 
+    update(diff)  { let messageGain = new Decimal(0)
+        if (hasMilestone('m', 0)) messageGain = player.m.points.div(10)
+        player.m.messages = player.m.messages.add(messageGain.times(diff))
+    },                    
+    gainMult() {                            
+        return new Decimal(1)               
+    },
+    gainExp() {
+        return new Decimal(1)
+    },
+    hotkeys: [
+        {key: "m", description: "M: Reset for Members", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown() { return hasUpgrade('s', 22) },
 })

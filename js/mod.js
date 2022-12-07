@@ -13,13 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "A new beginning...",
+	num: "0.2",
+	name: "Cametek Discord Server Opening!? :wobbers:",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.2</h3><br>
+		- Added a new layer. (Members)<br>
+		- Added 2 Song Upgrades and 4 Paroxysm Upgrades.<br>
+		- Endgame is 1 Member.<br>
 	<h3>v0.1</h3><br>
-		- Added Songs and Albums.<br>
+		- Added Songs, Albums, and Paroxysm Layer (not implemented).<br>
 		- Endgame is Paroxysm Layer.`
 
 let winText = `Your songs went viral, too viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)<br>
@@ -51,6 +55,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 13)) gain = gain.times(upgradeEffect('s', 13))
 	if (hasUpgrade('s', 15)) gain = gain.times(upgradeEffect('s', 15))
 	if (hasUpgrade('p', 12)) gain = gain.pow(1.05)
+	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
 	gain = gain.times((buyableEffect('p', 12)).times(x))
 	gain = gain.times(tmp.a.effect)
 	return gain
@@ -61,12 +66,12 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [
+var displayThings = [ "Current Endgame: 1 Member."
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('a', 0)
+	return hasMilestone('m', 0)
 }
 
 
