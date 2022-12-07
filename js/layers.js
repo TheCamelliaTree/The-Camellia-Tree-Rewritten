@@ -16,13 +16,13 @@ addLayer("s", {
             title: "The First Composition",
             description: "You created your first composition because of your friends begging you to make it, so you did. It isn't too good, but your note gain is doubled.",
             cost: new Decimal(2),
-            unlocked() { return hasUpgrade('s', 11)},
+            unlocked() { return hasUpgrade('s', 11) || hasMilestone('p', 0)},
         },
         13: {
             title: "A Great Discovery",
             description: "You discovered Vocaloid, and used the most known vocaloid, Hatsune Miku, to help your songs feel more lively. Hatsune Miku also helps you boost your note gain by how many songs you released.",
             cost: new Decimal(3),
-            unlocked() { return hasUpgrade('s', 11)},
+            unlocked() { return hasUpgrade('s', 11) || hasMilestone('p', 0)},
             effect() {
                 return player[this.layer].points.add(1).pow(0.35)
             },
@@ -32,7 +32,7 @@ addLayer("s", {
             title: "Social Media",
             description: "You went onto Social Media and created an account under the name 'Cametek,' and soon, your journey begins. Song gain is now boosted by your notes.",
             cost: new Decimal(5),
-            unlocked() { return hasUpgrade('s', 11)},
+            unlocked() { return hasUpgrade('s', 11) || hasMilestone('p', 0)},
             effect() {
                 let effect = player.points.add(1).pow(0.1)
                 if (hasUpgrade('s', 21)) effect = effect.times(upgradeEffect('s', 21))
@@ -44,7 +44,7 @@ addLayer("s", {
             title: "First Real Song",
             description: "You posted your first actual real song online! The song doesn't sound good though, but who cares. Note gain is boosting itself.",
             cost: new Decimal(10),
-            unlocked() { return hasUpgrade('s', 11)},
+            unlocked() { return hasUpgrade('s', 11) || hasMilestone('p', 0)},
             effect() {
                 return player.points.add(1).pow(0.2)
             },

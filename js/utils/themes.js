@@ -1,5 +1,5 @@
 // ************ Themes ************
-var themes = ["blackmagik", "uufo"];
+var themes = ["blackmagik", "uufo",];
 let displayNames = ["Blackmagik", "U.U.F.O."];
 
 function changeTheme() {
