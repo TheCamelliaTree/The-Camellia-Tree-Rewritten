@@ -21,6 +21,8 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.2</h3><br>
 		- Added a new layer. (Members)<br>
 		- Added 2 Song Upgrades and 4 Paroxysm Upgrades.<br>
+		- Fixed a softlocking problem.<br>
+		- Added 2 Paroxysm Buyables
 		- Endgame is 1 Member.<br>
 	<h3>v0.1</h3><br>
 		- Added Songs, Albums, and Paroxysm Layer (not implemented).<br>

@@ -375,9 +375,9 @@ addLayer("m", {
     requires: new Decimal(1e25),              
     type: "normal",                         
     exponent: 0.1, 
-    update(diff)  { let messageGain = new Decimal(0)
-        if (hasMilestone('m', 0)) messageGain = player.m.points.div(10)
-        player.m.messages = player.m.messages.add(messageGain.times(diff))
+    update(diff)  {
+        if (hasMilestone('m', 0))  {let messageGain = player.m.points.div(10)
+        player.m.messages = player.m.messages.add(messageGain.times(diff))}
     },                    
     gainMult() {                            
         return new Decimal(1)               
