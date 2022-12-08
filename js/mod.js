@@ -23,6 +23,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added 2 Song Upgrades and 4 Paroxysm Upgrades and Milestones.<br>
 		- Fixed a softlocking problem.<br>
 		- Added 2 Paroxysm Buyables<br>
+		- Added Endgame under Points<br>
 		- Endgame is 1 Member.<br>
 	<h3>v0.1</h3><br>
 		- Added Songs, Albums, and Paroxysm Layer (not implemented).<br>
