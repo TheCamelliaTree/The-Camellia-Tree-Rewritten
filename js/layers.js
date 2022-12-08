@@ -53,7 +53,7 @@ addLayer("s", {
         21: {
             title: "100 followers",
             description: "Congrats. You got 100 followers on Social Media. 'Social Media' boosted by 100x.",
-            cost: new Decimal(1e15),
+            cost: new Decimal(2e14),
             unlocked() { return hasUpgrade('p', 14)},
             effect: 100
         },
@@ -374,7 +374,7 @@ addLayer("m", {
     position: 1,                                 
     baseResource: "Songs",                 
     baseAmount() { return player.s.points },
-    requires: new Decimal(1e25),              
+    requires: new Decimal(1.5e24),              
     type: "normal",                         
     exponent: 0.1, 
     update(diff)  {
