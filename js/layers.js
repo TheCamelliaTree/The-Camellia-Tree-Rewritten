@@ -204,7 +204,7 @@ addLayer("p", {
         },
         14: {
             title: "Mithril",
-            description: "Track 4 of Paroxysm. Unlock new song upgrades.",
+            description: "Track 4 of Paroxysm. Unlock new song upgrades and boosts Paroxysm gain by notes.",
             cost: new Decimal(6)
         },
     },
@@ -327,9 +327,11 @@ addLayer("p", {
     baseResource: "notes", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1.95, // Prestige currency exponent
+    exponent: 1.9, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
-        return new Decimal(1)
+        let mult = new Decimal(1)
+        if (hasUpgrade('p', 14)) mult = mult.div(player.points.max(10).log(10)) //div for decrease, times for increase
+        return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
