@@ -74,6 +74,12 @@ addLayer("s", {
             effectDescription: "Unlock Albums",
             done() {return player.s.points.gte(50)},
         },
+        1: {
+            requirementDescription: "Worthy. (1e100 songs)",
+            effectDescription: "Unlock Artists.",
+            done() {return player.s.points.gte(1e100)},
+            unlocked() {return hasMilestone('p', 7)}
+        },
     },
     tabFormat: {
         "Upgrades":{
@@ -100,13 +106,15 @@ addLayer("s", {
         if (hasMilestone('p', 3)) keep.push("upgrades");
         layerDataReset(this.layer, keep);
       },
-    color: "#1F1E33",
+    color: "#3BB311",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "songs", // Name of prestige currency
     baseResource: "notes", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
+    softcap: new Decimal(1e20),
+    softcapPower: new Decimal(0.25),
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
@@ -125,6 +133,7 @@ addLayer("s", {
     hotkeys: [
         {key: "s", description: "S: Create a Song", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+    passiveGeneration() {return hasMilestone('p', 4) ? 0.01 : 0},
     layerShown(){return true}
 }),
 addLayer("a", {
@@ -137,14 +146,19 @@ addLayer("a", {
     }},
     milestones: {
         0: {
-            requirementDescription: "1 Album",
+            requirementDescription: "paroxysm (1 Album)",
             effectDescription: "Unlock the Paroxysm Layer.",
             done() {return player.a.points.gte(1)},
         },
         1: {
-            requirementDescription: "2 Albums",
+            requirementDescription: "Boost! (2 Albums)",
             effectDescription: "Song gain boosted by ^1.1",
             done() {return player.a.points.gte(2)}
+        },
+        2: {
+            requirementDescription: "[diffraction] (3 Albums)",
+            effectDescription: "Unlock the [diffraction] Layer.",
+            done() {return player.a.points.gte(3)}
         },
     },
     effect(){
@@ -154,12 +168,15 @@ addLayer("a", {
         return "multiplying note gain by " + format(tmp[this.layer].effect)
     },
     color: "#FFFFFF",
-    requires: new Decimal(200), // Can be a function that takes requirement increases into account
+    requires() {let requires = new Decimal(200)
+            if (hasUpgrade('m', 11)) requires = requires.sub(50)
+            return requires
+    }, // Can be a function that takes requirement increases into account
     resource: "albums", // Name of prestige currency
     baseResource: "songs", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 7.27, // Prestige currency exponent
+    exponent: 9, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
@@ -207,6 +224,11 @@ addLayer("p", {
             description: "Track 4 of Paroxysm. Unlock new song upgrades and boosts Paroxysm gain by notes.",
             cost: new Decimal(6)
         },
+        21: {
+            title: "Fastest Crash",
+            description: "Track 5 of Paroxysm. Boost Message gain by Paroxysms.",
+            cost: new Decimal(12)
+        },
     },
     milestones: {
         0: {
@@ -228,6 +250,11 @@ addLayer("p", {
             requirementDescription: "This Metal is the strongest in all of Middle Earth, even rare as well. (6 songs in Paroxysm).",
             effectDescription: "Keep Song upgrades on reset and unlock a buyable.",
             done() {return player.p.points.gte(6)}
+        },
+        4: {
+            requirementDescription: "You have performed the fastest crash ever recorded of 1672 MPH. (12 Songs in Paroxysm)",
+            effectDescription: "Passively gain 1% of song gain per second.",
+            done() {return player.p.points.gte(12)}
         },
     },
     buyables: {
@@ -356,6 +383,41 @@ addLayer("m", {
             effectDescription: "Wow, your first member joined, having the name Halloweeb#4371, and they started chatting in #general! More people started to join, but their typing was slow... Gain Messages based on Members.",
             done() {return player.m.points.gte(1)},
         },
+        1: {
+            requirementDescription: "Chat has begun to thrive a little. (10 Messages)",
+            effectDescription: "Your #general chat started to thrive a little from Halloweeb#4371 being active and listening to your songs in chat. Boost Message Gain by 10x.",
+            done() {return player.m.messages.gte(10)},
+        },
+    },
+    upgrades: {
+        11: {
+            title: "First Moderator",
+            description: "After a lot of messages and being online and active for some time, you decided to make Halloweeb#4371 a Moderator in your server. Boost message gain by 2x, Member gain by 3x, and Album base cost is lowered by 50.",
+            cost: new Decimal(50),
+            currencyDisplayName: "Messages",
+            currencyInternalName: "messages",
+            currencyLayer: "m"
+        },
+        12: {
+            title: "Active Chat",
+            description: "More members started joining, and started to make chat alive and active. Boost note gain by ^1.2.",
+            cost: new Decimal(200),
+            currencyDisplayName: "Messages",
+            currencyInternalName: "messages",
+            currencyLayer: "m"
+        },
+        13: {
+            title: "#shitpost channel",
+            description: "You have created a shitpost channel because everyone was posting memes in #general, which was bad for your server. In exchange, your members help boost note gain based on messages.",
+            cost: new Decimal(2500),
+            currencyDisplayName: "Messages",
+            currencyInternalName: "messages",
+            currencyLayer: "m",
+            effect() {
+                return log(player[this.layer].messages).div(100).add(1)
+            },
+            effectDisplay() {}
+        },
     },
     tabFormat: {
         "Member Milestones":{
@@ -367,6 +429,18 @@ addLayer("m", {
                 "milestones",
             ]
         },
+        "Upgrades":{
+            unlocked() {
+                return hasMilestone('m', 1)
+            },
+            content: [
+                ["display-text", () => "You have " + colored("m", format(player.m.points)) + " people who joined your discord."],
+                "prestige-button",
+                ["display-text", () => "You have " + colored("m", format(player.m.messages)) + " messages in the discord."],
+                "blank",
+                "upgrades",
+            ],
+        },
     },
     color: "#7289DA",                       
     resource: "Members",            
@@ -374,15 +448,21 @@ addLayer("m", {
     position: 1,                                 
     baseResource: "Songs",                 
     baseAmount() { return player.s.points },
-    requires: new Decimal(1.5e24),              
-    type: "normal",                         
-    exponent: 0.1, 
-    update(diff)  {
-        if (hasMilestone('m', 0))  {let messageGain = player.m.points.div(10)
-        player.m.messages = player.m.messages.add(messageGain.times(diff))}
+    requires: new Decimal(5e21),              
+    type: "static",                         
+    exponent: 1.5, 
+    update(diff)  { 
+        let messageGain = new Decimal(0)
+        if (hasMilestone('m', 0)) messageGain = player.m.points.div(10)
+        if (hasMilestone('m', 1)) messageGain = messageGain.times(10)
+        if (hasUpgrade('m', 11)) messageGain = messageGain.times(2)
+        messageGain = messageGain.times(player.p.points.div(2))
+        player.m.messages = player.m.messages.add(messageGain.times(diff))
     },                    
     gainMult() {                            
-        return new Decimal(1)               
+        let mult = new Decimal(1) 
+        if (hasUpgrade('m', 11)) mult = new Decimal(3)
+        return mult
     },
     gainExp() {
         return new Decimal(1)
