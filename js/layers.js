@@ -67,11 +67,27 @@ addLayer("s", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"}
         },
+        23: {
+            title: "Paroxysmal Note Boost",
+            description: "Your note gain was kinda concerning your fans, but your discord members were willing to help! Boost note gain by Members.",
+            cost: new Decimal(2.3e23),
+            unlocked() { return hasUpgrade('p', 14)},
+            effect() {
+                return player.m.points.add(1).times(2)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"}
+        },
+        24: {
+            title: "Fastest Boost",
+            description: "Note gain is boosted by Paroxysm's 5th milestone number (1672x).",
+            cost: new Decimal(4e24),
+            unlocked() { return hasUpgrade('p', 14)},
+        },
     },
     milestones: {
         0: {
             requirementDescription: "50 Songs",
-            effectDescription: "Unlock Albums",
+            effectDescription: "Unlock Albums and boost song gain by 5x",
             done() {return player.s.points.gte(50)},
         },
         1: {
@@ -117,23 +133,25 @@ addLayer("s", {
     softcapPower: new Decimal(0.25),
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
+        mult = mult.times((buyableEffect('p', 11)).times(x))
+        if (hasMilestone('s', 0)) mult = mult.times(5)
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
         if (hasUpgrade('p', 11)) mult = mult.times(upgradeEffect('p', 11))
         if (hasMilestone('p', 0)) mult = mult.times(10)
-        mult = mult.times((buyableEffect('p', 11)).times(x))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
         if (hasMilestone('a', 1)) exp = exp.add(0.1)
         if (hasUpgrade('p', 13)) exp = exp.add(0.171)
+        if (hasUpgrade('m', 14)) exp = exp.add(0.1)
         return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "s", description: "S: Create a Song", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    passiveGeneration() {return hasMilestone('p', 4) ? 0.01 : 0},
+    passiveGeneration() {return hasMilestone('p', 4) ? 0.1 : 0},
     layerShown(){return true}
 }),
 addLayer("a", {
@@ -229,6 +247,11 @@ addLayer("p", {
             description: "Track 5 of Paroxysm. Boost Message gain by Paroxysms.",
             cost: new Decimal(12)
         },
+        22: {
+            title: "Paroxysm",
+            description: "Track 6 of, well, Paroxysm. Raise message gain to ^1.25.",
+            cost: new Decimal(13)
+        },
     },
     milestones: {
         0: {
@@ -253,8 +276,13 @@ addLayer("p", {
         },
         4: {
             requirementDescription: "You have performed the fastest crash ever recorded of 1672 MPH. (12 Songs in Paroxysm)",
-            effectDescription: "Passively gain 1% of song gain per second.",
+            effectDescription: "Passively gain 10% of song gain per second.",
             done() {return player.p.points.gte(12)}
+        },
+        5: {
+            requirementDescription: "This song made you have a sudden violent feeling of Paroxysm. (13 Songs in Paroxysm)",
+            effectDescription: "Paroxysms now have an effect.",
+            done() {return player.p.points.gte(13)}
         },
     },
     buyables: {
@@ -363,7 +391,8 @@ addLayer("p", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
-    row: 1, // Row the layer is in on the tree (0 is the first row)
+    row: 1,
+    displayRow: 2, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "p", description: "P: Reset for Paraxysms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -414,9 +443,17 @@ addLayer("m", {
             currencyInternalName: "messages",
             currencyLayer: "m",
             effect() {
-                return log(player[this.layer].messages).div(100).add(1)
+                return player[this.layer].messages.log(10).div(100).add(1)
             },
-            effectDisplay() {}
+            effectDisplay() { return "^"+format(upgradeEffect(this.layer, this.id))}
+        },
+        14: {
+            title: "KonekoKitten",
+            description: "A youtuber by the name of KonekoKitten joined the server, and recommends you to a rhythm game. Unlock Blocks and boost song gain by ^1.1.",
+            cost: new Decimal(200000),
+            currencyDisplayName: "Messages",
+            currencyInternalName: "messages",
+            currencyLayer: "m",
         },
     },
     tabFormat: {
@@ -456,7 +493,8 @@ addLayer("m", {
         if (hasMilestone('m', 0)) messageGain = player.m.points.div(10)
         if (hasMilestone('m', 1)) messageGain = messageGain.times(10)
         if (hasUpgrade('m', 11)) messageGain = messageGain.times(2)
-        messageGain = messageGain.times(player.p.points.div(2))
+        if (hasUpgrade('p', 21)) messageGain = messageGain.times(player.p.points.div(2))
+        if (hasUpgrade('p', 22)) messageGain = messageGain.pow(1.25)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
     },                    
     gainMult() {                            

@@ -8,22 +8,28 @@ let modInfo = {
 	discordName: "The Camellia Tree",
 	discordLink: "https://discord.gg/BEa67qjXa4",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 24,  // In hours
+	offlineLimit: 240,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Cametek Discord Server Opening!? :wobbers:",
+	num: "0.3",
+	name: "Kobaryo and USAO Collab!? (whaaaaaaaa)",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.3</h3><br>
+		- Added 4 Layers (Artists, Kobaryo, USAO, and [diffraction])(1 that will be marked as endgame).<br>
+		- Added a song softcap due to inflation reasons.<br>
+		- Paroxysm is now finished.<br>
+		- Added some new layer upgrades.<br>
+		- Endgame is 1 [diffracted] point.<br>
 	<h3>v0.2</h3><br>
 		- Added a new layer. (Members)<br>
 		- Added 2 Song Upgrades and 4 Paroxysm Upgrades and Milestones.<br>
 		- Fixed a softlocking problem.<br>
-		- Added 2 Paroxysm Buyables<br>
-		- Added Endgame under Points<br>
+		- Added 2 Paroxysm Buyables.<br>
+		- Added Endgame under Points.<br>
 		- Endgame is 1 Member.<br>
 	<h3>v0.1</h3><br>
 		- Added Songs, Albums, and Paroxysm Layer (not implemented).<br>
@@ -52,6 +58,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
+	gain = gain.times((buyableEffect('p', 12)).times(x))
 	if (hasMilestone('p', 0)) gain = new Decimal(1)
 	if (hasUpgrade('s', 11)) gain = new Decimal(1)
 	if (hasUpgrade('s', 12)) gain = gain.times(2)
@@ -60,7 +67,8 @@ function getPointGen() {
 	if (hasUpgrade('p', 12)) gain = gain.pow(1.05)
 	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
 	if (hasUpgrade('m', 12)) gain = gain.pow(1.2)
-	gain = gain.times((buyableEffect('p', 12)).times(x))
+	if (hasUpgrade('m', 13)) gain = gain.pow(upgradeEffect('m', 13))
+	if (hasUpgrade('s', 24)) gain = gain.times(1672)
 	gain = gain.times(tmp.a.effect)
 	return gain
 }
@@ -70,7 +78,7 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [ "Current Endgame: 1 Member."
+var displayThings = [ "Current Endgame: 1 [diffracted] point."
 ]
 
 // Determines when the game "ends"
