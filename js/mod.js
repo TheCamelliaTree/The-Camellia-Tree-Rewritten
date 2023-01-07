@@ -58,7 +58,6 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
-	gain = gain.times((buyableEffect('p', 12)).times(x))
 	if (hasMilestone('p', 0)) gain = new Decimal(1)
 	if (hasUpgrade('s', 11)) gain = new Decimal(1)
 	if (hasUpgrade('s', 12)) gain = gain.times(2)
@@ -70,6 +69,7 @@ function getPointGen() {
 	if (hasUpgrade('m', 13)) gain = gain.pow(upgradeEffect('m', 13))
 	if (hasUpgrade('s', 24)) gain = gain.times(1672)
 	gain = gain.times(tmp.a.effect)
+	gain = gain.times((buyableEffect('p', 12)).times(x))
 	return gain
 }
 

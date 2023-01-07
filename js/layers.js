@@ -80,7 +80,7 @@ addLayer("s", {
         24: {
             title: "Fastest Boost",
             description: "Note gain is boosted by Paroxysm's 5th milestone number (1672x).",
-            cost: new Decimal(4e24),
+            cost: new Decimal(1e24),
             unlocked() { return hasUpgrade('p', 14)},
         },
     },
@@ -134,6 +134,7 @@ addLayer("s", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
         mult = mult.times((buyableEffect('p', 11)).times(x))
+        mult = mult.times(tmp.p.effect)
         if (hasMilestone('s', 0)) mult = mult.times(5)
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
         if (hasUpgrade('p', 11)) mult = mult.times(upgradeEffect('p', 11))
@@ -156,7 +157,7 @@ addLayer("s", {
 }),
 addLayer("a", {
     name: "albums", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol: "AB", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
@@ -217,6 +218,14 @@ addLayer("p", {
         unlocked: false,
 		points: new Decimal(0),
     }},
+    effect() { let effect = new Decimal(1)
+        if (hasMilestone('p', 5)) effect = player.p.points.times(4)
+        return effect
+    },
+    effectDescription() { let effectDescription = ""
+        if (hasMilestone('p', 5)) effectDescription = "multiplying song gain by "+ format(tmp[this.layer].effect)
+        return effectDescription
+    },
     upgrades: {
         11: {
             title: "Ring",
@@ -252,6 +261,20 @@ addLayer("p", {
             description: "Track 6 of, well, Paroxysm. Raise message gain to ^1.25.",
             cost: new Decimal(13)
         },
+        23: {
+            title: "Bug Collection",
+            description: "This is getting boring, but Track 7 of Paroxysm. Raise message gain to ^1.25 again! (because why not :D)",
+            cost: new Decimal(14),
+        },
+        24: {
+            title: "#include",
+            description: "The Final Track of Paroxysm. Raise note gain ^(Paroxysms/200)",
+            cost: new Decimal(20),
+            effect() {
+                return player[this.layer].points.div(200).add(1)
+            },
+            effectDisplay() { return "^"+format(upgradeEffect(this.layer, this.id))},
+        },
     },
     milestones: {
         0: {
@@ -284,6 +307,16 @@ addLayer("p", {
             effectDescription: "Paroxysms now have an effect.",
             done() {return player.p.points.gte(13)}
         },
+        6: {
+            requirementDescription: "A bug collection started to collect on your computer, causing an unknown song to appear. (14 Songs in Paroxysm)",
+            effectDescription: "Paroxysms are now auto-buy-maxed, and reset nothing.",
+            done() {return player.p.points.gte(14)}
+        },
+        7: {
+            requirementDescription: "#include ^layer.completion^ (20 Songs in Paroxysm)",
+            effectDescription: "Finish this layer, and Paroxysm buyables are now auto-bought.",
+            done() {return player.p.points.gte(20)},
+        },
     },
     buyables: {
         11: {
@@ -313,6 +346,7 @@ addLayer("p", {
                     return Decimal.pow(2, x)
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
+                buyMax() {return hasMilestone('p', 7)},
             },
             12: {
                 title: "Middle-Earth Gifts",
@@ -341,6 +375,7 @@ addLayer("p", {
                     return Decimal.pow(3, x)
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
+                buyMax() {return hasMilestone('p', 7)},
             },
         },
     tabFormat: {
@@ -393,6 +428,15 @@ addLayer("p", {
     },
     row: 1,
     displayRow: 2, // Row the layer is in on the tree (0 is the first row)
+    autoPrestige() {return hasMilestone('p', 6)},
+    canBuyMax() {return hasMilestone('p', 6)},
+    resetsNothing() {return hasMilestone('p', 6)},
+    automate() {
+        if (hasMilestone('p', 7)) {
+            buyBuyable('p', 11),
+            buyBuyable('p', 12)
+        }
+    },
     hotkeys: [
         {key: "p", description: "P: Reset for Paraxysms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -443,14 +487,14 @@ addLayer("m", {
             currencyInternalName: "messages",
             currencyLayer: "m",
             effect() {
-                return player[this.layer].messages.log(10).div(100).add(1)
+                return player[this.layer].messages.log(3).div(100).add(1)
             },
             effectDisplay() { return "^"+format(upgradeEffect(this.layer, this.id))}
         },
         14: {
             title: "KonekoKitten",
             description: "A youtuber by the name of KonekoKitten joined the server, and recommends you to a rhythm game. Unlock Blocks and boost song gain by ^1.1.",
-            cost: new Decimal(200000),
+            cost: new Decimal(100000),
             currencyDisplayName: "Messages",
             currencyInternalName: "messages",
             currencyLayer: "m",
@@ -495,6 +539,7 @@ addLayer("m", {
         if (hasUpgrade('m', 11)) messageGain = messageGain.times(2)
         if (hasUpgrade('p', 21)) messageGain = messageGain.times(player.p.points.div(2))
         if (hasUpgrade('p', 22)) messageGain = messageGain.pow(1.25)
+        if (hasUpgrade('p', 23)) messageGain = messageGain.pow(1.25)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
     },                    
     gainMult() {                            
@@ -509,4 +554,51 @@ addLayer("m", {
         {key: "m", description: "M: Reset for Members", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown() { return hasUpgrade('s', 22) },
+})
+addLayer("b", {
+    startData() { return {                  // startData is a function that returns default data for a layer. 
+        unlocked: true,                     // You can add more variables here to add them to your layer.
+        points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+    }},
+    tabFormat: {
+        "Upgrades":{
+            content: [
+                ["display-text", () => "You have collected " + colored("b", format(player[this.layer].points)) + " blocks"],
+                "prestige-button",
+                "blank",
+                "upgrades",
+            ]
+        },
+        "Milestones": {
+            content: [
+                ["display-text", () => "You have collected " + colored("b", format(player[this.layer].points)) + " blocks"],
+                "prestige-button",
+                "blank",
+                "milestones",
+            ]
+        },
+    },
+    color: "#F7CBE0",                       // The color for this layer, which affects many elements.
+    resource: "blocks",            // The name of this layer's main prestige resource.
+    row: 1,  
+    position: 2,                               // The row this layer is on (0 is the first row).
+    baseResource: "messages",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.m.messages },  // A function to return the current amount of baseResource.
+    requires: new Decimal(100000),              // The amount of the base needed to  gain 1 of the prestige currency.
+                                            // Also the amount required to unlock the layer.
+    type: "normal",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        return new Decimal(1)               // Factor in any bonuses multiplying gain here.
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        return new Decimal(1)
+    },
+    hotkeys: [
+        {key: "b", description: "B: Reset for Blocks", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    onPrestige() {
+        player.m.messages = new Decimal(1)
+    },
+    layerShown() { return hasUpgrade('m', 14) },          // Returns a bool for if this layer's node should be visible in the tree.
 })
