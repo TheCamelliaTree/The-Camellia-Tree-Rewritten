@@ -219,7 +219,7 @@ addLayer("p", {
 		points: new Decimal(0),
     }},
     effect() { let effect = new Decimal(1)
-        if (hasMilestone('p', 5)) effect = player.p.points.times(4)
+        if (hasMilestone('p', 5)) effect = player.p.points.times(4).add(1)
         return effect
     },
     effectDescription() { let effectDescription = ""
