@@ -219,12 +219,12 @@ addLayer("p", {
 		points: new Decimal(0),
     }},
     effect() { let effect = new Decimal(1)
-        if (hasMilestone('p', 5)) effect = player.p.points.times(4).add(1)
+        if (hasMilestone('p', 5)) effect = player.p.points.times(4).max(1)
         return effect
     },
-    effectDescription() { let effectDescription = ""
-        if (hasMilestone('p', 5)) effectDescription = "multiplying song gain by "+ format(tmp[this.layer].effect)
-        return effectDescription
+    effectDescription() {
+        if (!hasMilestone('p', 5)) return
+        return "multiplying song gain by "+ format(tmp[this.layer].effect)
     },
     upgrades: {
         11: {
@@ -381,7 +381,7 @@ addLayer("p", {
     tabFormat: {
         "Upgrades":{
             content: [
-                ["display-text", () => "You have created " + colored("p", format(player.p.points)) + " songs for Paraxysm."],
+                ["display-text", () => `You have created ${colored("p", format(player.p.points))} songs for Paroxysm${hasMilestone("p", 5) ? `, multiplying song gain by ${format(tmp.p.effect)}` : ''}`],
                 "prestige-button",
                 "blank",
                 "upgrades",
@@ -389,7 +389,7 @@ addLayer("p", {
         },
         "Milestones": {
             content: [
-                ["display-text", () => "You have created " + colored("p", format(player.p.points)) + " songs for Paroxysm."],
+                ["display-text", () => `You have created ${colored("p", format(player.p.points))} songs for Paroxysm${hasMilestone("p", 5) ? `, multiplying song gain by ${format(tmp.p.effect)}` : ''}`],
                 "prestige-button",
                 "blank",
                 "milestones",
@@ -400,7 +400,7 @@ addLayer("p", {
                 return hasMilestone('p', 1)
             },
             content:[
-                ["display-text", () => "You have created " + colored("p", format(player.p.points)) + " songs for Paroxysm."],
+                ["display-text", () => `You have created ${colored("p", format(player.p.points))} songs for Paroxysm${hasMilestone("p", 5) ? `, multiplying song gain by ${format(tmp.p.effect)}` : ''}`],
                 "prestige-button",
                 "blank",
                 "buyables",

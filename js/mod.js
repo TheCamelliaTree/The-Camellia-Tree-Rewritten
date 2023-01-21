@@ -19,7 +19,7 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.3</h3><br>
-		- Added 4 Layers (Artists, Kobaryo, USAO, and [diffraction])(1 that will be marked as endgame).<br>
+		- Added 5 Layers (Blocks, Artists, Kobaryo, USAO, and [diffraction])(1 that will be marked as endgame).<br>
 		- Added a song softcap due to inflation reasons.<br>
 		- Paroxysm is now finished.<br>
 		- Added some new layer upgrades.<br>
@@ -67,7 +67,8 @@ function getPointGen() {
 	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
 	if (hasUpgrade('m', 12)) gain = gain.pow(1.2)
 	if (hasUpgrade('m', 13)) gain = gain.pow(upgradeEffect('m', 13))
-	if (hasUpgrade('s', 24)) gain = gain.times(1672)
+	if (hasUpgrade('s', 24)) gain = gain.times(1672) //Superluminal
+	if (hasUpgrade('b', 11)) gain = gain.pow(1.234) //reference to Bangin' Burst!'s bpm of 234
 	gain = gain.times(tmp.a.effect)
 	gain = gain.times((buyableEffect('p', 12)).times(x))
 	return gain
