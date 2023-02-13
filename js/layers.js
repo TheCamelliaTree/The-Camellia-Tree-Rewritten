@@ -560,10 +560,29 @@ addLayer("b", {
         unlocked: true,                     // You can add more variables here to add them to your layer.
         points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
+    upgrades: {
+        11: {
+            title: "Bangin' Burst!",
+            description: "Bang Bang! Bursting with energy, gain ^1.234 more notes!",
+            cost: new Decimal(5)
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "A Block? What is this used for anyways... (1 Total Block)",
+            effectDescription: "Message gain is boosted by 100x.",
+            done() {return player.b.total.gte(1)}
+        },
+        9: {
+            requirementDescription: "Start your SDVX Adventure. (1000 Total Blocks)",
+            effectDescription: "Unlock Sound Voltex (Will possibly make you mad due to it being RNG based).",
+            done() {return player.b.total.gte(1000)}
+        },
+    },
     tabFormat: {
         "Upgrades":{
             content: [
-                ["display-text", () => "You have collected " + colored("b", format(player[this.layer].points)) + " blocks"],
+                ["display-text", () => "You have collected " + colored("b", format(player.b.points)) + " blocks"],
                 "prestige-button",
                 "blank",
                 "upgrades",
@@ -571,10 +590,21 @@ addLayer("b", {
         },
         "Milestones": {
             content: [
-                ["display-text", () => "You have collected " + colored("b", format(player[this.layer].points)) + " blocks"],
+                ["display-text", () => "You have collected " + colored("b", format(player.b.points)) + " blocks"],
                 "prestige-button",
                 "blank",
                 "milestones",
+            ]
+        },
+        "Sound Voltex": {
+            unlocked() {
+                return hasMilestone('b', 9)
+            },
+            content: [
+                ["display-text", () => "You have collected " + colored("b", format(player[this.layer].points)) + " blocks"],
+                "prestige-button",
+                "blank",
+                ["display-text", () => "You have reached the endgame for v0.3.1. v0.3.2 is being worked on."],
             ]
         },
     },
