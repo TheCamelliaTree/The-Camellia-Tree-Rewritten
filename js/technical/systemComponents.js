@@ -228,6 +228,8 @@ var systemComponents = {
 				</div>
 				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>
 			</button>
+			
+
         </div>`
     },
 

@@ -8,22 +8,22 @@ let modInfo = {
 	discordName: "The Camellia Tree",
 	discordLink: "https://discord.gg/BEa67qjXa4",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 240,  // In hours
+	offlineLimit: 2400,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "Kobaryo and USAO Collab!? (whaaaaaaaa)",
+	num: "0.3.1",
+	name: "Potential Block in Japan",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.3</h3><br>
-		- Added 5 Layers (Blocks, Artists, Kobaryo, USAO, and [diffraction])(1 that will be marked as endgame).<br>
+	<h3>v0.3.1</h3><br>
+		- Added a layer.<br>
 		- Added a song softcap due to inflation reasons.<br>
 		- Paroxysm is now finished.<br>
 		- Added some new layer upgrades.<br>
-		- Endgame is 1 [diffracted] point.<br>
+		- Endgame is unlocking Sound Voltex Tab.<br>
 	<h3>v0.2</h3><br>
 		- Added a new layer. (Members)<br>
 		- Added 2 Song Upgrades and 4 Paroxysm Upgrades and Milestones.<br>
@@ -70,7 +70,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 24)) gain = gain.times(1672) //Superluminal
 	if (hasUpgrade('b', 11)) gain = gain.pow(1.234) //reference to Bangin' Burst!'s bpm of 234
 	gain = gain.times(tmp.a.effect)
-	gain = gain.times((buyableEffect('p', 12)).times(x))
+	gain = gain.times(buyableEffect('p', 12))
 	return gain
 }
 
@@ -79,12 +79,12 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [ "Current Endgame: 1 [diffracted] point."
+var displayThings = [ "Current Endgame: Sound Voltex Tab unlocked."
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('m', 0)
+	return hasMilestone('b', 9)
 }
 
 

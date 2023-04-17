@@ -133,7 +133,7 @@ addLayer("s", {
     softcapPower: new Decimal(0.25),
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
-        mult = mult.times((buyableEffect('p', 11)).times(x))
+        mult = mult.times((buyableEffect('p', 11)))
         mult = mult.times(tmp.p.effect)
         if (hasMilestone('s', 0)) mult = mult.times(5)
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
@@ -144,7 +144,7 @@ addLayer("s", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
         if (hasMilestone('a', 1)) exp = exp.add(0.1)
-        if (hasUpgrade('p', 13)) exp = exp.add(0.171)
+        if (hasUpgrade('p', 13)) exp = exp.add(0.71)
         if (hasUpgrade('m', 14)) exp = exp.add(0.1)
         return exp
     },
@@ -243,7 +243,7 @@ addLayer("p", {
         },
         13: {
             title: "[e-]",
-            description: "Track 3 of Paroxysm. Raise song gain by ^1.171 (get it, because e is a function and 1 is taken away because of the minus sign).",
+            description: "Track 3 of Paroxysm. Raise song gain by ^1.71 (get it, because e is a function and 1 is taken away because of the minus sign).",
             cost: new Decimal(4)
         },
         14: {
@@ -342,8 +342,7 @@ addLayer("p", {
                     player.points = player.points.sub(this.cost())
                     setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
                 },
-                effect(x) {
-                    return Decimal.pow(2, x)
+                effect() { return Decimal.pow(2, getBuyableAmount(this.layer, this.id))
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
                 buyMax() {return hasMilestone('p', 7)},
@@ -361,7 +360,7 @@ addLayer("p", {
                     return `
                     <br /> Your notes are as hard as Mithril, making them worth 3x more.
                     <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
-                    <br /><b><h3>Currently notes are selling for </h3></b><h2> ${this.effectDisplay(temp.p.buyables[11].effect)}</h2><h3> times higher than normal.</h3>
+                    <br /><b><h3>Currently notes are selling for </h3></b><h2> ${this.effectDisplay(temp.p.buyables[12].effect)}</h2><h3> times higher than normal.</h3>
                     <br /><b><h3>Cost:</h3></b> ${format(temp.p.buyables[12].cost)} Notes`
                 },
                 canAfford() {
@@ -371,8 +370,7 @@ addLayer("p", {
                     player.points = player.points.sub(this.cost())
                     setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
                 },
-                effect(x) {
-                    return Decimal.pow(3, x)
+                effect() { return Decimal.pow(3, getBuyableAmount(this.layer, this.id))
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
                 buyMax() {return hasMilestone('p', 7)},
@@ -537,14 +535,14 @@ addLayer("m", {
         if (hasMilestone('m', 0)) messageGain = player.m.points.div(10)
         if (hasMilestone('m', 1)) messageGain = messageGain.times(10)
         if (hasUpgrade('m', 11)) messageGain = messageGain.times(2)
-        if (hasUpgrade('p', 21)) messageGain = messageGain.times(player.p.points.div(2))
+        if (hasUpgrade('p', 21)) messageGain = messageGain.times(player.p.points.div(2)).add(1)
         if (hasUpgrade('p', 22)) messageGain = messageGain.pow(1.25)
         if (hasUpgrade('p', 23)) messageGain = messageGain.pow(1.25)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
     },                    
     gainMult() {                            
         let mult = new Decimal(1) 
-        if (hasUpgrade('m', 11)) mult = new Decimal(3)
+        if (hasUpgrade('m', 11)) mult = new Decimal(0.3)
         return mult
     },
     gainExp() {
