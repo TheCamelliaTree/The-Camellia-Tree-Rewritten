@@ -139,6 +139,7 @@ addLayer("s", {
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
         if (hasUpgrade('p', 11)) mult = mult.times(upgradeEffect('p', 11))
         if (hasMilestone('p', 0)) mult = mult.times(10)
+        if (hasMilestone('b', 1)) mult = mult.times(100)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -538,6 +539,7 @@ addLayer("m", {
         if (hasUpgrade('p', 21)) messageGain = messageGain.times(player.p.points.div(2)).add(1)
         if (hasUpgrade('p', 22)) messageGain = messageGain.pow(1.25)
         if (hasUpgrade('p', 23)) messageGain = messageGain.pow(1.25)
+        if (hasMilestone('b', 0)) messageGain = messageGain.times(100)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
     },                    
     gainMult() {                            
@@ -556,7 +558,8 @@ addLayer("m", {
 addLayer("b", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,                     // You can add more variables here to add them to your layer.
-        points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        points: new Decimal(0),
+        total: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
     upgrades: {
         11: {
@@ -571,10 +574,26 @@ addLayer("b", {
             effectDescription: "Message gain is boosted by 100x.",
             done() {return player.b.total.gte(1)}
         },
+        1: {
+            requirementDescription: "So you're saying that the blocks are currency in this world? How strange... (5 Total Blocks)",
+            effectDescription: "Song gain is boosted by 100x.",
+            done() {return player.b.total.gte(5)}
+        },
+        2: {
+            requirementDescription: "I think I felt something wrong with some of the blocks, almost as if I'm being drained from them... (10 Total Blocks)",
+            effectDescription: "Unlock Block Challenges.",
+            done() {return player.b.total.gte(10)}
+        },
         9: {
-            requirementDescription: "Start your SDVX Adventure. (1000 Total Blocks)",
+            requirementDescription: "Start your SDVX Adventure. (10000 Total Blocks)",
             effectDescription: "Unlock Sound Voltex (Will possibly make you mad due to it being RNG based).",
-            done() {return player.b.total.gte(1000)}
+            done() {return player.b.total.gte(10000)}
+        },
+    },
+    challenges: {
+        11: {
+            name: "Unhypnotized Universe",
+            challengeDescription: "A Dyscontrolled Galaxy has been discovered... Note gain has been nerfed by 200x because of the unstable discovery."
         },
     },
     tabFormat: {
@@ -582,6 +601,7 @@ addLayer("b", {
             content: [
                 ["display-text", () => "You have collected " + colored("b", format(player.b.points)) + " blocks"],
                 "prestige-button",
+                ["display-text", () => "You have collected a total of " + format(player.b.total) + " blocks"],
                 "blank",
                 "upgrades",
             ]
@@ -590,8 +610,23 @@ addLayer("b", {
             content: [
                 ["display-text", () => "You have collected " + colored("b", format(player.b.points)) + " blocks"],
                 "prestige-button",
+                ["display-text", () => "You have collected a total of " + format(player.b.total) + " blocks"],
                 "blank",
                 "milestones",
+            ]
+        },
+        "Blocky Challenges": {
+            unlocked() {
+                return hasMilestone('b', 2)
+            },
+            content: [
+                ["display-text", () => "You have collected " + colored("b", format(player.b.points)) + " blocks"],
+                "prestige-button",
+                ["display-text", () => "You have collected a total of " + format(player.b.total) + " blocks"],
+                "blank",
+                ["display-text", () => "Challenges are not for the faint of heart, don't plunge into a challenge unless you have the right amount of currency and seem stuck."],
+                "blank",
+                "challenges",
             ]
         },
         "Sound Voltex": {
@@ -614,8 +649,8 @@ addLayer("b", {
     baseAmount() { return player.m.messages },  // A function to return the current amount of baseResource.
     requires: new Decimal(100000),              // The amount of the base needed to  gain 1 of the prestige currency.
                                             // Also the amount required to unlock the layer.
-    type: "normal",                         // Determines the formula used for calculating prestige currency.
-    exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
+    type: "static",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.8,                          // "normal" prestige gain is (currency^exponent).
     gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
         return new Decimal(1)               // Factor in any bonuses multiplying gain here.
     },

@@ -18,11 +18,22 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<br>
+<h2>Format: va.b.c.d</h2><br>
+<br>
+a and b = New updates regarding layers and stuff.<br>
+c (will sometimes pop up) = Updates that are in parts, simply because some updates take longer than others.<br>
+d = bug/grammatical fixes.<br>
+Credit to pg132's changelog format.<br>
+<br>
+<br>
 	<h3>v0.3.1</h3><br>
 		- Added a layer.<br>
 		- Added a song softcap due to inflation reasons.<br>
 		- Paroxysm is now finished.<br>
 		- Added some new layer upgrades.<br>
+		- Added the changelog format.<br>
+		- Fixed some bugs and grammar (thanks to some of you guys for finding them).<br>
 		- Endgame is unlocking Sound Voltex Tab.<br>
 	<h3>v0.2</h3><br>
 		- Added a new layer. (Members)<br>
