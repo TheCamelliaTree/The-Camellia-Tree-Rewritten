@@ -593,7 +593,9 @@ addLayer("b", {
     challenges: {
         11: {
             name: "Unhypnotized Universe",
-            challengeDescription: "A Dyscontrolled Galaxy has been discovered... Note gain has been nerfed by 200x because of the unstable discovery."
+            challengeDescription: "A Dyscontrolled Galaxy has been discovered... Note gain has been nerfed by ^.69 because of the unstable discovery.",
+            goalDescription: "Reach the end of this unstable discovery and make it stable again. Make a song with 1.000e50 notes in it.",
+            canComplete: function() {return player.points.gte(1e50)},
         },
     },
     tabFormat: {
@@ -638,7 +640,7 @@ addLayer("b", {
                 "prestige-button",
                 "blank",
                 ["display-text", () => "You have reached the endgame for v0.3.1. v0.3.2 is being worked on."],
-            ]
+            ],
         },
     },
     color: "#F7CBE0",                       // The color for this layer, which affects many elements.
@@ -650,7 +652,7 @@ addLayer("b", {
     requires: new Decimal(100000),              // The amount of the base needed to  gain 1 of the prestige currency.
                                             // Also the amount required to unlock the layer.
     type: "static",                         // Determines the formula used for calculating prestige currency.
-    exponent: 0.8,                          // "normal" prestige gain is (currency^exponent).
+    exponent: 1,                          // "normal" prestige gain is (currency^exponent).
     gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
         return new Decimal(1)               // Factor in any bonuses multiplying gain here.
     },
