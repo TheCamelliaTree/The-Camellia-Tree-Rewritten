@@ -29,7 +29,7 @@ Credit to pg132's changelog format.<br>
 <br>
 	<h3>v0.3.1</h3><br>
 		- Added a layer.<br>
-		- Added challenges to the new layer (omg camellia song reference if I didn't express that already).<br>
+		- Added challenges to the new layer (omg camellia song reference if I didn't express that already (thank you GrievousKnight#8249 for the nerf)).<br>
 		- Added songs to the new layer (thx to Icecreamdude's "Incremental God Tree" code, do play the tree, it's good).<br>
 		- Added a song softcap due to inflation reasons.<br>
 		- Paroxysm is now finished.<br>
@@ -76,12 +76,13 @@ function getPointGen() {
 	if (hasUpgrade('s', 12)) gain = gain.times(2)
 	if (hasUpgrade('s', 13)) gain = gain.times(upgradeEffect('s', 13))
 	if (hasUpgrade('s', 15)) gain = gain.times(upgradeEffect('s', 15))
-	if (hasUpgrade('p', 12)) gain = gain.pow(1.05)
+	if (hasUpgrade('p', 12) && !inChallenge('b', 12)) gain = gain.pow(1.05)
 	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
 	if (hasUpgrade('m', 12)) gain = gain.pow(1.2)
 	if (hasUpgrade('m', 13)) gain = gain.pow(upgradeEffect('m', 13))
 	if (hasUpgrade('s', 24)) gain = gain.times(1672) //Superluminal
-	if (hasUpgrade('b', 11)) gain = gain.pow(1.234) //reference to Bangin' Burst!'s bpm of 234
+	if (hasUpgrade('b', 11)) gain = gain.pow(1.234)
+	if (hasUpgrade('b', 12)) gain = gain.pow(upgradeEffect('b', 12)) //reference to Bangin' Burst!'s bpm of 234
 	gain = gain.times(tmp.a.effect)
 	gain = gain.times(buyableEffect('p', 12))
 	if (inChallenge('b', 11)) gain = gain.pow(0.69) //nice
@@ -93,8 +94,7 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [ "Current Endgame: Sound Voltex Tab unlocked."
-]
+var displayThings = [() => `Current Endgame: Sound Voltex Tab unlocked.<br> ${inChallenge('b', 12) ? ` T1M3 UN!17 KU23HA C0N5UM35 A77: ${format(player.b.ktime)}s` : ''}<br><h1> ${inChallenge('b', 12) && player.b.time>88.8 && player.b.time<100.5 ? ` KU23HA W177 C0N5UM3 A77.` : ''}${inChallenge('b', 12) && player.b.time>100.5 && player.b.time<111.75 ? ` 1! 15 100 7A13.` : ''}<h1>${inChallenge('b', 12) && player.b.time>111.75 ? ` N0W P32!5H!!!` : ''}`]
 
 // Determines when the game "ends"
 function isEndgame() {

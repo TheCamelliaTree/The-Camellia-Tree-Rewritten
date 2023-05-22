@@ -120,6 +120,7 @@ addLayer("s", {
       
         let keep = [];
         if (hasMilestone('p', 3)) keep.push("upgrades");
+        if (hasMilestone('p', 3)) keep.push("milestones");
         layerDataReset(this.layer, keep);
       },
     color: "#3BB311",
@@ -130,22 +131,24 @@ addLayer("s", {
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     softcap: new Decimal(1e20),
-    softcapPower: new Decimal(0.25),
+    softcapPower() {let softcapPower = new Decimal(0.25)
+    if (player.s.points >= new Decimal(1e50)) softcapPower = new Decimal(0.125)
+    return softcapPower},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
-        mult = mult.times((buyableEffect('p', 11)))
-        mult = mult.times(tmp.p.effect)
+        if (!inChallenge('b', 12)) mult = mult.times((buyableEffect('p', 11)))
+        if (!inChallenge('b', 12)) mult = mult.times(tmp.p.effect)
         if (hasMilestone('s', 0)) mult = mult.times(5)
         if (hasUpgrade('s', 14)) mult = mult.times(upgradeEffect('s', 14))
-        if (hasUpgrade('p', 11)) mult = mult.times(upgradeEffect('p', 11))
-        if (hasMilestone('p', 0)) mult = mult.times(10)
+        if (hasUpgrade('p', 11) && !inChallenge('b', 12)) mult = mult.times(upgradeEffect('p', 11))
+        if (hasMilestone('p', 0) && !inChallenge('b', 12)) mult = mult.times(10)
         if (hasMilestone('b', 1)) mult = mult.times(100)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
         if (hasMilestone('a', 1)) exp = exp.add(0.1)
-        if (hasUpgrade('p', 13)) exp = exp.add(0.71)
+        if (hasUpgrade('p', 13) && !inChallenge('b', 12)) exp = exp.add(0.71)
         if (hasUpgrade('m', 14)) exp = exp.add(0.1)
         return exp
     },
@@ -202,7 +205,7 @@ addLayer("a", {
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
-        if (hasMilestone('p', 2)) exp = exp.add(0.1)
+        if (hasMilestone('p', 2) && !inChallenge('b', 12)) exp = exp.add(0.1)
         return exp
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
@@ -220,7 +223,7 @@ addLayer("p", {
 		points: new Decimal(0),
     }},
     effect() { let effect = new Decimal(1)
-        if (hasMilestone('p', 5)) effect = player.p.points.times(4).max(1)
+        if (hasMilestone('p', 5) && !inChallenge('b', 12)) effect = player.p.points.times(4).max(1)
         return effect
     },
     effectDescription() {
@@ -323,7 +326,7 @@ addLayer("p", {
         11: {
                 title: "Nuclear Fusion",
                 unlocked() {
-                    return hasMilestone('p', 1)
+                    return hasMilestone('p', 1) && !inChallenge('b', 12)
                 },
                 cost(x) {
                     return new Decimal(1000).pow(x)
@@ -333,7 +336,7 @@ addLayer("p", {
                     return `
                     <br /> Your songs are on a Nuclear Driving Ring, causing them to create Nuclear Fusion, which boosts song by 2x due to radiation.
                     <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
-                    <br /><b><h3>Currently boosting songs by:</h3></b> ${this.effectDisplay(temp.p.buyables[11].effect)}
+                    <br /><b><h3>Currently boosting songs by </h3></b><h2> ${this.effectDisplay(temp.p.buyables[11].effect)}</h2><h3> due to radiation.</h3>
                     <br /><b><h3>Cost:</h3></b> ${format(temp.p.buyables[11].cost)} Notes`
                 },
                 canAfford() {
@@ -351,7 +354,7 @@ addLayer("p", {
             12: {
                 title: "Middle-Earth Gifts",
                 unlocked() {
-                    return hasMilestone('p', 3)
+                    return hasMilestone('p', 3) && !inChallenge('b', 12)
                 },
                 cost(x) {
                     return new Decimal(10000).pow(x)
@@ -396,7 +399,7 @@ addLayer("p", {
         },
         "Buyables": {
             unlocked() {
-                return hasMilestone('p', 1)
+                return hasMilestone('p', 1) && !inChallenge('b', 12)
             },
             content:[
                 ["display-text", () => `You have created ${colored("p", format(player.p.points))} songs for Paroxysm${hasMilestone("p", 5) ? `, multiplying song gain by ${format(tmp.p.effect)}` : ''}`],
@@ -409,6 +412,7 @@ addLayer("p", {
     color: "#DF6079",
     requires() {
         let requires = new Decimal(5000)
+            if (inChallenge('b', 12)) requires = new Decimal('10^^308')
             if (hasMilestone('p', 2)) requires = requires.sub(50)
         return requires
     }, // Can be a function that takes requirement increases into account
@@ -419,7 +423,7 @@ addLayer("p", {
     exponent: 1.9, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
-        if (hasUpgrade('p', 14)) mult = mult.div(player.points.max(10).log(10)) //div for decrease, times for increase
+        if (hasUpgrade('p', 14) && !inChallenge('b', 12)) mult = mult.div(player.points.max(10).log(10)) //div for decrease, times for increase
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -427,11 +431,11 @@ addLayer("p", {
     },
     row: 1,
     displayRow: 2, // Row the layer is in on the tree (0 is the first row)
-    autoPrestige() {return hasMilestone('p', 6)},
-    canBuyMax() {return hasMilestone('p', 6)},
-    resetsNothing() {return hasMilestone('p', 6)},
+    autoPrestige() {return hasMilestone('p', 6) && !inChallenge('b', 12)},
+    canBuyMax() {return hasMilestone('p', 6) && !inChallenge('b', 12)},
+    resetsNothing() {return hasMilestone('p', 6) && !inChallenge('b', 12)},
     automate() {
-        if (hasMilestone('p', 7)) {
+        if (hasMilestone('p', 7) && !inChallenge('b', 12)) {
             buyBuyable('p', 11),
             buyBuyable('p', 12)
         }
@@ -439,7 +443,7 @@ addLayer("p", {
     hotkeys: [
         {key: "p", description: "P: Reset for Paraxysms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return hasMilestone('a', 0) || player.p.unlocked}
+    layerShown(){return hasMilestone('a', 0) && !inChallenge('b', 12) || player.p.unlocked}
 })
 addLayer("m", {
     name: "Members",
@@ -536,9 +540,9 @@ addLayer("m", {
         if (hasMilestone('m', 0)) messageGain = player.m.points.div(10)
         if (hasMilestone('m', 1)) messageGain = messageGain.times(10)
         if (hasUpgrade('m', 11)) messageGain = messageGain.times(2)
-        if (hasUpgrade('p', 21)) messageGain = messageGain.times(player.p.points.div(2)).add(1)
-        if (hasUpgrade('p', 22)) messageGain = messageGain.pow(1.25)
-        if (hasUpgrade('p', 23)) messageGain = messageGain.pow(1.25)
+        if (hasUpgrade('p', 21) && !inChallenge('b', 12)) messageGain = messageGain.times(player.p.points.div(2)).add(1)
+        if (hasUpgrade('p', 22) && !inChallenge('b', 12)) messageGain = messageGain.pow(1.25)
+        if (hasUpgrade('p', 23) && !inChallenge('b', 12)) messageGain = messageGain.pow(1.25)
         if (hasMilestone('b', 0)) messageGain = messageGain.times(100)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
     },                    
@@ -560,12 +564,39 @@ addLayer("b", {
         unlocked: true,                     // You can add more variables here to add them to your layer.
         points: new Decimal(0),
         total: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        time: new Decimal(0),
+        ktime: new Decimal(117.6),
     }},
+    update(diff) {
+        let timeGain = new Decimal(1)
+        player.b.time = player.b.time.add(timeGain.times(diff))
+        if (inChallenge('b', 12)) {
+            if (player.b.time>117.6) {
+                alert("666 HA5 C0N5UM3D Y0U. Y0U F377 !N10 1H3 HAND5 0F KU23HA.")
+                player.b.fail = 1
+                player.b.activeChallenge = null
+                doReset('b', true)
+                player.b.time = 0
+            }
+        }
+        let ktimeGain = new Decimal(0)
+        if (inChallenge('b', 12)) ktimeGain = new Decimal(1)
+        player.b.ktime = player.b.ktime.sub(ktimeGain.times(diff))
+    },
     upgrades: {
         11: {
             title: "Bangin' Burst!",
             description: "Bang Bang! Bursting with energy, gain ^1.234 more notes!",
             cost: new Decimal(5)
+        },
+        12: {
+            title: "Xeroa",
+            description: "Xero Out your blocks to make note gain Xoosted by total blocks.",
+            cost: new Decimal(10),
+            effect() {
+                return player[this.layer].total.log(2).div(100).add(1)
+            },
+            effectDisplay() { return "^"+format(upgradeEffect(this.layer, this.id))}
         },
     },
     milestones: {
@@ -597,6 +628,22 @@ addLayer("b", {
             goalDescription: "Reach the end of this unstable discovery and make it stable again. Make a song with 1.000e50 notes in it.",
             canComplete: function() {return player.points.gte(1e50)},
         },
+        12: {
+            name: "666",
+            challengeDescription: "666 H45 C022UP13D 3V32Y1H!N6. PARAXY5M5 A23 D!5ABL3D.",
+            goalDescription: "W!5H UP0N 1H3 W02D5 0F R0U6H5K31CH AND R3ACH 6.666E666 N0135 B3F0R3 Y0U2 D3M!53.",
+            canComplete: function() {return player.points.gte(6.666e666)},
+            onEnter() {
+                player.b.time = new Decimal(0)
+                player.b.ktime = new Decimal(117.6)
+                player.p.points = new Decimal(0)
+            },
+            onExit() {
+                player.b.time = new Decimal(0)
+                player.b.ktime = new Decimal(117.6)
+                player.p.points = new Decimal(0)
+            }
+        },
     },
     tabFormat: {
         "Upgrades":{
@@ -605,6 +652,7 @@ addLayer("b", {
                 "prestige-button",
                 ["display-text", () => "You have collected a total of " + format(player.b.total) + " blocks"],
                 "blank",
+                ["display-text", () => "Time since Last Reset: " + format(player.b.time) + " s"],
                 "upgrades",
             ]
         },
@@ -614,6 +662,7 @@ addLayer("b", {
                 "prestige-button",
                 ["display-text", () => "You have collected a total of " + format(player.b.total) + " blocks"],
                 "blank",
+                ["display-text", () => "Time since Last Reset: " + format(player.b.time) + " s"],
                 "milestones",
             ]
         },
@@ -626,8 +675,9 @@ addLayer("b", {
                 "prestige-button",
                 ["display-text", () => "You have collected a total of " + format(player.b.total) + " blocks"],
                 "blank",
-                ["display-text", () => "Challenges are not for the faint of heart, don't plunge into a challenge unless you have the right amount of currency and seem stuck."],
+                ["display-text", () => "Time since Last Reset: " + format(player.b.time) + " s"],
                 "blank",
+                ["display-text", () => "Challenges are not for the faint of heart, don't plunge into a challenge unless you have the right amount of currency and seem stuck. Music will be played for challenge entertainment :) (Note: 666 is 2 minutes long, not 666 seconds.)"],
                 "challenges",
             ]
         },
@@ -643,6 +693,7 @@ addLayer("b", {
             ],
         },
     },
+   
     color: "#F7CBE0",                       // The color for this layer, which affects many elements.
     resource: "blocks",            // The name of this layer's main prestige resource.
     row: 1,  
@@ -664,6 +715,7 @@ addLayer("b", {
     ],
     onPrestige() {
         player.m.messages = new Decimal(1)
+        player.b.time = new Decimal(0)
     },
     layerShown() { return hasUpgrade('m', 14) },          // Returns a bool for if this layer's node should be visible in the tree.
 })

@@ -40,7 +40,8 @@
 <body onload="load()" onmousemove="updateMouse(event)">
 	<div class="background"></div>
 	<div id="app">
-		<audio v-if="inChallenge('b', 11)" controls autoplay loop hidden><source src=music2/dyscontrolled.mp3 type<audio/mp3>loop=true hidden=true autostart=true</audio>
+		<audio v-if="inChallenge('b', 11)" controls autoplay loop hidden><source src=music2/dyscontrolled.mp3 type="audio/mp3"></audio>
+		<audio v-if="inChallenge('b', 12)" controls autoplay loop hidden><source src=music2/666.mp3 type="audio/mp3"></audio>
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">
