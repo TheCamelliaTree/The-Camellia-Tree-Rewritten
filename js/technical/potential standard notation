@@ -1,0 +1,27 @@
+function formatNumberWithCustomPrefix(num, decimalPlaces = 2) {
+    const prefixes = [
+      { symbol: "k", exponent: 3 },
+      { symbol: "M", exponent: 6 },
+      { symbol: "B", exponent: 9 },
+      { symbol: "T", exponent: 12 },
+      { symbol: "q", exponent: 15 },
+      { symbol: "Q", exponent: 18 },
+      { symbol: "s", exponent: 21 },
+      { symbol: "S", exponent: 24 },
+      { symbol: "O", exponent: 27 },
+      { symbol: "N", exponent: 30 },
+      { symbol: "De", exponent: 33 },
+    ];
+  
+    let prefix = prefixes.find((p) => Math.abs(num) >= Math.pow(10, p.exponent + 3));
+  
+    if (!prefix) {
+      prefix = { symbol: "", exponent: 0 };
+    }
+  
+    const base = num / Math.pow(10, prefix.exponent);
+    const baseString = base.toFixed(decimalPlaces);
+  
+    return baseString + prefix.symbol;
+  }
+  

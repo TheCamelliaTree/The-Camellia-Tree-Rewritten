@@ -1,0 +1,7 @@
+<button class="opt" onclick="switchNotation()">
+    <div class="key-desc">
+        <div class="key">Notation</div>
+        <div class="desc">Switch between different notations.</div>
+    </div>
+    <div class="value">{{ getNotationName() }}</div>
+</button>

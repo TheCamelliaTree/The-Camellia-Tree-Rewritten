@@ -228,12 +228,12 @@ var systemComponents = {
 				</div>
 				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>
 			</button>
-			<button class="opt" onclick="adjustNOTE()">
+			<button class="opt" onclick="changeNotation()">
 				<div class="key-desc">
 					<div class="key">Notation</div>
-					<div class="desc">Switch between notations</div>
+					<div class="desc">Change notations (Standard, Scientific, and Engineering.)</div>
 				</div>
-				<div class="value">{{ NOTE_DIS[NOTE_SET.indexOf(options.notation)]}}</div>
+				<div class="value">{{ player.notation }}</div>
 			</button>
 
         </div>`

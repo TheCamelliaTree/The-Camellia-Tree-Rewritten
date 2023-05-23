@@ -14,10 +14,13 @@ function getStartOptions() {
 		forceOneTab: false,
 		oldStyle: false,
 		tooltipForcing: true,
-		notation: "sci",
 	}
 }
-
+let notations = ['Scientific', 'Engineering', 'Standard']
+function changeNotation() {
+	player.notation = notations[(notations.indexOf(player.notation) + 1) % notations.length]
+	needCanvasUpdate = true;
+}
 function toggleOpt(name) {
 	if (name == "oldStyle" && styleCooldown > 0)
 		return;
@@ -51,16 +54,10 @@ const MS_DISPLAYS = ["ALL", "LAST, AUTO, INCOMPLETE", "AUTOMATION, INCOMPLETE", 
 
 const MS_SETTINGS = ["always", "last", "automation", "incomplete", "never"];
 
-const NOTE_DIS = ["Standard", "Scientific", "Engineering"]
-
-const NOTE_SET = ["stan", "sci", "engi"]
-
 function adjustMSDisp() {
 	options.msDisplay = MS_SETTINGS[(MS_SETTINGS.indexOf(options.msDisplay) + 1) % 5];
 }
-function adjustNOTE() {
-	options.notation = NOTE_SET[(NOTE_SET.indexOf(options.notation) + 1) % 3];
-}
+
 function milestoneShown(layer, id) {
 	complete = player[layer].milestones.includes(id);
 	auto = layers[layer].milestones[id].toggles;
