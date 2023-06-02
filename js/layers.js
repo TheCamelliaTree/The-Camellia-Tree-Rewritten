@@ -512,6 +512,12 @@ addLayer("m", {
             challengeDescription: "A powerful presence has been spotted, you notice your notes starting to lag, and your note gain lags out every other beat, with it being nerfed.",
             goalDescription: "Convince the Lagtrain to commence operation and bring Inabakumori to your server with 1.47e14 notes.",
             canComplete: function() {return player.points.gte(1.47e14)},
+            onEnter() {
+                player.m.lag = new Decimal(0)
+            },
+            onExit() {
+                player.m.lag = new Decimal(0)
+            }
         }
     },
     tabFormat: {
@@ -543,7 +549,7 @@ addLayer("m", {
             content: [
                 ["display-text", () => "You have " + colored("m", format(player.m.points)) + " people who joined your discord."],
                 "prestige-button",
-                ["display-text", () => "You have " + colored("m", format(player.m.lag)) + " messages in the discord."],
+                ["display-text", () => "Inabakumori's beat is " + colored("m", format(player.m.lag)) + "(0 = no gain, 1 = gain)."],
                 "blank",
                 "challenges"
             ],
@@ -570,7 +576,7 @@ addLayer("m", {
         player.m.messages = player.m.messages.add(messageGain.times(diff))
         let lagGain = new Decimal(0)
         if (inChallenge('m', 11)) lagGain = new Decimal(2.45)
-        if (player.m.lag >= new Decimal(2)) player.m.lag = new Decimal(0)
+        if (player.m.lag.gte(2)) player.m.lag = new Decimal(0)
         player.m.lag = player.m.lag.add(lagGain.times(diff))
     },                    
     gainMult() {                            

@@ -87,6 +87,8 @@ function getPointGen() {
 	gain = gain.times(tmp.a.effect)
 	gain = gain.times(buyableEffect('p', 12))
 	if (inChallenge('b', 11)) gain = gain.pow(0.69)
+	if (inChallenge('m', 11)) gain = gain.pow(0.147)
+	if (inChallenge('m', 11) && player.m.lag <= 1) gain = new Decimal(0)
 	return gain
 }
 
