@@ -27,9 +27,10 @@ d = bug/grammatical fixes.<br>
 Credit to pg132's changelog format.<br>
 <br>
 <br>
-	<h3>v0.3.1</h3><br>
+	<h3>v0.3.1(.1)</h3><br>
 		- Added a layer.<br>
 		- Added challenges to the new layer (omg camellia song reference if I didn't express that already (thank you GrievousKnight#8249 for the nerf)).<br>
+		- Added notations (finally).<br>
 		- Added songs to the new layer (thx to Icecreamdude's "Incremental God Tree" code, do play the tree, it's good).<br>
 		- Added a song softcap due to inflation reasons.<br>
 		- Paroxysm is now finished.<br>
@@ -85,7 +86,7 @@ function getPointGen() {
 	if (hasUpgrade('b', 12)) gain = gain.pow(upgradeEffect('b', 12)) //reference to Bangin' Burst!'s bpm of 234
 	gain = gain.times(tmp.a.effect)
 	gain = gain.times(buyableEffect('p', 12))
-	if (inChallenge('b', 11)) gain = gain.pow(0.69) //nice
+	if (inChallenge('b', 11)) gain = gain.pow(0.69)
 	return gain
 }
 

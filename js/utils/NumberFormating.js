@@ -94,7 +94,7 @@ function t1format(x,mult=false,y) {
 
 function t2format(x,mult=false,y) {
     let t2ills = ["","Mi","Mc","Na","Pi","Fm","At","Ze","Yo","Xo"]
-    let t2ones = ["","Me","Du","Tre","Tet","Pen","Hex","Hep","Oct","Ene"]
+    let t2ones = ["","Mei","Due","Tre","Tet","Pen","Hex","Hep","Oct","Ene"]
     if (mult && y>0 && x<10) t2ones = ["","","Mc","Na","Pi","Fm","At","Ze","Yo","Xo"]
     let t2tens = ["","c","Ic","Tri","Tec","Pec","Hec","Hpc","Otc","Ena"]
     let t2hunds = ["","Hc","Dh","Trh","Teh","Peh","Heh","Hph","Oth","Enh"]
@@ -107,13 +107,13 @@ function t2format(x,mult=false,y) {
 }
 
 function t3format(x,mult=false,y,z) {
-    let t3ills = ["","Kl","Mg","Gi","Ter","Pt","Ex","Zt","Yt","Xe"]
+    let t3ills = ["","Kil","Meg","Gig","Ter","Pet","Exi","Zet","Yot","Xen"]
     let t3ones = ["","eN","oD","tR","tE","pT","eX","zE","yO","xN"]
-    let t3tns = ["Dk","Hn","Dok","TrD","TeD","PeD","ExD","ZeD","YoD","NeD"]
+    let t3tns = ["Dak","Hen","Dok","Tra","Ted","Ped","Exd","Zed","Yod","Ned"]
     let t3to = ["k","k","c","c","c","k","k","c","k","c"]
     if (mult && y>0 && x<10) t3ones = ["","","D","Tr","T","P","Ex","Z","Y","N"]
     let t3tens = ["","","I","Tr","Te","P","E","Z","Y","N"]
-    let t3hunds = ["","Ho","Do","Tro","To","Po","Ex","Zo","Yo","No"]
+    let t3hunds = ["","Hot","Bot","Trot","Tot","Pot","Exot","Zot","Yoot","Not"]
     let t3f = t3ills[x]
     if ((mult && y>0) || z>=1e3) t3f = t3ones[x]
     let t3t = t3tens[Math.floor(x/10)%10]
@@ -126,8 +126,8 @@ function t3format(x,mult=false,y,z) {
 }
 
 function t4format(x,m) {
-    let t4ills = ["","aL","eJ","iJ","AsT","uN","rM","oV","oL","eT","O","aX","uP","rS","lT"]
-    let t4m = ["","K","M","G","","L","F","J","S","B","Gl","G","S","V","M"]
+    let t4ills = ["","aL","eJ","iJ","AsT","uN","rM","oV","oL","eT","O","aX","uP","rS","lT","eT","eN","yP","rC","lR","mN","rA","uC","olT","rieV","esoN","emP","esT","entI","otaE","ameL"] //eT is the start of the extending, beginning at 10^10^10^45. Currently at 10^10^10^90 (Camellillion). Previous extensions: 10^10^10^87 (Rotaenillion), 10^10^10^84 (Pentimentillion), 10^10^10^81 (Testifillion) 10^10^10^78 (Tempestillion), 10^10^10^75 (Resonillion) 10^10^10^72 (Grievillion), 10^10^10^69 (nice)(Voltillion), 10^10^10^66 (Yucillion), 10^10^10^63 (Fractillion), 10^10^10^60 (Omnillion), Ultrillion (10^10^10^57), Archillion (10^10^10^54), Hyperillion (10^10^10^51), Xenoillion (10^10^10^48), Metaillion (10^10^10^45)
+    let t4m = ["","K","M","G","","L","F","J","S","B","Gl","G","S","V","M","M","X","H","A","U","O","F","Y","V","G","R","T","T","P","R","C"]
     let t4f = t4ills[x]
     if (m<2) t4f = t4m[x]+t4f
     return t4f
@@ -142,7 +142,7 @@ function format(decimal, precision = 2, small) {
     }
     if (decimal.sign < 0) return "-" + format(decimal.neg(), precision, small)
     if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
-    if (decimal.gte("eeee1000")) {
+    if (decimal.gte("eeeee1000")) {
         var slog = decimal.slog()
         if (slog.gte(1e6)) return "F" + format(slog.floor())
         else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "F" + commaFormat(slog.floor(), 0)
@@ -199,7 +199,7 @@ function format(decimal, precision=3) {
 function standard(decimal, precision){
 	decimal = new Decimal(decimal)
 	if (decimal.sign < 0) return "-"+standard(decimal.neg(), precision)
-	if (decimal.layer > 4 || (decimal.mag > Math.log10(3e45) && decimal.layer == 4)) {
+	if (decimal.layer > 4 || (decimal.mag > Math.log10(3e120) && decimal.layer == 4)) {
 		var slog = decimal.slog()
 		if (slog.gte(1e9)) return "F" + formatWhole(slog.floor())
 		if (slog.gte(100)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "F" + commaFormat(slog.floor(), 0)

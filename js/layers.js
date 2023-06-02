@@ -131,9 +131,7 @@ addLayer("s", {
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     softcap: new Decimal(1e20),
-    softcapPower() {let softcapPower = new Decimal(0.25)
-    if (player.s.points >= new Decimal(1e50)) softcapPower = new Decimal(0.125)
-    return softcapPower},
+    softcapPower: new Decimal(0.25),
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
         if (!inChallenge('b', 12)) mult = mult.times((buyableEffect('p', 11)))
@@ -150,6 +148,7 @@ addLayer("s", {
         if (hasMilestone('a', 1)) exp = exp.add(0.1)
         if (hasUpgrade('p', 13) && !inChallenge('b', 12)) exp = exp.add(0.71)
         if (hasUpgrade('m', 14)) exp = exp.add(0.1)
+        if (hasMilestone('b', 3)) exp = exp.add(0.222)
         return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -349,7 +348,7 @@ addLayer("p", {
                 effect() { return Decimal.pow(2, getBuyableAmount(this.layer, this.id))
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
-                buyMax() {return hasMilestone('p', 7)},
+                buyMax() {return hasMilestone('p', 7) ? true : false},
             },
             12: {
                 title: "Middle-Earth Gifts",
@@ -377,7 +376,7 @@ addLayer("p", {
                 effect() { return Decimal.pow(3, getBuyableAmount(this.layer, this.id))
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
-                buyMax() {return hasMilestone('p', 7)},
+                buyMax() {return hasMilestone('p', 7) ? true : false},
             },
         },
     tabFormat: {
@@ -614,6 +613,11 @@ addLayer("b", {
             requirementDescription: "I think I felt something wrong with some of the blocks, almost as if I'm being drained from them... (10 Total Blocks)",
             effectDescription: "Unlock Block Challenges.",
             done() {return player.b.total.gte(10)}
+        },
+        3: {
+            requirementDescription: "Something else was discovered among the stars. Maybe it can help with this draining blocks. (20 Total Blocks)",
+            effectDescription: "Note and Song Gain boosted by ^1.222 (Freedom Dive).",
+            done() {return player.b.total.gte(20)}
         },
         9: {
             requirementDescription: "Start your SDVX Adventure. (10000 Total Blocks)",
