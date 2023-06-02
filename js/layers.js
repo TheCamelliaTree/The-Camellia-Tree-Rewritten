@@ -327,8 +327,9 @@ addLayer("p", {
                 unlocked() {
                     return hasMilestone('p', 1) && !inChallenge('b', 12)
                 },
-                cost(x) {
-                    return new Decimal(1000).pow(x)
+                cost(x) {let cost =  new Decimal(1000).pow(x)
+                    if (hasChallenge('b', 11)) cost = new Decimal(1000).pow(x).pow(0.9)
+                    return cost
                 },
                 display() {
                     let amount = getBuyableAmount('p', 11)
@@ -355,8 +356,9 @@ addLayer("p", {
                 unlocked() {
                     return hasMilestone('p', 3) && !inChallenge('b', 12)
                 },
-                cost(x) {
-                    return new Decimal(10000).pow(x)
+                cost(x) { let cost =  new Decimal(10000).pow(x)
+                    if (hasChallenge('b', 11)) cost = new Decimal(10000).pow(x).pow(0.9)
+                    return cost
                 },
                 display() {
                     let amount = getBuyableAmount('p', 12)
@@ -450,7 +452,9 @@ addLayer("m", {
     startData() { return {                  
         unlocked: true,                     
         points: new Decimal(0), 
-        messages: new Decimal(0),            
+        messages: new Decimal(0),
+        beat: new Decimal(0),
+        lag: new Decimal(0),            
     }},
     milestones: {
         0: {
@@ -502,6 +506,14 @@ addLayer("m", {
             currencyLayer: "m",
         },
     },
+    challenges: {
+        11: {
+            name: "Inabakumori",
+            challengeDescription: "A powerful presence has been spotted, you notice your notes starting to lag, and your note gain lags out every other beat, with it being nerfed.",
+            goalDescription: "Convince the Lagtrain to commence operation and bring Inabakumori to your server with 1.47e14 notes.",
+            canComplete: function() {return player.points.gte(1.47e14)},
+        }
+    },
     tabFormat: {
         "Member Milestones":{
             content: [
@@ -524,6 +536,18 @@ addLayer("m", {
                 "upgrades",
             ],
         },
+        "The Gulag":{
+            unlocked() {
+                return hasChallenge('b', 12)
+            },
+            content: [
+                ["display-text", () => "You have " + colored("m", format(player.m.points)) + " people who joined your discord."],
+                "prestige-button",
+                ["display-text", () => "You have " + colored("m", format(player.m.lag)) + " messages in the discord."],
+                "blank",
+                "challenges"
+            ],
+        },
     },
     color: "#7289DA",                       
     resource: "Members",            
@@ -544,6 +568,10 @@ addLayer("m", {
         if (hasUpgrade('p', 23) && !inChallenge('b', 12)) messageGain = messageGain.pow(1.25)
         if (hasMilestone('b', 0)) messageGain = messageGain.times(100)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
+        let lagGain = new Decimal(0)
+        if (inChallenge('m', 11)) lagGain = new Decimal(2.45)
+        if (player.m.lag >= new Decimal(2)) player.m.lag = new Decimal(0)
+        player.m.lag = player.m.lag.add(lagGain.times(diff))
     },                    
     gainMult() {                            
         let mult = new Decimal(1) 
@@ -615,9 +643,14 @@ addLayer("b", {
             done() {return player.b.total.gte(10)}
         },
         3: {
-            requirementDescription: "Something else was discovered among the stars. Maybe it can help with this draining blocks. (20 Total Blocks)",
+            requirementDescription: "Something else was discovered among the stars. Maybe it can help with this draining blocks. (15 Total Blocks)",
             effectDescription: "Note and Song Gain boosted by ^1.222 (Freedom Dive).",
-            done() {return player.b.total.gte(20)}
+            done() {return player.b.total.gte(15)}
+        },
+        4: {
+            requirementDescription: "I feel power starting to brew within me, it's almost like I want to make a Critical Error on these blocks, and cause a 250 killstreak to occur... (25 total blocks)",
+            effectDescription: "Paroxysm Buyables are more powerful.",
+            done() {return player.b.total.gte(25)}
         },
         9: {
             requirementDescription: "Start your SDVX Adventure. (10000 Total Blocks)",
@@ -631,12 +664,13 @@ addLayer("b", {
             challengeDescription: "A Dyscontrolled Galaxy has been discovered... Note gain has been nerfed by ^.69 because of the unstable discovery.",
             goalDescription: "Reach the end of this unstable discovery and make it stable again. Make a song with 1.000e50 notes in it.",
             canComplete: function() {return player.points.gte(1e50)},
+            rewardDescription: "Paroxysm base buyable cost exponents are lowered by .1",
         },
         12: {
             name: "666",
             challengeDescription: "666 H45 C022UP13D 3V32Y1H!N6. PARAXY5M5 A23 D!5ABL3D.",
             goalDescription: "W!5H UP0N 1H3 W02D5 0F R0U6H5K31CH AND R3ACH 6.666E666 N0135 B3F0R3 Y0U2 D3M!53.",
-            canComplete: function() {return player.points.gte(6.666e666)},
+            canComplete: function() {return player.points.gte(6.666e66)},
             onEnter() {
                 player.b.time = new Decimal(0)
                 player.b.ktime = new Decimal(117.6)
@@ -707,7 +741,7 @@ addLayer("b", {
     requires: new Decimal(100000),              // The amount of the base needed to  gain 1 of the prestige currency.
                                             // Also the amount required to unlock the layer.
     type: "static",                         // Determines the formula used for calculating prestige currency.
-    exponent: 1,                          // "normal" prestige gain is (currency^exponent).
+    exponent: 0.99,                          // "normal" prestige gain is (currency^exponent).
     gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
         return new Decimal(1)               // Factor in any bonuses multiplying gain here.
     },
