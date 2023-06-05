@@ -84,6 +84,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 24)) gain = gain.times(1672) //Superluminal
 	if (hasUpgrade('b', 11)) gain = gain.pow(1.234)
 	if (hasUpgrade('b', 12)) gain = gain.pow(upgradeEffect('b', 12)) //reference to Bangin' Burst!'s bpm of 234
+	if (hasChallenge('b', 12)) gain = gain.pow(1.0666)
 	gain = gain.times(tmp.a.effect)
 	gain = gain.times(buyableEffect('p', 12))
 	if (inChallenge('b', 11)) gain = gain.pow(0.69)

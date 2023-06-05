@@ -141,6 +141,7 @@ addLayer("s", {
         if (hasUpgrade('p', 11) && !inChallenge('b', 12)) mult = mult.times(upgradeEffect('p', 11))
         if (hasMilestone('p', 0) && !inChallenge('b', 12)) mult = mult.times(10)
         if (hasMilestone('b', 1)) mult = mult.times(100)
+        if (hasUpgrade('b', 13)) mult = mult.times((upgradeEffect('b', 13)))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -328,7 +329,7 @@ addLayer("p", {
                     return hasMilestone('p', 1) && !inChallenge('b', 12)
                 },
                 cost(x) {let cost =  new Decimal(1000).pow(x)
-                    if (hasChallenge('b', 11)) cost = new Decimal(1000).pow(x).pow(0.9)
+                    if (hasChallenge('b', 11)) cost = new Decimal(1000).pow(x).pow(0.75)
                     return cost
                 },
                 display() {
@@ -357,7 +358,7 @@ addLayer("p", {
                     return hasMilestone('p', 3) && !inChallenge('b', 12)
                 },
                 cost(x) { let cost =  new Decimal(10000).pow(x)
-                    if (hasChallenge('b', 11)) cost = new Decimal(10000).pow(x).pow(0.9)
+                    if (hasChallenge('b', 11)) cost = new Decimal(10000).pow(x).pow(0.75)
                     return cost
                 },
                 display() {
@@ -631,6 +632,15 @@ addLayer("b", {
             },
             effectDisplay() { return "^"+format(upgradeEffect(this.layer, this.id))}
         },
+        13: {
+            title: "Venomous Firefly",
+            description: "Feast upon the Fire this Venom gives and bosst your song gain by Total Venomous Blocks.",
+            cost: new Decimal(12),
+            effect() {
+                return player[this.layer].total.pow(1.25)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"}
+        },
     },
     milestones: {
         0: {
@@ -686,7 +696,8 @@ addLayer("b", {
                 player.b.time = new Decimal(0)
                 player.b.ktime = new Decimal(117.6)
                 player.p.points = new Decimal(0)
-            }
+            },
+            rewardDescription: "Unlockkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk (Disconnected)"
         },
     },
     tabFormat: {
