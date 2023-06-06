@@ -511,7 +511,8 @@ addLayer("m", {
         11: {
             name: "Inabakumori",
             challengeDescription: "A powerful presence has been spotted, you notice your notes starting to lag, and your note gain lags out every other beat, with it being nerfed.",
-            goalDescription: "Convince the Lagtrain to commence operation and bring Inabakumori to your server with 1.47e14 notes.",
+            goalDescription() { return `Convince the Lagtrain to commence operation and bring Inabakumori to your server with ${format(tmp[layer],challenges[id].goal)} notes.`},
+            goal() { return new Decimal(1.47e14)},
             canComplete: function() {return player.points.gte(1.47e14)},
             onEnter() {
                 player.m.lag = new Decimal(0)
@@ -680,7 +681,7 @@ addLayer("b", {
             challengeDescription: "A Dyscontrolled Galaxy has been discovered... Note gain has been nerfed by ^.69 because of the unstable discovery.",
             goalDescription: "Reach the end of this unstable discovery and make it stable again. Make a song with 1.000e50 notes in it.",
             canComplete: function() {return player.points.gte(1e50)},
-            rewardDescription: "Paroxysm base buyable cost exponents are lowered by .1",
+            rewardDescription: "Paroxysm base buyable cost exponents are lowered by .25",
         },
         12: {
             name: "666",
