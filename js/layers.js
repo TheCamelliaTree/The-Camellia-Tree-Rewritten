@@ -199,7 +199,7 @@ addLayer("a", {
     baseResource: "songs", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 9, // Prestige currency exponent
+    exponent: 10, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         return new Decimal(1)
     },
@@ -511,7 +511,7 @@ addLayer("m", {
         11: {
             name: "Inabakumori",
             challengeDescription: "A powerful presence has been spotted, you notice your notes starting to lag, and your note gain lags out every other beat, with it being nerfed.",
-            goalDescription() { return `Convince the Lagtrain to commence operation and bring Inabakumori to your server with ${format(tmp[layer],challenges[id].goal)} notes.`},
+            goalDescription() { return `Convince the Lagtrain to commence operation and bring Inabakumori to your server with ${format(tmp['m'].challenges[11].goal)} notes.`},
             goal() { return new Decimal(1.47e14)},
             canComplete: function() {return player.points.gte(1.47e14)},
             onEnter() {
@@ -679,7 +679,8 @@ addLayer("b", {
         11: {
             name: "Unhypnotized Universe",
             challengeDescription: "A Dyscontrolled Galaxy has been discovered... Note gain has been nerfed by ^.69 because of the unstable discovery.",
-            goalDescription: "Reach the end of this unstable discovery and make it stable again. Make a song with 1.000e50 notes in it.",
+            goalDescription() { return `Reach the end of this unstable discovery and make it stable again. Make a song with ${format(tmp['b'].challenges[11].goal)} notes in it.`},
+            goal() {return new Decimal(1e50)},
             canComplete: function() {return player.points.gte(1e50)},
             rewardDescription: "Paroxysm base buyable cost exponents are lowered by .25",
         },

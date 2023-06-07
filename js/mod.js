@@ -70,7 +70,7 @@ function canGenPoints(){
 function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
-
+	
 	let gain = new Decimal(0)
 	if (hasMilestone('p', 0)) gain = new Decimal(1)
 	if (hasUpgrade('s', 11)) gain = new Decimal(1)
@@ -90,7 +90,9 @@ function getPointGen() {
 	if (inChallenge('b', 11)) gain = gain.pow(0.69)
 	if (inChallenge('m', 11)) gain = gain.pow(0.147)
 	if (inChallenge('m', 11) && player.m.lag <= 1) gain = new Decimal(0)
+	if (player.points.gte(1e33)) gain = gain.pow(0.5)
 	return gain
+	
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
@@ -98,7 +100,7 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [() => `Current Endgame: Sound Voltex Tab unlocked.<br> ${inChallenge('b', 12) ? ` T1M3 UN!17 KU23HA C0N5UM35 A77: ${format(player.b.ktime)}s` : ''}<br><h1> ${inChallenge('b', 12) && player.b.time>88.8 && player.b.time<100.5 ? ` KU23HA W177 C0N5UM3 A77.` : ''}${inChallenge('b', 12) && player.b.time>100.5 && player.b.time<111.75 ? ` 1! 15 100 7A13.` : ''}<h1>${inChallenge('b', 12) && player.b.time>111.75 ? ` N0W P32!5H!!!` : ''}`]
+var displayThings = [() => `You have <h2>${format(player.points)}</h2> notes. <br> Current Endgame: Sound Voltex Tab unlocked.<br> ${inChallenge('b', 12) ? ` T1M3 UN!17 KU23HA C0N5UM35 A77: ${format(player.b.ktime)}s` : ''}<br><h1> ${inChallenge('b', 12) && player.b.time>88.8 && player.b.time<100.5 ? ` KU23HA W177 C0N5UM3 A77.` : ''}${inChallenge('b', 12) && player.b.time>100.5 && player.b.time<111.75 ? ` 1! 15 100 7A13.` : ''}<h1>${inChallenge('b', 12) && player.b.time>111.75 ? ` N0W P32!5H!!!` : ''}`]
 
 // Determines when the game "ends"
 function isEndgame() {

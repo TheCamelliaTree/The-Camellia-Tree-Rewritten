@@ -43,6 +43,7 @@
 		<audio v-if="inChallenge('b', 11)" controls autoplay loop hidden><source src=music2/dyscontrolled.mp3 type="audio/mp3"></audio>
 		<audio v-if="inChallenge('b', 12)" controls autoplay loop hidden><source src=music2/666.mp3 type="audio/mp3"></audio>
 		<audio v-if="inChallenge('m', 11)" controls autoplay loop hidden><source src=music2/Lagtrain.mp3 type="audio/mp3"></audio>
+		<audio v-if="player.points.gte(0)"controls autoplay loop hidden><source src=music2/stars.mp3 type="audio/mp3"></audio>
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">
