@@ -5,6 +5,7 @@ addLayer("s", {
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
+        sp: new Decimal(0)
     }},
     upgrades: {
         11: {
@@ -130,8 +131,6 @@ addLayer("s", {
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
-    softcap: new Decimal(1e20),
-    softcapPower: new Decimal(0.25),
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
         if (!inChallenge('b', 12)) mult = mult.times((buyableEffect('p', 11)))
@@ -142,6 +141,7 @@ addLayer("s", {
         if (hasMilestone('p', 0) && !inChallenge('b', 12)) mult = mult.times(10)
         if (hasMilestone('b', 1)) mult = mult.times(100)
         if (hasUpgrade('b', 13)) mult = mult.times((upgradeEffect('b', 13)))
+        if (player.s.points.gte(1e20)) mult = mult.log10().div(20).pow(0.25).times(20)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
