@@ -5,7 +5,7 @@ addLayer("s", {
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
-        sp: new Decimal(0)
+        stars: new Decimal(0)
     }},
     upgrades: {
         11: {
@@ -103,6 +103,7 @@ addLayer("s", {
             content: [
                 ["display-text", () => "You have created " + colored("s", format(player.s.points)) + " songs on your computer."],
                 "prestige-button",
+                ["display-text", () => "Time since the Precious Song Dedicated to the Stars has started: " + colored("s", format(player.s.stars)) + "s"],
                 "blank",
                 "upgrades",
             ]
@@ -124,6 +125,10 @@ addLayer("s", {
         if (hasMilestone('p', 3)) keep.push("milestones");
         layerDataReset(this.layer, keep);
       },
+    update(diff) { let starsGain = new Decimal(0)
+    if (hasUpgrade('s', 11) || player.a.unlocked) starsGain = new Decimal(1)
+    player.s.stars = player.s.stars.add(starsGain.times(diff))
+    if (player.s.stars.gte(582)) player.s.stars = new Decimal(0) },
     color: "#3BB311",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "songs", // Name of prestige currency
@@ -208,6 +213,12 @@ addLayer("a", {
         if (hasMilestone('p', 2) && !inChallenge('b', 12)) exp = exp.add(0.1)
         return exp
     },
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+      
+        let keep = ["milestones"];
+        layerDataReset(this.layer, keep);
+      },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "a", description: "A: Create an Album", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
