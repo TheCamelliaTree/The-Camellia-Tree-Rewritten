@@ -71,7 +71,7 @@ addLayer("s", {
         23: {
             title: "Paroxysmal Note Boost",
             description: "Your note gain was kinda concerning your fans, but your discord members were willing to help! Boost note gain by Members.",
-            cost: new Decimal(2.3e23),
+            cost: new Decimal(1.5e21),
             unlocked() { return hasUpgrade('p', 14)},
             effect() {
                 return player.m.points.add(1).times(2)
@@ -147,6 +147,7 @@ addLayer("s", {
         if (hasMilestone('b', 1)) mult = mult.times(100)
         if (hasUpgrade('b', 13)) mult = mult.times((upgradeEffect('b', 13)))
         if (player.s.points.gte(1e20)) mult = mult.log10().div(20).pow(0.25).times(20)
+        if (player.s.points.gte(1e50)) mult = mult.log10().div(50).pow(0.125).times(50)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -574,7 +575,7 @@ addLayer("m", {
     position: 1,                                 
     baseResource: "Songs",                 
     baseAmount() { return player.s.points },
-    requires: new Decimal(5e21),              
+    requires: new Decimal(1e21),              
     type: "static",                         
     exponent: 1.5, 
     update(diff)  { 
