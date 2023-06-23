@@ -129,9 +129,9 @@ addLayer("s", {
     if (hasUpgrade('s', 11) || player.a.unlocked) starsGain = new Decimal(1)
     player.s.stars = player.s.stars.add(starsGain.times(diff))
     if (player.s.stars.gte(582)) player.s.stars = new Decimal(0) },
-      canReset() {
-        return !hasMilestone('p', 4)
-      },
+    canReset() {
+        return tmp.s.resetGain && !hasMilestone('p', 4)
+    },
     color: "#3BB311",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "songs", // Name of prestige currency
