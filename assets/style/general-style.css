@@ -11,7 +11,7 @@ body {
 /* General text */
 h1, h2, h3, b, input {
 	display: inline;
-	font-family: "Lucida Console", "Courier New", monospace
+	font-family: "Chakra Petch", "Lucida Console", "Courier New", monospace
 }
 
 .background {
@@ -19,7 +19,7 @@ h1, h2, h3, b, input {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	filter: blur(5px);
+	filter: blur(10px);
 
 	position: fixed;
 	width: calc(100vw + 20px);

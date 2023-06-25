@@ -35,7 +35,7 @@
     margin-bottom: 5px;
     transform: translateX(-50%);
     padding: 7px;
-    font-family: "Lucida Console", "Courier New", monospace;
+    font-family: "Inconsolata", monospace;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -70,11 +70,19 @@
 	border-left: 6px solid var(--color);
 	height: 100%;
 	position: absolute;
-	left: 50%;
+	left: 45%;
 	margin-left: -3px;
 	top: 0
 }
 
 .hl {
 	border-top: 3px solid var(--color);
+}
+
+.symbol {
+    display: inline;
+    font-family: "Material Symbols Outlined";
+    vertical-align: -0.2em;
+    user-select: none;
+    -webkit-user-select: none;
 }

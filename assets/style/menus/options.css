@@ -1,13 +1,15 @@
 .options-tab {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100%;
     margin: 0;
 }
 
 .opt {
 	min-height: 60px;
-	width: 100%;
+	flex: 0 0 460px;
 	border-radius: 10px;
 	border: none;
 	background-color: rgba(0, 0, 0, 0.6);
@@ -42,8 +44,7 @@
 
 .opt .key-desc .key {
     text-align: left;
-    margin: 0;
-    font-family: inherit;
+    margin: -2px 0 0 0;
 }
 
 .opt .key-desc .desc {

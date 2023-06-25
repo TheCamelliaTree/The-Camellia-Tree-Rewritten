@@ -6,7 +6,7 @@ var systemComponents = {
 				<div v-for="tab in Object.keys(data)">
 					<button v-if="data[tab].unlocked == undefined || data[tab].unlocked" v-bind:class="{tabButton: true, notify: subtabShouldNotify(layer, name, tab), resetNotify: subtabResetNotify(layer, name, tab)}"
 					v-bind:style="[{'border-color': tmp[layer].color}, (subtabShouldNotify(layer, name, tab) ? {'box-shadow': 'var(--hqProperty2a), 0 0 20px '  + (data[tab].glowColor || defaultGlow)} : {}), tmp[layer].componentStyles['tab-button'], data[tab].buttonStyle]"
-						v-on:click="function(){player.subtabs[layer][name] = tab; updateTabFormats(); needCanvasUpdate = true;}">{{tab}}</button>
+						v-on:click="function(){player.subtabs[layer][name] = tab; updateTabFormats(); needCanvasUpdate = true;}">{{data[tab].title ?? tab}}</button>
 				</div>
 			</div>
 		`
@@ -112,9 +112,9 @@ var systemComponents = {
 			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
-		<span v-if="player.points.lt('1e1000')"  class="overlayThing">You have </span>
-		<h2  class="overlayThing" id="points">{{format(player.points)}}</h2>
-		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
+		<span v-if="player.points.lt('1e1000')" class="overlayThing">You have </span>
+		<h2 class="overlayThing" id="points">{{formatWhole(player.points)}}</h2>
+		<span v-if="player.points.lt('1e1e6')" class="overlayThing"> {{modInfo.pointsName}}</span>
 		<br>
 		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
@@ -153,77 +153,77 @@ var systemComponents = {
         <div class="options-tab">
             <button class="opt" onclick="save()">
 				<div class="key-desc">
-					<div class="key">Save</div>
+					<h3 class="key">Save</h3>
 					<div class="desc">Save your game</div>
 				</div>
 				<div class="value"></div>
 			</button>
             <button class="opt" onclick="toggleOpt('autosave')">
 				<div class="key-desc">
-					<div class="key">Autosave</div>
+					<h3 class="key">Autosave</h3>
 					<div class="desc">Automatically save your game</div>
 				</div>
 				<div class="value">{{ options.autosave?"ON":"OFF" }}</div>
 			</button>
             <button class="opt" onclick="hardReset()">
 				<div class="key-desc">
-					<div class="key">Hard Reset</div>
+					<h3 class="key">Hard Reset</h3>
 					<div class="desc">Reset your game</div>
 				</div>
 				<div class="value"></div>
 			</button>
             <button class="opt" onclick="exportSave()">
 				<div class="key-desc">
-					<div class="key">Export to clipboard</div>
+					<h3 class="key">Export to clipboard</h3>
 					<div class="desc">Copy your save to your clipboard</div>
 				</div>
 				<div class="value"></div>
 			</button>
             <button class="opt" onclick="importSave()">
 				<div class="key-desc">
-					<div class="key">Import</div>
+					<h3 class="key">Import</h3>
 					<div class="desc">Import a save from your clipboard</div>
 				</div>
 				<div class="value"></div>
 			</button>
             <button class="opt" onclick="toggleOpt('offlineProd')">
 				<div class="key-desc">
-					<div class="key">Offline Production</div>
+					<h3 class="key">Offline Production</h3>
 					<div class="desc">Keep producing while the game is closed</div>
 				</div>
 				<div class="value">{{ options.offlineProd?"ON":"OFF" }}</div>
 			</button>
             <button class="opt" onclick="switchTheme()">
 				<div class="key-desc">
-					<div class="key">Theme</div>
+					<h3 class="key">Theme</h3>
 					<div class="desc">Switch between different themes</div>
 				</div>
 				<div class="value">{{ getThemeName() }}</div>
 			</button>
             <button class="opt" onclick="adjustMSDisp()">
 				<div class="key-desc">
-					<div class="key">Show Milestones</div>
+					<h3 class="key">Show Milestones</h3>
 					<div class="desc">Show or hide milestones</div>
 				</div>
 				<div class="value">{{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</div>
 			</button>
             <button class="opt" onclick="toggleOpt('hideChallenges')">
 				<div class="key-desc">
-					<div class="key">Completed Challenges</div>
+					<h3 class="key">Completed Challenges</h3>
 					<div class="desc">Show or hide completed challenges</div>
 				</div>
 				<div class="value">{{ options.hideChallenges?"HIDDEN":"SHOWN" }}</div>
 			</button>
             <button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">
 				<div class="key-desc">
-					<div class="key">Single-Tab Mode</div>
+					<h3 class="key">Single-Tab Mode</h3>
 					<div class="desc">Force the game to only show one tab at a time</div>
 				</div>
 				<div class="value">{{ options.forceOneTab?"ALWAYS":"AUTO" }}</div>
 			</button>
 			<button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">
 				<div class="key-desc">
-					<div class="key">Shift-Click to Toggle Tooltips</div>
+					<h3 class="key">Shift-Click to Toggle Tooltips</h3>
 					<div class="desc">Toggle tooltips on or off with shift-clicking</div>
 				</div>
 				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>

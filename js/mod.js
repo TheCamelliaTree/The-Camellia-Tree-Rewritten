@@ -1,33 +1,33 @@
 let modInfo = {
 	name: "The Camellia Tree",
-	id: "Camellia",
+	id: "cametek",
 	author: "Not Cametek (Halloweeb#4371 collabing with Flustix#5433 (foreshadowing something))",
-	pointsName: "notes",
-	modFiles: ["layers.js", "tree.js"],
+	pointsName: "ideas",
+	modFiles: [
+		"tree.js",
+		"layers/journal.js",
+		"layers/tracks.js",
+		"layers/player.js",
+		"layers/world.js",
+	],
 
-	discordName: "The Camellia Tree",
+	discordName: "ArcanaEden's Trees",
 	discordLink: "https://discord.gg/BEa67qjXa4",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 24,  // In hours
+	initialStartPoints: new Decimal (1),
+	offlineLimit: 1,
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Cametek Discord Server Opening!? :wobbers:",
+	num: "1.0",
+	name: "I WANNA BE THE KAMILLER",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.2</h3><br>
-		- Added a new layer. (Members)<br>
-		- Added 2 Song Upgrades and 4 Paroxysm Upgrades and Milestones.<br>
-		- Fixed a softlocking problem.<br>
-		- Added 2 Paroxysm Buyables<br>
-		- Added Endgame under Points<br>
-		- Endgame is 1 Member.<br>
-	<h3>v0.1</h3><br>
-		- Added Songs, Albums, and Paroxysm Layer (not implemented).<br>
-		- Endgame is Paroxysm Layer.`
+	<h2>v1.0</h2>
+	<i>- I WANNA BE THE KAMILLER -</i><br>
+		- Rewritten <i><u>BASICALLY EVERYTHING</u></i>.<br>
+`
 
 let winText = `Your songs went viral, too viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)<br>
 			Please make sure to join Camellia's Official Discord Server if you support his music and possibly the tree as well!<br>
@@ -48,19 +48,10 @@ function canGenPoints(){
 
 // Calculate points/sec!
 function getPointGen() {
-	if(!canGenPoints())
-		return new Decimal(0)
+	if(!canGenPoints()) return new Decimal(0);
 
-	let gain = new Decimal(0)
-	if (hasMilestone('p', 0)) gain = new Decimal(1)
-	if (hasUpgrade('s', 11)) gain = new Decimal(1)
-	if (hasUpgrade('s', 12)) gain = gain.times(2)
-	if (hasUpgrade('s', 13)) gain = gain.times(upgradeEffect('s', 13))
-	if (hasUpgrade('s', 15)) gain = gain.times(upgradeEffect('s', 15))
-	if (hasUpgrade('p', 12)) gain = gain.pow(1.05)
-	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
-	gain = gain.times((buyableEffect('p', 12)).times(x))
-	gain = gain.times(tmp.a.effect)
+	let gain = tmp.tracks.effect.trackBoost[0];
+	if (hasUpgrade("player", 11)) gain = gain.mul(upgradeEffect("player", 11));
 	return gain
 }
 
@@ -69,18 +60,17 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [ "Current Endgame: 1 Member."
-]
+var displayThings = []
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('m', 0)
+	return hasAchievement("journal", "3x1");
 }
 
 
 
 // Less important things beyond this point!
-function colored(layer, text, tag='h2') { return `<${tag} style='color:${temp[layer].color};text-shadow:${temp[layer].color} 0px 0px 10px;'>${text}</${tag}>` }
+function colored(layer, text, tag='h2') { return `<${tag} style='color:${temp[layer].color};text-shadow:${temp[layer].color} 0px 0px 10px,black 0px 0px 10px;'>${text}</${tag}>` }
 // Style for the background, can be a function
 var backgroundStyle = {
 
@@ -93,5 +83,5 @@ function maxTickLength() {
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
-function fixOldSave(oldVersion){
+function fixOldSave(oldVersion) {
 }

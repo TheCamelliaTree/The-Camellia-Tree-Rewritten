@@ -7,12 +7,12 @@
 	margin: auto;
 	-webkit-text-size-adjust: none;
 	text-size-adjust: none;
-
+	font-variant-numeric: tabular-nums;
 }
 
 *:focus {
 	outline: none;
-	webkit-outline: none;
+	-webkit-outline: none;
 }
 
 html, body {
@@ -118,16 +118,24 @@ td {
 }
 
 .col {
-	min-width: 49.5%;
-	max-width: 49.5%;
-	width: 49.5%;
+	min-width: 54.5%;
+	max-width: 54.5%;
+	width: 54.5%;
 	height: 100%;
+	padding-bottom: 100px;
+	box-sizing: border-box;
 	min-height: 100%;
 	column-span: 1;
 	position: absolute;
 	overflow-y: auto;
 	overflow-x: auto;
 	transition-duration: 0s
+}
+
+.col.left {
+	min-width: 44.5%;
+	max-width: 44.5%;
+	width: 44.5%;
 }
 
 .instant {
@@ -209,8 +217,8 @@ ul {
 	z-index: 10000;
 	pointer-events:auto;
 	position: absolute;
-	right: 55px;
-	top: 65px;
+	right: 60px;
+	top: 100px;
 	background-color: transparent;
 }
 

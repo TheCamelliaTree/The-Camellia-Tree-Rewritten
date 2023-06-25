@@ -434,7 +434,7 @@ function loadVue() {
 			currentTab() {return player.subtabs[layer][data]}
 		},
 		template: `
-		<div v-if="tmp[layer].microtabs" :style="{'border-style': 'solid'}">
+		<div v-if="tmp[layer].microtabs">
 			<div class="upgTable instant">
 				<tab-buttons :layer="layer" :data="tmp[layer].microtabs[data]" :name="data" v-bind:style="tmp[layer].componentStyles['tab-buttons']"></tab-buttons>
 			</div>
@@ -469,9 +469,9 @@ function loadVue() {
 		props: ['layer', 'data'],
 		template: `
 		<div v-if="tmp[layer].achievements" class="upgTable">
-			<div v-for="row in (data === undefined ? tmp[layer].achievements.rows : data)" class="upgRow">
-				<div v-for="col in tmp[layer].achievements.cols"><div v-if="tmp[layer].achievements[row*10+col]!== undefined && tmp[layer].achievements[row*10+col].unlocked" class="upgAlign">
-					<achievement :layer = "layer" :data = "row*10+col" v-bind:style="tmp[layer].componentStyles.achievement"></achievement>
+			<div v-for="row in (data ?? tmp[layer].achievements.rows)" class="upgRow">
+				<div v-for="col in tmp[layer].achievements.cols"><div v-if="tmp[layer].achievements[row+'x'+col]!== undefined && tmp[layer].achievements[row+'x'+col].unlocked" class="upgAlign">
+					<achievement :layer = "layer" :data = "row+'x'+col" v-bind:style="tmp[layer].componentStyles.achievement"></achievement>
 				</div></div>
 			</div>
 			<br>
@@ -553,6 +553,16 @@ function loadVue() {
 	`
 	})
 
+	// Data is an array with the structure of the tree
+	Vue.component('upgrade-tree', {
+		props: ['layer', 'data'],
+		computed: {
+			key() {return this.$vnode.key}
+		},
+		template: `<thing-tree :layer="layer" :data = "data" :type = "'upgrade'"></thing-tree>`
+	})
+
+
 
 	// Updates the value in player[layer][data]
 	Vue.component('text-input', {
@@ -594,6 +604,166 @@ function loadVue() {
 		template: `
 			<button v-if="tmp[layer].buyables && tmp[layer].buyables[data].sellAll && !(tmp[layer].buyables[data].canSellAll !== undefined && tmp[layer].buyables[data].canSellAll == false)" v-on:click="run(tmp[layer].buyables[data].sellAll, tmp[layer].buyables[data])"
 				v-bind:class="{ longUpg: true, can: player[layer].unlocked, locked: !player[layer].unlocked }">{{tmp[layer].buyables.sellAllText ? tmp[layer].buyables.sellAllText : "Sell All"}}</button>
+	`
+	})
+	
+	Vue.component('song-info', {
+		props: ['layer'],
+		template: `
+			<div class="song-info">
+				<div class="info">
+					<h5>NOW COMPOSING</h5>
+					<h3>Untitled Song #1</h3><br/>
+					<span>cametek</span>
+				</div>
+				<div class="quality">
+					<h5>SONG QUALITY</h5>
+					<h2>{{format(tmp.tracks.effect.quality)}}</h2>
+				</div>
+			</div>
+	`
+	})
+	
+	Vue.component('song-mode', {
+		props: ['layer'],
+		template: `
+			<div class="song-modes">
+				<button class="upg can" v-on:click="player.tracks.actionMode = 'add'">
+					Add
+				</button>
+				<button class="upg can" v-on:click="player.tracks.actionMode = 'master'">
+					Master
+				</button>
+			</div>
+	`
+	})
+	
+	Vue.component('note-track', {
+		props: ['layer', 'data'],
+		template: `
+			<div class="note-track">
+				<div class="info">
+					<h3>Track {{formatWhole(+data + 1)}}</h3><br/>
+					{{
+						data == 0 ? "+" : "×"
+					}}{{
+						format(tmp.tracks.effect.trackBoost[data])
+					}}<i v-if="Decimal.gt(tmp.tracks.effect.trackPower[data], 1)">{{
+						" ^" + format(tmp.tracks.effect.trackPower[data])
+					}}</i><br/>{{
+						data == 0 ? "ideas per second" : "above track's multi"
+					}}
+				</div>
+				<div class="bar">
+					<template v-if="player.tracks.actionMode == 'add'">
+						{{formatWhole(player.tracks.notes[data])}}
+					</template>
+					<template v-else-if="player.tracks.actionMode == 'master'">
+						{{formatWhole(player.tracks.masters[data])}}
+					</template>
+				</div>
+				<button v-bind:class="{ can: tmp.tracks.effect.trackCan[data], locked: !tmp.tracks.effect.trackCan[data] }" v-on:click="addNotesToTrack(data)">
+					<template v-if="player.tracks.actionMode == 'add'">
+						Add<br/>
+						{{formatWhole(Decimal.mul(player.points, tmp.tracks.effect.trackGain[data] ?? 1).floor())}}
+						<br/>notes
+					</template>
+					<template v-else-if="player.tracks.actionMode == 'master'">
+						Master<br/>
+						{{formatWhole(Decimal.mul(player.tracks.notes[data], tmp.tracks.effect.masterBoost))}}
+						<br/>notes
+					</template>
+				</button>
+			</div>
+	`
+	})
+	
+	Vue.component('task-list', {
+		props: ['layer', 'data'],
+		template: `
+		<div v-if="tmp[layer].challenges" class="upgTable">
+			<task v-for="(_, id) in tmp[layer].challenges" :layer="layer" :data="id" v-bind:style="tmp[layer].componentStyles.challenge"></task>
+		</div>
+		`
+	})
+
+	// data = id
+	Vue.component('task', {
+		props: ['layer', 'data'],
+		template: `
+		<div v-if="tmp[layer].challenges && tmp[layer].challenges[data] && tmp[layer].challenges[data].unlocked && !(options.hideChallenges && maxedChallenge(layer, [data]) && !inChallenge(layer, [data]))"
+			v-bind:class="['task', challengeStyle(layer, data), player[layer].activeChallenge === data ? 'resetNotify' : '']" v-bind:style="tmp[layer].challenges[data].style">
+			<div class="header">
+				<h3 v-html="tmp[layer].challenges[data].name"></h3>
+			</div>
+			<div class="description">
+				<i v-html="tmp[layer].challenges[data].challengeDescription"></i>
+				<table class="description-table">
+					<tbody>
+						<tr>
+							<th colspan="2"><h5>GOALS:</h5></th>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<ul><li v-for="item in tmp[layer].challenges[data].goalList" v-html="item"></li></ul>
+							</td>
+						</tr>
+						<hr />
+						<tr>
+							<th><h5>CAVEATS:</h5></th>
+							<th><h5>REWARDS:</h5></th>
+						</tr>
+						<tr>
+							<td>
+								<ul><li v-for="item in tmp[layer].challenges[data].caveatList" v-html="item"></li></ul>
+							</td>
+							<td>
+								<ul><li v-for="item in tmp[layer].challenges[data].rewardList" v-html="item"></li></ul>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<button v-bind:class="{ longUpg: true, can: true, [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button>
+		</div>
+		`
+	})
+
+	Vue.component('world-song', {
+		props: ['layer', 'data'],
+		template: `
+			<button v-if="player.world.songs[data]" v-bind:class="{'world-song': true, can: player.world.songs[data].stage == 'ended'}" v-on:click="claimSong(data)">
+				<div class="info">
+					<div class="metadata">
+						<h3>Untitled Song #1</h3><br/>
+						<i>cametek</i>
+					</div>
+					<div class="stats">
+						{{formatWhole(player.world.songs[data].quality)}}
+						<span class="symbol">magic_button</span><br/>
+						{{formatWhole(player.world.songs[data].publicity)}}
+						<span class="symbol">public</span>
+					</div>
+				</div>
+				<div class="status">
+					<div v-if="player.world.songs[data].stage == 'publishing'">
+						<h3>Publishing your song...</h3>
+						<div>
+							{{formatWhole(player.world.songs[data].age * 100)}}%
+							<span class="symbol">play_circle</span>
+						</div>
+					</div>
+					<div v-else>
+						<h3>{{player.world.songs[data].stage == "ended" ? "Click to claim" : "Gathering listeners..."}}</h3>
+						<div>
+							{{formatWhole(player.world.songs[data].streams)}}
+							<span class="symbol">play_circle</span>
+							¥{{formatWhole(player.world.songs[data].money)}}
+							<span class="symbol">payments</span>
+						</div>
+					</div>
+				</div>
+			</button>
 	`
 	})
 
@@ -658,6 +828,9 @@ function loadVue() {
 			ctrlDown,
 			run,
 			gridRun,
+			canAddNotesToTrack,
+			addNotesToTrack,
+			claimSong,
 		},
 	})
 }
