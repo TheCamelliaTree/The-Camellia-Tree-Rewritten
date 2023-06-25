@@ -831,6 +831,7 @@ function loadVue() {
 			canAddNotesToTrack,
 			addNotesToTrack,
 			claimSong,
+			currentMusic,
 		},
 	})
 }

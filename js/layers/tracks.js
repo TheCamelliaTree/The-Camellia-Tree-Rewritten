@@ -246,22 +246,22 @@ addLayer("tracks", {
     },
 
     update(delta) {
-        player.tracks.idleTime += delta;
-        player.tracks.expandTime += delta;
-        player.tracks.masterTime += delta;
-        player.tracks.songTime += delta;
-
         for (let a = 0; a < tmp.tracks.effect.limit; a++) {
             if (player.tracks.notes[a] === undefined) player.tracks.notes.push(0);
             if (player.tracks.masters[a] === undefined) player.tracks.masters.push(0);
         }
-        if (Decimal.gt(player.points, 0)) {
+        if (player.tracks.expandTime > 0.05) {
             for (let a = 0; a < tmp.tracks.effect.limit; a++) {
                 if (Decimal.gt(getBuyableAmount("player", 11), a)) {
                     player.tracks.notes[a] = Decimal.mul(player.points, tmp.tracks.effect.trackGain[a] ?? 1).floor().mul(delta).add(player.tracks.notes[a]);
                 }
             }
         }
+
+        player.tracks.idleTime += delta;
+        player.tracks.expandTime += delta;
+        player.tracks.masterTime += delta;
+        player.tracks.songTime += delta;
     },
     
     tabFormat: [

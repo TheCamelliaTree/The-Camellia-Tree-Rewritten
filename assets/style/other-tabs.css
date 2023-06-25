@@ -83,3 +83,49 @@ a {
 	text-shadow: 5px 0 10px #02f2f2,
               -3px 0 12px #02f2f2;
 }
+
+.music-player {
+	position: fixed;
+	bottom: 10px;
+	left: 50vw;
+	height: 50px;
+	width: calc(80% - 200px);
+	font-size: 12px;
+	transform: translate(-50%, 0);
+	background: rgba(0, 0, 0, 0.6);
+	border-radius: 5px;
+	display: flex;
+	flex-flow: row;
+	transition: transform .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.music-player.hidden {
+	transform: translate(-50%, calc(100% + 20px));
+}
+
+.music-player .play-pause {
+	margin: 0;
+	border: none;
+	width: 50px;
+	height: 50px;
+	background: rgba(0, 0, 0, 0.6);
+	padding: 0;
+	border-radius: 5px 0 0 5px;
+	flex: 0 0 50px;
+}
+.music-player .play-pause img {
+	width: 50px;
+	height: 50px;
+	border-radius: 5px 0 0 5px;
+}
+.music-player .info {
+	padding-bottom: 2px;
+	flex: 1 1 100%;
+	margin: 0 50px 0 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.music-player .info > * {
+	margin: 0;
+}

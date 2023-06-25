@@ -106,7 +106,7 @@ addLayer("journal", {
         "s1x1": {
             ...journalSecretAchievement,
             title: "Music to my ears",
-            description: "Drop a music file into the game",
+            description: "Drop a music file into the game.",
             hint: "I'm a music player",
             done: () => false,
         },

@@ -27,6 +27,7 @@
 	<script src="js/utils/options.js"></script>
 	<script src="js/utils/save.js"></script>
 	<script src="js/utils/themes.js"></script>
+	<script src="js/utils/music.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -37,7 +38,7 @@
 </head>
 
 
-<body onload="load()" onmousemove="updateMouse(event)">
+<body onload="load()" onmousemove="updateMouse(event)" ondrop="onFileDrop(event)" ondragover="onFileDragOver(event)">
 	<div class="background"></div>
 	<div id="app">
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
@@ -132,6 +133,16 @@
 			<img id="optionWheel" src="assets/images/icons/gear.png" onclick="showTab('options-tab')"></img>
 			<img id="info" src="assets/images/icons/about.png" onclick="showTab('info-tab')"></img>
 			<img id="discord" src="assets/images/icons/discord.png" onclick="window.open((modInfo.discordLink))"></img>
+		</div>
+		
+		<div v-bind:class="{'music-player': true, 'hidden': !currentMusic.enabled}">
+			<button class="play-pause" v-on:click="console.log(currentMusic.player); currentMusic.player.paused ? currentMusic.player.play() : currentMusic.player.pause()">
+				<img v-if="currentMusic.data?.mainPicture !== undefined" v-bind:src="currentMusic.data?.mainPicture"></img>
+			</button>
+			<div class="info">
+				<h2>{{currentMusic.data?.trackTitle}}</h2>
+				<i>{{currentMusic.data?.trackAuthor}}</i>
+			</div>
 		</div>
 	</div>
 </body>
