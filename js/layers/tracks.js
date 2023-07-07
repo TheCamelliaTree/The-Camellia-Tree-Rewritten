@@ -124,7 +124,7 @@ addLayer("tracks", {
                 let temp = tmp[this.layer].clickables[this.id];
                 return `<h3>Finish</h3> 
 
-                    Close the song, and never touch it again.
+                    Close the song, and never touch it again. (Unless, you want to continue on, with a twist.)
 
                     ${temp.canClick ? 
                    `Gain
