@@ -9,6 +9,7 @@
 @import url('system-style.css');
 @import url('tree-node.css');
 @import url('themes.css');
+@import url('changelog.css');
 
 /* menus */
 @import url("menus/options.css");

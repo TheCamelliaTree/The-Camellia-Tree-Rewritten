@@ -5,13 +5,13 @@ body {
 	--background: #0f0f0f;
 	--color: #dfdfdf;
 	--points: #ffffff;
-	background: var(--background)
+	background: var(--background);
 }
 
 /* General text */
 h1, h2, h3, b, input {
 	display: inline;
-	font-family: "Chakra Petch", "Lucida Console", "Courier New", monospace
+	font-family: "Chakra Petch", sans-serif;
 }
 
 .background {
@@ -19,7 +19,7 @@ h1, h2, h3, b, input {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	filter: blur(10px);
+	filter: blur(5px);
 
 	position: fixed;
 	width: calc(100vw + 20px);
@@ -29,7 +29,15 @@ h1, h2, h3, b, input {
 	z-index: -1;
 	opacity: 0;
 	animation: bgZoom 1s forwards .2s;
+
+	transition-duration: .4s;
+	transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
 }
+.has-modal .background {
+	transform: scale(0.95);
+	filter: blur(20px);
+}
+
 
 #app {
 	opacity: 0;
@@ -82,4 +90,39 @@ h1, h2, h3, b, input {
 		scale: 1;
 		opacity: 1;
 	}
+}
+
+#timer {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+
+#timer h1 {
+	opacity: .15;
+	font-size: 30vw;
+	user-select: none;
+	-webkit-user-select: none;
+	transform: skewX(-4deg);
+}
+#timer h1 span {
+	transition: none;
+	display: inline-block;
+	width: 1ch;
+	font-family: inherit;
+}
+
+.shake {
+	animation: shake .2s linear infinite;
+}
+
+@keyframes shake {
+	0% { transform: translate(0, 0) rotate(0deg); }
+	20% { transform: translate(1px, 1px) rotate(1deg); }
+	40% { transform: translate(2px, -2px) rotate(-2deg); }
+	60% { transform: translate(-2px, -2px) rotate(2deg); }
+	80% { transform: translate(-1px, 1px) rotate(-1deg); }
+	100% { transform: translate(0, 0) rotate(0deg); }
 }

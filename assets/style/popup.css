@@ -50,3 +50,59 @@
 	z-index: 99999;
 	background-size:contain;
 }
+
+.modal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	background: #0007;
+}
+
+.modal > div {
+	background: #0003;
+	box-shadow: 0 25px 100px #fff3;
+	padding: 10px 20px;
+	border-radius: 5px;
+	transition: all .4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+.modal > div > .title {
+	display: block;
+	width: auto;
+	background: #0007;
+	margin: -10px -20px 15px -20px;
+	padding: 10px 20px;
+	text-align: left;
+	box-sizing: border-box;
+	border-radius: 5px 5px 0 0;
+}
+.modal > div > .actions {
+	margin: 15px 0 10px 0;
+	text-align: right;
+}
+.modal > div > .actions > button {
+	min-height: 30px;
+	min-width: 100px;
+	border-radius: 0px;
+	border: 2px solid;
+	border-color: rgba(0, 0, 0, 0.125);
+	font-size: 14px;
+	overflow: visible;
+	margin: 2px;
+}
+
+.modal-transition {
+	transition: all .4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.modal-enter, .modal-leave-to {
+	opacity: 0;
+}
+.modal-enter > div, .modal-leave-to > div {
+	transform: scale(0.9);
+	filter: blur(5px);
+	pointer-events: none;
+}

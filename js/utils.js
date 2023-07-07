@@ -25,8 +25,6 @@ function canBuyBuyable(layer, id) {
 	return (b.unlocked && run(b.canAfford, b) && player[layer].buyables[id].lt(b.purchaseLimit) && !tmp[layer].deactivated)
 }
 
-
-
 function canAffordPurchase(layer, thing, cost) {
 	if (thing.currencyInternalName) {
 		let name = thing.currencyInternalName
@@ -128,14 +126,14 @@ function clickGrid(layer, id) {
 
 // Function to determine if the player is in a challenge
 function inChallenge(layer, id) {
-	let challenge = player[layer].activeChallenge
-	if (!challenge) return false
-	id = toNumber(id)
-	if (challenge == id) return true
+	let challenge = player[layer].activeChallenge;
+	if (!challenge) return false;
+	id = toNumber(id) || id;
+	if (challenge == id) return true;
 
 	if (layers[layer].challenges[challenge].countsAs)
-		return tmp[layer].challenges[challenge].countsAs.includes(id) || false
-	return false
+		return tmp[layer].challenges[challenge].countsAs.includes(id) || false;
+	return false;
 }
 
 // ************ Misc ************
@@ -417,4 +415,25 @@ function gridRun(layer, func, data, id) {
 	}
 	else
 		return layers[layer].grid[func];
+}
+
+var activeModals = [];
+var modalID = 0;
+
+function showModal(title = "", body = [], actions = ["Close"], onAction = _ => _, layer = "tree-tab") {
+	let modal = {
+		title,
+		body,
+		actions,
+		onAction,
+		layer,
+		id: modalID,
+	}
+
+	activeModals.push(modal);
+	modalID++;
+}
+
+function hideModal(id) {
+	activeModals.splice(id, 1);
 }

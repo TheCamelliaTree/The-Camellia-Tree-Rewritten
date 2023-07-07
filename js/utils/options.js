@@ -7,13 +7,15 @@ function getStartOptions() {
 		autosave: true,
 		msDisplay: "always",
 		theme: "blackmagik",
+		notation: "scientific",
 		hqTree: false,
 		offlineProd: true,
 		hideChallenges: false,
 		showStory: true,
 		forceOneTab: false,
 		oldStyle: false,
-		tooltipForcing: true,
+		forceTooltips: true,
+		visualizer: true,
 	}
 }
 
@@ -26,6 +28,15 @@ function toggleOpt(name) {
 		changeTreeQuality();
 	if (name == "oldStyle")
 		updateStyle();
+}
+function toggleOptHyper(name, event) {
+	console.log(event);
+	if (options[name] != "hyper" && event.shiftKey) {
+		awardAchievement("journal", "s1x2");
+		options[name] = "hyper";
+	} else {
+		options[name] = !options[name];
+	}
 }
 var styleCooldown = 0;
 function updateStyle() {

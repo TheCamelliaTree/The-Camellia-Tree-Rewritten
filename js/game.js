@@ -383,15 +383,33 @@ function gameLoop(diff) {
 
 }
 
-function hardReset(resetOptions) {
-	if (!confirm("Are you sure you want to do this? You will lose all your progress!")) return
+function hardReset(resetOptions = false) {
 	player = null
 	if(resetOptions) options = null
 	save(true);
 	window.location.reload();
 }
 
-var ticking = false
+function hardResetModal(resetOptions) {
+	let title = "Hard Reset?";
+	if (Math.random() < 0.1) {
+		title = [
+			"⬜(============ 💾?",
+		];
+		title = title[Math.floor(Math.random() * title.length)];
+	}
+	showModal(title, [
+		["raw-html", `
+			Are you sure you want to erase all of your progress?<br>
+			This process is not recoverable!
+		`]
+	], ["Yes", "No"], (x) => {
+		if (x == "Yes") hardReset();
+	});
+}
+
+var ticking = false;
+let diff = 0;
 
 var interval = setInterval(function() {
 	if (player===undefined||tmp===undefined) return;
@@ -399,7 +417,7 @@ var interval = setInterval(function() {
 	if (tmp.gameEnded&&!player.keepGoing) return;
 	ticking = true
 	let now = Date.now()
-	let diff = (now - player.time) / 1e3
+	diff = (now - player.time) / 1e3
 	let trueDiff = diff
 	if (player.offTime !== undefined) {
 		if (player.offTime.remain > modInfo.offlineLimit * 3600) player.offTime.remain = modInfo.offlineLimit * 3600
@@ -424,7 +442,11 @@ var interval = setInterval(function() {
 	fixNaNs()
 	adjustPopupTime(trueDiff)
 	updateParticles(trueDiff)
+	updateMusicVisualizer();
 	ticking = false
 }, 50)
 
-setInterval(function() {needCanvasUpdate = true}, 500)
+function canvasFunc() {
+	needCanvasUpdate = true;
+	setTimeout(canvasFunc, currentMusic.player?.paused || !options.visualizer ? 500 : 50);
+}

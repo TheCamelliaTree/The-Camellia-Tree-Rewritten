@@ -27,6 +27,21 @@ var colors_theme
 function drawTree() {
 	if (!retrieveCanvasData()) return;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	if (options.visualizer && currentMusic.peaks) {
+		let peaks = currentMusic.peaks;
+		let length = peaks.length;
+		let width = canvas.width / length;
+		ctx.fillStyle = "#000";
+		for (let a = 0; a < length; a++) {
+			let peak = peaks[options.visualizer == "hyper" ? (a + Math.floor(player.time / 25)) % length : a];
+			if (options.visualizer == "hyper") ctx.fillStyle = "hsl(" + ((a * 5 + player.time / 5) % 360) + "deg, " + peak * 100 + "%, " + (peak * 50 + 25) + "%)";
+			else ctx.globalAlpha = peak * .25 + .25;
+			ctx.fillRect(width * a, canvas.height * (1 - peak), width, canvas.height);
+		}
+		ctx.globalAlpha = 1;
+	}
+
 	for (layer in layers){
 		if (tmp[layer].layerShown == true && tmp[layer].branches){
 			for (branch in tmp[layer].branches)
@@ -37,8 +52,8 @@ function drawTree() {
 		drawComponentBranches(layer, tmp[layer].upgrades, "upgrade-")
 		drawComponentBranches(layer, tmp[layer].buyables, "buyable-")
 		drawComponentBranches(layer, tmp[layer].clickables, "clickable-")
-
 	}
+
 }
 
 function drawComponentBranches(layer, data, prefix) {

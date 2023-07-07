@@ -208,6 +208,7 @@ function load() {
 	changeTreeQuality();
 	updateLayers();
 	setupModInfo();
+	canvasFunc();
 
 	setupTemp();
 	updateTemp();
@@ -222,7 +223,8 @@ function loadOptions() {
 		options = Object.assign(getStartOptions(), JSON.parse(decodeURIComponent(escape(atob(get2)))));
 	else 
 		options = getStartOptions()
-	if (themes.indexOf(options.theme) < 0) theme = "default"
+	if (!themes[options.theme]) options.theme = "blackmagik";
+	if (!notations[options.notation]) options.notation = "scientific";
 	fixData(options, getStartOptions())
 
 }

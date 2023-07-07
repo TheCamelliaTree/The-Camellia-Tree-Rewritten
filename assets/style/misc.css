@@ -7,21 +7,45 @@
 	border-color: rgba(0, 0, 0, 0.125);
 }
 
+.tabRow {
+	background: rgba(0, 0, 0, 0.5);
+}
+.tabRow > div {
+    position: relative;
+}
+.tabRow > div:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    background: var(--color);
+    transition: height .1s linear;
+}
+.tabRow > div.selected:before {
+    z-index: 0;
+    height: 100%;
+}
+
 .tabButton {
 	background-color: transparent;
 	color: var(--color);
 	font-size: 20px;
 	cursor: pointer;
 	padding: 5px 20px;
-	margin: 5px;
 	border-radius: 10px;
-	border: 2px solid;
-	color: var(--color);
+    border: none;
+	font-family: "Chakra Petch", sans-serif;
+    position: relative;
+    z-index: 1;
 }
-
 .tabButton:hover {
 	transform: scale(1.1, 1.1);
 	text-shadow: 0 0 7px var(--color);
+}
+.tabRow > div.selected > .tabButton {
+	color: black;
 }
 
 .tooltip { 
@@ -82,6 +106,7 @@
 .symbol {
     display: inline;
     font-family: "Material Symbols Outlined";
+    font-weight: 500;
     vertical-align: -0.2em;
     user-select: none;
     -webkit-user-select: none;

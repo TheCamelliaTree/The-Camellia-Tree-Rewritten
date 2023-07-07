@@ -1,25 +1,41 @@
 // ************ Themes ************
-var themes = ["blackmagik", "uufo",];
-let displayNames = ["Blackmagik", "U.U.F.O."];
+var themes = {
+	blackmagik: "BLACKMAGIK", 
+	uufo: "U.U.F.O.",
+};
 
 function changeTheme() {
 	document.body.classList = "theme-default " + "theme-" + options.theme;
 }
 function getThemeName() {
-	let index = themes.indexOf(options.theme || "blackmagik");
-	return displayNames[index];
+	return themes[options.theme || "blackmagik"];
 }
 
 function switchTheme() {
-	let index = themes.indexOf(options.theme)
+	let list = Object.keys(themes);
+	let index = list.indexOf(options.theme);
 
-	if (options.theme === null || index >= themes.length-1 || index < 0) {
-		options.theme = themes[0];
-	} else {
-		index ++;
-		options.theme = themes[index];
-		options.theme = themes[1];
-	}
+	options.theme = list[(index + 1) % list.length];
+
 	changeTheme();
 	resizeCanvas();
+}
+
+// ************ Notations ************
+var notations = {
+	scientific: "SCIENTIFIC", 
+	engineering: "ENGINEERING", 
+	standard: "STANDARD", 
+	letters: "LETTERS", 
+};
+
+function getNotationName() {
+	return notations[options.notation || "scientific"];
+}
+
+function switchNotation() {
+	let list = Object.keys(notations);
+	let index = list.indexOf(options.notation);
+
+	options.notation = list[(index + 1) % list.length];
 }

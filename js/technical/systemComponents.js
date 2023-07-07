@@ -2,8 +2,8 @@ var systemComponents = {
 	'tab-buttons': {
 		props: ['layer', 'data', 'name'],
 		template: `
-			<div class="upgRow">
-				<div v-for="tab in Object.keys(data)">
+			<div class="tabRow">
+				<div v-for="tab in Object.keys(data)" v-bind:class="{ selected: player.subtabs[layer][name] == tab }">
 					<button v-if="data[tab].unlocked == undefined || data[tab].unlocked" v-bind:class="{tabButton: true, notify: subtabShouldNotify(layer, name, tab), resetNotify: subtabResetNotify(layer, name, tab)}"
 					v-bind:style="[{'border-color': tmp[layer].color}, (subtabShouldNotify(layer, name, tab) ? {'box-shadow': 'var(--hqProperty2a), 0 0 20px '  + (data[tab].glowColor || defaultGlow)} : {}), tmp[layer].componentStyles['tab-button'], data[tab].buttonStyle]"
 						v-on:click="function(){player.subtabs[layer][name] = tab; updateTabFormats(); needCanvasUpdate = true;}">{{data[tab].title ?? tab}}</button>
@@ -128,15 +128,34 @@ var systemComponents = {
         <h2>{{modInfo.name}}</h2>
         <br>
         <h3>{{VERSION.withName}}</h3>
-        <span v-if="modInfo.author">
-            <br>
-            Made by {{modInfo.author}}	
-        </span>
         <br>
-        The Modding Tree <a v-bind:href="'https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md'" target="_blank" class="link" v-bind:style = "{'font-size': '14px', 'display': 'inline'}" >{{TMT_VERSION.tmtNum}}</a> by Acamaeda
         <br>
-        The Prestige Tree made by Jacorb and Aarex
-		<br><br>
+		made by 
+		<a href="https://github.com/TheCamelliaTree" target="_blank" class="link inline">ArcanaEden</a> and 
+		<a href="https://ducdat0507.github.io/" target="_blank" class="link inline">duducat</a>
+        <br>
+		additional CSS help from
+		<a href="https://flustix.foxes4life.net/" target="_blank" class="link inline">Flustix</a>
+        <hr style="width: 200px; margin: 4px auto 2px auto; border: none; height: 2px; background: var(--color)">
+        using The Modding Tree 
+		<a href="https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md" target="_blank" class="link inline">{{TMT_VERSION.tmtNum}}</a> by 
+		<a href="https://github.com/Acamaeda/" target="_blank" class="link inline">Acamaeda</a>
+        <br>
+        based on The Prestige Tree made by 
+		<a href="https://jacorb90.me/" target="_blank" class="link inline">Jacorb</a> and
+		<a href="https://aarextiaokhiao.github.io/" target="_blank" class="link inline">Aarex</a><br>
+		<br>
+		You are now playing the new, rewritten Camellia Tree made mostly by ducdat0507.<br>
+		If you wish to expereience the old tree please visit
+		<a href="https://raw.githack.com/TheCamelliaTree/The-Camellia-Tree-Rewritten/arcana-eden/" target="_blank" class="link inline">this link</a>.<br>
+		<br>
+		<div style="opacity: .5; font-size: small">
+			This game is made just for fun, no income is generated.<br>
+			If you do not wish to be referenced in the game please let us know in the Discord links down below.<br>
+			And also if you're really Camellia, hi 👋 please don't attack us
+		</div>
+		<br>
+		<br>
 		<div class="link" onclick="showTab('changelog-tab')">Changelog</div><br>
         <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>
         <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree Discord</a><br>
@@ -165,16 +184,16 @@ var systemComponents = {
 				</div>
 				<div class="value">{{ options.autosave?"ON":"OFF" }}</div>
 			</button>
-            <button class="opt" onclick="hardReset()">
+            <button class="opt" onclick="hardResetModal()">
 				<div class="key-desc">
 					<h3 class="key">Hard Reset</h3>
-					<div class="desc">Reset your game</div>
+					<div class="desc">Wipe everything</div>
 				</div>
 				<div class="value"></div>
 			</button>
             <button class="opt" onclick="exportSave()">
 				<div class="key-desc">
-					<h3 class="key">Export to clipboard</h3>
+					<h3 class="key">Export to Clipboard</h3>
 					<div class="desc">Copy your save to your clipboard</div>
 				</div>
 				<div class="value"></div>
@@ -182,7 +201,7 @@ var systemComponents = {
             <button class="opt" onclick="importSave()">
 				<div class="key-desc">
 					<h3 class="key">Import</h3>
-					<div class="desc">Import a save from your clipboard</div>
+					<div class="desc">Import a save from a save string</div>
 				</div>
 				<div class="value"></div>
 			</button>
@@ -193,17 +212,38 @@ var systemComponents = {
 				</div>
 				<div class="value">{{ options.offlineProd?"ON":"OFF" }}</div>
 			</button>
+            <button class="opt" onclick="switchNotation()">
+				<div class="key-desc">
+					<h3 class="key">Notation</h3>
+					<div class="desc">Change how numbers are formatted</div>
+				</div>
+				<div class="value">{{ getNotationName() }}</div>
+			</button>
             <button class="opt" onclick="switchTheme()">
 				<div class="key-desc">
 					<h3 class="key">Theme</h3>
-					<div class="desc">Switch between different themes</div>
+					<div class="desc">Switch between different background themes</div>
 				</div>
 				<div class="value">{{ getThemeName() }}</div>
+			</button>
+            <button class="opt" onclick="toggleOpt('hqTree')">
+				<div class="key-desc">
+					<h3 class="key">High Quality Tree</h3>
+					<div class="desc">Add shadows and shades to tree nodes</div>
+				</div>
+				<div class="value">{{ options.hqTree?"ON":"OFF" }}</div>
+			</button>
+            <button v-if="hasAchievement('journal', 's1x1')" class="opt" onclick="toggleOptHyper('visualizer', event)">
+				<div class="key-desc">
+					<h3 class="key">Dancing Background</h3>
+					<div class="desc">Make the background react to the currently playing music</div>
+				</div>
+				<div class="value">{{ options.visualizer?options.visualizer=="hyper"?"HYPER MODE":"ON":"OFF" }}</div>
 			</button>
             <button class="opt" onclick="adjustMSDisp()">
 				<div class="key-desc">
 					<h3 class="key">Show Milestones</h3>
-					<div class="desc">Show or hide milestones</div>
+					<div class="desc">Show or hide milestones based on criterias</div>
 				</div>
 				<div class="value">{{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</div>
 			</button>
@@ -223,8 +263,8 @@ var systemComponents = {
 			</button>
 			<button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">
 				<div class="key-desc">
-					<h3 class="key">Shift-Click to Toggle Tooltips</h3>
-					<div class="desc">Toggle tooltips on or off with shift-clicking</div>
+					<h3 class="key">Shift-Click to Pin Tooltips</h3>
+					<div class="desc">Enable pinning tooltips by shift-clicking</div>
 				</div>
 				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>
 			</button>

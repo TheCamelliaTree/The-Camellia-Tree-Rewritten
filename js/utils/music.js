@@ -3,6 +3,7 @@
 let currentMusic = {
     enabled: false,
     player: new Audio(),
+    contexts: {},
     data: null,
 };
 
@@ -16,15 +17,46 @@ function onFileDrop(event) {
 
     if (file?.type.startsWith("audio")) {
         currentMusic.enabled = true;
+        destroyContexts();
+        createContexts();
         currentMusic.player.src = URL.createObjectURL(file);
         currentMusic.player.play();
         file.arrayBuffer().then((buffer) => {
             console.log(currentMusic.data = readMetadata(buffer));
+            currentMusic.data.trackTitle ??= file.name;
+            updateTitle();
         });
         awardAchievement("journal", "s1x1");
     }
 
     console.log(file);
+}
+
+function createContexts() {
+    currentMusic.player = new Audio();
+
+    let contexts = {
+        base: new AudioContext()
+    };
+
+    contexts.player = contexts.base.createMediaElementSource(currentMusic.player);
+    contexts.analyser = contexts.base.createAnalyser({
+        minDecibels: -120,
+        maxDecibels: -0,
+    });
+    
+    contexts.player.connect(contexts.analyser);
+    contexts.analyser.connect(contexts.base.destination);
+
+    currentMusic.contexts = contexts;
+}
+
+function destroyContexts() {
+    let contexts = currentMusic.contexts;
+
+    contexts.base?.close();
+
+    currentMusic.contexts = {};
 }
 
 function onFileDragOver(event) {
@@ -82,7 +114,7 @@ function readMetadata(buffer) {
                 reader.readAsDataURL(blob);
             } else {
                 let decbe = new TextDecoder(["iso-8859-1", "ucs-2", "utf-16", "utf-8"][dv.getUint8(offset + 10)]);
-                data = decbe.decode(data.slice(1, length)).trim().trim("\x00"); 
+                data = decbe.decode(data.slice(1, length)).replace(/^[\s\x00]+|[\s\x00]+$/gm, ""); 
             }
             metadata[tagTF[tag] || tag] = data;
             offset += length + 10;
@@ -90,6 +122,46 @@ function readMetadata(buffer) {
         console.log(metadata);
     }
     return metadata;
+}
+
+function updateTitle() {
+    let leAuthuer = currentMusic.data?.trackAuthor || "Camellia";
+    if (leAuthuer == "Kobaryo") leAuthuer = "Not Quite Camellia (Kobaryo)";
+    if (leAuthuer.replace("’", "'") == "Snail's House") leAuthuer = "Inverse of Camellia (Snail's House)";
+    if (leAuthuer == "Josh Whelchel") leAuthuer = "\"I didn't know Maozon is Josh Whelchel\"";
+    document.title = "The " + leAuthuer + " Tree";
+}
+
+function updateMusicVisualizer() {
+    if (!currentMusic.contexts.analyser) return;
+    if (currentMusic.player.paused || !options.visualizer) return;
+
+    let analyser = currentMusic.contexts.analyser;
+    let length = analyser.frequencyBinCount;
+    let data = new Uint8Array(length);
+    analyser.getByteFrequencyData(data);
+
+    let peakCount = 64;
+    let peaks = new Float32Array(peakCount);
+    let counts = new Float32Array(peakCount);
+    let log = Math.log(4);
+
+    for (let a = 0; a < length; a ++) {
+        let freq = a / length * currentMusic.contexts.base.sampleRate;
+        let pos = Math.floor((Math.log(freq) / log % 1) * peakCount);
+        peaks[pos] += Math.pow(data[pos] / 255, 2) / freq;
+        counts[pos] += 1 / freq;
+    }
+
+    for (let a = 0; a < peakCount; a++) {
+        peaks[a] /= counts[a];
+    }
+
+    currentMusic.peaks = peaks;
+}
+
+function musicPlayerModal() {
+	showModal("", ["music-player"]);
 }
 
 /*

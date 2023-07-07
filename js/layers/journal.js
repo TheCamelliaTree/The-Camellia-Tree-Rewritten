@@ -69,7 +69,7 @@ addLayer("journal", {
         "2x1": {
             ...journalAchievement,
             name: "wac-a-mole",
-            tooltip: () => `Reach 100 song quality.`,
+            tooltip: "Reach 100 song quality.",
             done: () => Decimal.gte(tmp.tracks.effect.quality, 100),
         },
         "2x2": {
@@ -82,7 +82,7 @@ addLayer("journal", {
             ...journalAchievement,
             name: "When You See It (kinda)",
             tooltip: "Unlock floor(7.27) tracks.",
-            done: () => Decimal.gte(player.player.exp, 7),
+            done: () => tmp.tracks.effect.limit >= 7,
         },
         "2x4": {
             ...journalAchievement,
@@ -102,12 +102,61 @@ addLayer("journal", {
             tooltip: "Complete your first request.",
             done: () => hasChallenge("world", "s1"),
         },
+        "3x2": {
+            ...journalAchievement,
+            name: "Musical High School Graduate",
+            tooltip: () => `Reach ${format(1e15)} experience.`,
+            done: () => Decimal.gte(player.player.exp, 1e15),
+        },
+        "3x3": {
+            ...journalAchievement,
+            name: "Prestigious Sounds",
+            tooltip: "Reach 1,000 song quality.",
+            done: () => Decimal.gte(tmp.tracks.effect.quality, 1000),
+        },
+        "3x4": {
+            ...journalAchievement,
+            name: "More Than One",
+            tooltip: "Complete your first collaboration.",
+            done: () => hasChallenge("world", "c0x0"),
+        },
+        "3x5": {
+            ...journalAchievement,
+            name: "Wait, That's Illegal",
+            tooltip: "Unlock 9 tracks.",
+            done: () => tmp.tracks.effect.limit >= 9,
+        },
+        "4x1": {
+            ...journalAchievement,
+            name: "It's Movie Making Time",
+            tooltip: "Unlock the Movie Maker.",
+            done: () => Decimal.gt(getBuyableAmount("player", 13)),
+        },
+        "4x2": {
+            ...journalAchievement,
+            name: "A GOOGOL NOTES SONG",
+            tooltip: () => `Have a total of ${format(1e100)} notes in your song.`,
+            done: () => Decimal.gte(tmp.tracks.effect.totalNotes, 1e100),
+        },
+        "4x3": {
+            ...journalAchievement,
+            name: "Anti-Camellia Dimensions",
+            tooltip: () => `Collaborate with Ujico*.`,
+            done: () => hasChallenge("world", "c1x1"),
+        },
 
         "s1x1": {
             ...journalSecretAchievement,
             title: "Music to my ears",
             description: "Drop a music file into the game.",
             hint: "I'm a music player",
+            done: () => false,
+        },
+        "s1x2": {
+            ...journalSecretAchievement,
+            title: "SUPERTRUE",
+            description: "Set an option to HYPER MODE.",
+            hint: "Shift to set to hyperdrive",
             done: () => false,
         },
     },
@@ -127,7 +176,7 @@ addLayer("journal", {
                     ["blank", "10px"],
                     ["microtabs", "achs"],
                 ],
-            }
+            },
         },
         stats: {
             tracks: {
@@ -160,7 +209,7 @@ addLayer("journal", {
                 title: "Normal",
                 content: [
                     ["blank", "10px"],
-                    ["achievements", [1, 2, 3]],
+                    ["achievements", [1, 2, 3, 4]],
                 ],
             },
             secret: {
@@ -176,7 +225,8 @@ addLayer("journal", {
     tabFormat: [
         ["raw-html", () => `
             You have ${colored("journal", formatWhole(player.journal.potential))} potential.<br/>
-            You gain 1 potential for each achievement you completed, including secret achievements.
+            You gain 1 potential for each achievement and story entry you unlocked.<br/>
+            Secret achievements also count toward the potential counter.
         `],
         ["blank", "20px"],
         ["microtabs", "main"],

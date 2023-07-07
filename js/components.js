@@ -468,8 +468,8 @@ function loadVue() {
 	Vue.component('achievements', {
 		props: ['layer', 'data'],
 		template: `
-		<div v-if="tmp[layer].achievements" class="upgTable">
-			<div v-for="row in (data ?? tmp[layer].achievements.rows)" class="upgRow">
+		<div v-if="tmp[layer].achievements" class="upgTable" style="flex-direction: row; width: 100%">
+			<div v-for="row in (data ?? tmp[layer].achievements.rows)" class="upgRow" style="margin: 0">
 				<div v-for="col in tmp[layer].achievements.cols"><div v-if="tmp[layer].achievements[row+'x'+col]!== undefined && tmp[layer].achievements[row+'x'+col].unlocked" class="upgAlign">
 					<achievement :layer = "layer" :data = "row+'x'+col" v-bind:style="tmp[layer].componentStyles.achievement"></achievement>
 				</div></div>
@@ -627,13 +627,13 @@ function loadVue() {
 	Vue.component('song-mode', {
 		props: ['layer'],
 		template: `
-			<div class="song-modes">
-				<button class="upg can" v-on:click="player.tracks.actionMode = 'add'">
+			<div class="tabRow action-modes">
+				<div v-bind:class="{selected: player.tracks.actionMode == 'add'}"><button class="tabButton" v-on:click="player.tracks.actionMode = 'add'">
 					Add
-				</button>
-				<button class="upg can" v-on:click="player.tracks.actionMode = 'master'">
+				</button></div>
+				<div v-bind:class="{selected: player.tracks.actionMode == 'master'}"><button class="tabButton" v-on:click="player.tracks.actionMode = 'master'">
 					Master
-				</button>
+				</button></div>
 			</div>
 	`
 	})
@@ -642,18 +642,25 @@ function loadVue() {
 		props: ['layer', 'data'],
 		template: `
 			<div class="note-track">
-				<div class="info">
+				<button class="info" onclick="player.tracks.fullView = !player.tracks.fullView">
 					<h3>Track {{formatWhole(+data + 1)}}</h3><br/>
+					
 					{{
 						data == 0 ? "+" : "×"
-					}}{{
-						format(tmp.tracks.effect.trackBoost[data])
-					}}<i v-if="Decimal.gt(tmp.tracks.effect.trackPower[data], 1)">{{
-						" ^" + format(tmp.tracks.effect.trackPower[data])
-					}}</i><br/>{{
-						data == 0 ? "ideas per second" : "above track's multi"
-					}}
-				</div>
+					}}<template v-if="player.tracks.fullView">{{
+						Decimal.gt(player.tracks.extraMulti[data], 0) 
+							? "(" + format(tmp.tracks.effect.trackBase[data]) + " + " + format(player.tracks.extraMulti[data]) + ")"
+							: format(tmp.tracks.effect.trackBase[data])
+						}}<br/><i v-if="Decimal.gt(tmp.tracks.effect.trackPower[data], 1)">{{
+							" ^" + format(tmp.tracks.effect.trackPower[data])
+						}}</i><span v-else>{{
+							data == 0 ? "ideas per second" : "above track's multi"
+					}}</span></template><template v-else>{{
+							format(tmp.tracks.effect.trackBoost[data])
+						}}<br/>{{
+							data == 0 ? "ideas per second" : "above track's multi"
+					}}</template>
+				</button>
 				<div class="bar">
 					<template v-if="player.tracks.actionMode == 'add'">
 						{{formatWhole(player.tracks.notes[data])}}
@@ -670,7 +677,7 @@ function loadVue() {
 					</template>
 					<template v-else-if="player.tracks.actionMode == 'master'">
 						Master<br/>
-						{{formatWhole(Decimal.mul(player.tracks.notes[data], tmp.tracks.effect.masterBoost))}}
+						{{formatWhole(tmp.tracks.effect.masterGain[data])}}
 						<br/>notes
 					</template>
 				</button>
@@ -682,7 +689,7 @@ function loadVue() {
 		props: ['layer', 'data'],
 		template: `
 		<div v-if="tmp[layer].challenges" class="upgTable">
-			<task v-for="(_, id) in tmp[layer].challenges" :layer="layer" :data="id" v-bind:style="tmp[layer].componentStyles.challenge"></task>
+			<task v-for="(_, id) in tmp[layer].challenges" v-if="!tmp[layer].challenges[id].collaber && !(maxedChallenge(layer, id) && !inChallenge(layer, id))" :layer="layer" :data="id" v-bind:style="tmp[layer].componentStyles.challenge"></task>
 		</div>
 		`
 	})
@@ -691,7 +698,7 @@ function loadVue() {
 	Vue.component('task', {
 		props: ['layer', 'data'],
 		template: `
-		<div v-if="tmp[layer].challenges && tmp[layer].challenges[data] && tmp[layer].challenges[data].unlocked && !(options.hideChallenges && maxedChallenge(layer, [data]) && !inChallenge(layer, [data]))"
+		<div v-if="tmp[layer].challenges && tmp[layer].challenges[data] && tmp[layer].challenges[data].unlocked"
 			v-bind:class="['task', challengeStyle(layer, data), player[layer].activeChallenge === data ? 'resetNotify' : '']" v-bind:style="tmp[layer].challenges[data].style">
 			<div class="header">
 				<h3 v-html="tmp[layer].challenges[data].name"></h3>
@@ -724,7 +731,7 @@ function loadVue() {
 					</tbody>
 				</table>
 			</div>
-			<button v-bind:class="{ longUpg: true, can: true, [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button>
+			<button v-bind:class="{ longUpg: true, can: !maxedChallenge(layer, data), done: maxedChallenge(layer, data), [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button>
 		</div>
 		`
 	})
@@ -760,11 +767,241 @@ function loadVue() {
 							<span class="symbol">play_circle</span>
 							¥{{formatWhole(player.world.songs[data].money)}}
 							<span class="symbol">payments</span>
+							<template v-if="player.world.songs[data].fans">
+								{{formatWhole(player.world.songs[data].fans)}}
+								<span class="symbol">person</span>
+							</tamplate>
 						</div>
 					</div>
 				</div>
 			</button>
 	`
+	})
+
+	Vue.component('collab-tree', {
+		props: ['layer', 'data'],
+		data() {
+			return {
+				x: 0,
+				y: 0,
+				tileSize: 120,
+				tick: 0,
+			}
+		},
+		computed: {
+			width() { this.tick; return this.$el?.offsetWidth / this.tileSize || 0; },
+			height() { this.tick; return this.$el?.offsetHeight / this.tileSize || 0; },
+			startX() { this.tick; return this.x - this.width / 2 + .5; },
+			startY() { this.tick; return this.y - this.height / 2 + .5; },
+		},
+		methods: {
+			drag(e) {
+				console.log(e);
+				let startPos = { x: e.clientX, y: e.clientY };
+				let startGrid = { x: this.x, y: this.y }
+				let isDragging = false;
+				let move = (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					let pos = { x: e.clientX, y: e.clientY };
+					if (!isDragging && Math.abs(pos.x - startPos.x) + Math.abs(pos.y - startPos.y) < 10) return;
+					isDragging = true;
+					this.x = startGrid.x - (pos.x - startPos.x) / this.tileSize;
+					this.y = startGrid.y - (pos.y - startPos.y) / this.tileSize;
+					this.$el.classList.add("dragging");
+				}
+				let end = (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					document.body.removeEventListener("pointermove", move);
+					document.body.removeEventListener("pointerup", end);
+					this.$el.classList.remove("dragging");
+				}
+				document.body.addEventListener("pointermove", move);
+				document.body.addEventListener("pointerup", end);
+			},
+		},
+		mounted() {
+			this.tick++;
+		},
+		template: `
+			<div class="collab-tree" v-bind:style="{'--tile-size': tileSize + 'px'}" @pointerdown="drag(event)">
+				<table v-bind:style="{transform: 'translate(' + (Math.floor(startX) - startX) * tileSize + 'px, ' + (Math.floor(startY) - startY) * tileSize + 'px)'}">
+					<tbody>
+						<tr v-for="posY in Array.from(new Array(Math.ceil(height) + 1).keys()).map(x => x + Math.floor(startY))" :key="'ct-' + posY">
+							<td v-for="posX in Array.from(new Array(Math.ceil(width) + 1).keys()).map(x => x + Math.floor(startX))" :key="'ct-' + posY + '-' + posX">
+								<collab-node v-if="tmp.world.challenges['c' + posX + 'x' + posY]" :id="'c' + posX + 'x' + posY"></collab-node>
+								<div v-else class="ghost"> </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		`
+	})
+	Vue.component('collab-node', {
+		props: ['id'],
+		template: `
+			<button v-bind:class="{ upg: true, [tmp.world.challenges[id].unlocked ? maxedChallenge('world', id) ? 'done' : 'can' : 'locked']: true }" 
+				v-on:click="if (tmp.world.challenges[id].unlocked) { player.world.selectedCollab = id.substring(1); window.hideModal(0) }">
+				<h3>{{tmp.world.challenges[id].collaber}}</h3><br/>
+				<span v-html=" tmp.world.challenges[id].unlocked ? 
+					tmp.world.challenges[id].rewardList[tmp.world.challenges[id].rewardList.length - 1] + 
+					(tmp.world.challenges[id].rewardList.length > 1 ? ' (+' + formatWhole(tmp.world.challenges[id].rewardList.length - 1) + ' rewards)' : '')
+				: 'Collab with<br/>' + tmp.world.challenges[id].neighbors.map(x => tmp.world.challenges[x].collaber).join(', ') + '<br/>to unlock'"></span>
+			</button>
+		`
+	})
+	
+	Vue.component('movie-info', {
+		props: ['layer'],
+		template: `
+			<div class="song-info">
+				<div class="info">
+					<h5>NOW MAKING MOVIE FOR</h5>
+					<h3>Untitled Song #1</h3><br/>
+					<span>cametek</span>
+				</div>
+				<div class="quality">
+					<h5>MOVIE QUALITY</h5>
+					<h2>{{formatWhole(tmp.movie.effect.quality)}}</h2>
+				</div>
+			</div>
+	`
+	})
+
+	Vue.component('movie-mode', {
+		props: ['layer'],
+		template: `
+			<div class="tabRow action-modes">
+				<div v-bind:class="{selected: player.movie.actionMode == 'move'}"><button class="tabButton" v-on:click="player.movie.actionMode = 'move'">
+					Move
+				</button></div>
+				<div v-bind:class="{selected: player.movie.actionMode == 'scrap'}"><button class="tabButton" v-on:click="player.movie.actionMode = 'scrap'">
+					Scrap
+				</button></div>
+				<div v-bind:class="{selected: player.movie.actionMode == 'upgrade'}"><button class="tabButton" v-on:click="player.movie.actionMode = 'upgrade'">
+					Upgrade
+				</button></div>
+			</div>
+	`
+	})
+	
+	Vue.component('clip-inventory', {
+		props: ['layer'],
+		template: `
+			<div class="clip-inventory">
+				<div class="active">
+					<movie-clip v-for="(clip, pos) in player.movie.activeClips" :layer="layer" :data="clip" :pos="pos" :active="true" ></movie-clip>
+					<div v-for="_ in tmp.movie.effect.limit - player.movie.activeClips.length" class="slot"></div>
+				</div>
+				<div class="inactive">
+					<movie-clip v-for="(clip, pos) in player.movie.inactiveClips" :layer="layer" :data="clip" :pos="pos" :active="false" ></movie-clip>
+				</div>
+			</div>
+	`
+	})
+
+	Vue.component('movie-clip', {
+		props: ['layer', 'data', 'pos', 'active'],
+		computed: {
+			classes() {
+				let list = ["movie-clip", "upg"];
+				if (player.movie.actionMode == "move") {
+					if (!this.active && player.movie.activeClips.length >= tmp.movie.effect.limit) list.push("locked");
+				} else if (player.movie.actionMode == "scrap") {
+					list.push("shake");
+				} else if (player.movie.actionMode == "upgrade") {
+					if (Decimal.lt(player.movie.scraps, getClipUpgradeCost(this.data.tier))) list.push("locked");
+					else list.push("can");
+				}
+				return list;
+			},
+		},
+		methods: {
+			click(e) {
+				if (this.active) {
+					moveClip(this.pos, player.movie.activeClips, player.movie.inactiveClips);
+				} else {
+					moveClip(this.pos, player.movie.inactiveClips, player.movie.activeClips);
+				}
+			},
+		},
+		template: `
+			<button :class="classes" v-on:click="click()">
+				<h3>Tier {{formatWhole(data.tier)}}</h3><br/>
+				<template v-if="player.movie.actionMode == 'move'">
+					+{{formatWhole(getClipQuality(data.tier))}} movie quality
+					<template v-if="active && tmp.movie.effect.flows[pos] > 0">
+						<br/>+{{formatWhole(tmp.movie.effect.flows[pos] * 10)}}% flow bonus
+					</template>
+				</template>
+				<template v-else-if="player.movie.actionMode == 'scrap'">
+					Scrap for<br/>
+					{{formatWhole(getClipScrapValue(data.tier))}} movie scrap
+				</template>
+				<template v-else-if="player.movie.actionMode == 'upgrade'">
+					Upgrade costs<br/>
+					{{formatWhole(getClipUpgradeCost(data.tier))}} movie scrap
+				</template>
+				<div v-for="(flow, fpos) in data.startFlows" v-if="flow" class="flow start" v-bind:style="'--pos: ' + (fpos + 1)"></div>
+				<div v-for="(flow, fpos) in data.endFlows" v-if="flow" class="flow end" v-bind:style="'--pos: ' + (fpos + 1)"></div>
+			</button>
+	`
+	})
+
+
+	Vue.component('music-player', {
+		props: ['layer', 'data'],
+		data() {
+			return {
+				tick: 0,
+				time: null,
+			}
+		},
+		methods: {
+			drag(e) {
+				console.log(e);
+				let rect = this.$refs.seeker.getBoundingClientRect();
+				let move = (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					this.time = Math.min(Math.max((e.clientX - rect.x) / rect.width, 0), 1) * currentMusic.player.duration;
+				}
+				let end = (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					currentMusic.player.currentTime = this.time;
+					this.time = null;
+					document.body.removeEventListener("pointermove", move);
+					document.body.removeEventListener("pointerup", end);
+				}
+				document.body.addEventListener("pointermove", move);
+				document.body.addEventListener("pointerup", end);
+				console.log(e);
+				move(e);
+			},
+		},
+		template: `
+			<div v-bind:class="{'big-music-player': true, [currentMusic.player?.paused ? 'paused' : 'playing']: tick + 1}">
+				<div class="controls">
+					<img v-if="currentMusic.data?.mainPicture !== undefined" v-bind:src="currentMusic.data?.mainPicture"></img>
+					<div>
+						<div class="seeker" ref="seeker" v-bind:style="{
+							'': player.time,
+							'--time': '\\'' + formatClock(time ?? currentMusic.player.currentTime, 0) + '\\'',
+							'--dur': '\\'' + formatClock(currentMusic.player.duration, 0) + '\\'',
+							'--progress': (time ?? currentMusic.player.currentTime) / currentMusic.player.duration * 100 + '%',
+						}" @pointerdown="drag(event)"></div>
+						<button class="play-pause" v-on:click="currentMusic.player.paused ? currentMusic.player.play() : currentMusic.player.pause(); tick++"><div></div></button>
+					</div>
+				</div>
+				<div class="info">
+					<h2>{{currentMusic.data?.trackTitle}}</h2><br/>
+					<i>{{currentMusic.data?.trackAuthor}}</i>
+				</div>
+			</div>
+		`
 	})
 
 	// SYSTEM COMPONENTS
@@ -790,9 +1027,11 @@ function loadVue() {
 			format,
 			formatWhole,
 			formatTime,
+			formatClock,
 			formatSmall,
 			focused,
 			getThemeName,
+			getNotationName,
 			layerunlocked,
 			doReset,
 			buyUpg,
@@ -821,6 +1060,7 @@ function loadVue() {
 			LAYERS,
 			hotkeys,
 			activePopups,
+			activeModals,
 			particles,
 			mouseX,
 			mouseY,
@@ -831,6 +1071,9 @@ function loadVue() {
 			canAddNotesToTrack,
 			addNotesToTrack,
 			claimSong,
+			getClipQuality,
+			getClipScrapValue,
+			getClipUpgradeCost,
 			currentMusic,
 		},
 	})
