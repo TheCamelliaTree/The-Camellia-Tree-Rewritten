@@ -362,7 +362,7 @@ addLayer("p", {
                     player.points = player.points.sub(this.cost())
                     setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
                 },
-                effect() { return Decimal.pow(2, getBuyableAmount(this.layer, this.id))
+                effect() { return hasMilestone('b', 4) ? Decimal.pow(2.5, getBuyableAmount(this.layer, this.id)) : Decimal.pow(2, getBuyableAmount(this.layer, this.id))
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
                 buyMax() {return hasMilestone('p', 7) ? true : false},
@@ -391,7 +391,7 @@ addLayer("p", {
                     player.points = player.points.sub(this.cost())
                     setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
                 },
-                effect() { return Decimal.pow(3, getBuyableAmount(this.layer, this.id))
+                effect() { return hasMilestone('b', 4) ? Decimal.pow(4, getBuyableAmount(this.layer, this.id)) : Decimal.pow(3, getBuyableAmount(this.layer, this.id))
                 },
                 effectDisplay() {return format(buyableEffect(this.layer, this.id))},
                 buyMax() {return hasMilestone('p', 7) ? true : false},
