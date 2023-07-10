@@ -590,6 +590,7 @@ addLayer("m", {
         if (hasUpgrade('p', 22) && !inChallenge('b', 12)) messageGain = messageGain.pow(1.25)
         if (hasUpgrade('p', 23) && !inChallenge('b', 12)) messageGain = messageGain.pow(1.25)
         if (hasMilestone('b', 0)) messageGain = messageGain.times(100)
+        if (hasMilestone('b', 5)) messageGain = messageGain.pow(1.234)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
         let lagGain = new Decimal(0)
         if (inChallenge('m', 11)) lagGain = new Decimal(2.45)
@@ -683,6 +684,11 @@ addLayer("b", {
             requirementDescription: "I feel power starting to brew within me, it's almost like I want to make a Critical Error on these blocks, and cause a 250 killstreak to occur... (25 total blocks)",
             effectDescription: "Paroxysm Buyables are more powerful.",
             done() {return player.b.total.gte(25)}
+        },
+        5: {
+            requirementDescription: "The hums of the blocks resonate a tune of bursting lasers... (35 Total Blocks)",
+            effectDescription: "Message and Note gain is boosted ^1.234 (Bangin' Burst!).",
+            done() {return player.b.total.gte(35)}
         },
         9: {
             requirementDescription: "Start your SDVX Adventure. (10000 Total Blocks)",

@@ -84,6 +84,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 24)) gain = gain.times(1672) //Superluminal
 	if (hasUpgrade('b', 11)) gain = gain.pow(1.234)
 	if (hasUpgrade('b', 12)) gain = gain.pow(upgradeEffect('b', 12)) //reference to Bangin' Burst!'s bpm of 234
+	if (hasMilestone('b', 5)) gain = gain.pow(1.234) //again because why not
 	if (hasChallenge('b', 12)) gain = gain.pow(1.0666)
 	gain = gain.times(tmp.a.effect)
 	gain = gain.times(buyableEffect('p', 12))
@@ -100,7 +101,7 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [() => `You have <h2>${format(player.points)}</h2> notes. <br> ${player.points.gte(1e33) ? ` Gain is Softcapped by ^0.5.` : ''}<br> ${inChallenge('b', 12) ? ` T1M3 UN!17 KU23HA C0N5UM35 A77: ${format(player.b.ktime)}s` : ''}<br><h1> ${inChallenge('b', 12) && player.b.time>88.8 && player.b.time<100.5 ? ` KU23HA W177 C0N5UM3 A77.` : ''}${inChallenge('b', 12) && player.b.time>100.5 && player.b.time<111.75 ? ` 1! 15 100 7A13.` : ''}<h1>${inChallenge('b', 12) && player.b.time>111.75 ? ` N0W P32!5H!!!` : ''}`]
+var displayThings = [() => `You have <h2>${format(player.points)}</h2> notes. <br> ${inChallenge('m', 11) ? `Lagtrain beat is ${format(player.m.lag)}` : ''}<br> ${player.points.gte(1e33) ? ` Gain is Softcapped by ^0.5.` : ''}<br> ${inChallenge('b', 12) ? ` T1M3 UN!17 KU23HA C0N5UM35 A77: ${format(player.b.ktime)}s` : ''}<br><h1> ${inChallenge('b', 12) && player.b.time>88.8 && player.b.time<100.5 ? ` KU23HA W177 C0N5UM3 A77.` : ''}${inChallenge('b', 12) && player.b.time>100.5 && player.b.time<111.75 ? ` 1! 15 100 7A13.` : ''}<h1>${inChallenge('b', 12) && player.b.time>111.75 ? ` N0W P32!5H!!!` : ''}`]
 
 // Determines when the game "ends"
 function isEndgame() {
