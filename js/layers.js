@@ -591,6 +591,7 @@ addLayer("m", {
         if (hasUpgrade('p', 23) && !inChallenge('b', 12)) messageGain = messageGain.pow(1.25)
         if (hasMilestone('b', 0)) messageGain = messageGain.times(100)
         if (hasMilestone('b', 5)) messageGain = messageGain.pow(1.234)
+        if (hasUpgrade('b', 14)) messageGain = messageGain.pow(upgradeEffect('b', 14))
         player.m.messages = player.m.messages.add(messageGain.times(diff))
         let lagGain = new Decimal(0)
         if (inChallenge('m', 11)) lagGain = new Decimal(2.45)
@@ -657,6 +658,15 @@ addLayer("b", {
                 return player[this.layer].total.pow(1.25)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x"}
+        },
+        14: {
+            title: "Xronier",
+            description: "The Final Frontier shines upon you. Xoost message gain by total blocks.",
+            cost: new Decimal(15),
+            effect() {
+                return player[this.layer].total.log(5).div(100).add(1)
+            },
+            effectDisplay() {return "^"+format(upgradeEffect(this.layer, this.id))}
         },
     },
     milestones: {
