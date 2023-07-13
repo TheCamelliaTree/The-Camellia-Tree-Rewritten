@@ -30,18 +30,16 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<meta property="og:title" content="The Camellia Tree">
+	<meta property="og:title" content="Antreematter NG+3C">
 	<meta property="og:type" content="website">
-	<meta property="og:description" content="todo: description here">
-	<meta property="og:site_name" content="The Camellia Tree">
+	<meta property="og:description" content="Boo!">
+	<meta property="og:site_name" content="Antreematter NG+3C">
 </head>
 
 
 <body onload="load()" onmousemove="updateMouse(event)">
 	<div class="background"></div>
 	<div id="app">
-		<audio v-if="inChallenge('b', 11)" controls autoplay loop hidden><source src=music2/dyscontrolled.mp3 type="audio/mp3"></audio>
-		<audio v-if="inChallenge('b', 12)" controls autoplay loop hidden><source src=music2/666.mp3 type="audio/mp3"></audio>
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">

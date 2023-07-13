@@ -42,7 +42,7 @@ addLayer("a", {
                 player.points = player.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
-            effect() { return Decimal.times(3, getBuyableAmount(this.layer, this.id))
+            effect() { return getBuyableAmount(this.layer, this.id).div(10).floor().pow(2).max(3)
             },
             effectDisplay() {return format(buyableEffect(this.layer, this.id))},
         }
