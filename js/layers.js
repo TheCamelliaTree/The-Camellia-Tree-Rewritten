@@ -525,7 +525,7 @@ addLayer("m", {
         15: {
             title: "\\frac{\\textup{sig}=\\frac{821}{149}}{bpm\\approx533}",
             description: "Did Kurokotei join your server? Boost song gain by the upgrade character length (50), and raise note gain by ^(1+((821/149)/10)), and raise message gain by ^1.0533. (Guess why the cost is the way it is!)",
-            cost: new Decimal(293686),
+            cost: new Decimal(29368600000),
             currencyDisplayName: "Messages",
             currencyInternalName: "messages",
             currencyLayer: "m",
