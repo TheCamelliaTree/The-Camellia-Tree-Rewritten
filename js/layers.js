@@ -1,7 +1,9 @@
 addLayer("a", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,                     // You can add more variables here to add them to your layer.
-        points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        nd1Absolute: new Decimal(0),
+        nd1Gen: new Decimal(0),
+        nd2Absolute: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "antimatter",            // The name of this layer's main prestige resource.
@@ -24,15 +26,15 @@ addLayer("a", {
             unlocked() {
                 return true
             },
-            cost(x) {let cost =  new Decimal(1000).pow(x)
+            cost() {let cost =  getBuyableAmount('a', 11).div(10).ceil().pow_base(1000)
                 return cost
             },
             display() {
                 let amount = getBuyableAmount('a', 11)
                 return `
-                <br /> Creates Antimatter.
+                <br /> Generates Antimatter.
                 <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
-                <br /><b><h3>Currently creating </h3></b><h2> ${this.effectDisplay(temp.a.buyables[11].effect)}</h2><h3> antimatter.</h3>
+                <br /><b><h3>Currently creating </h3></b><h2> ${this.effectDisplay(temp.a.buyables[11].effect)}</h2><h3> Antimatter.</h3>
                 <br /><b><h3>Cost:</h3></b> ${format(temp.a.buyables[11].cost)} Antimatter`
             },
             canAfford() {
@@ -42,9 +44,36 @@ addLayer("a", {
                 player.points = player.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
-            effect() { return getBuyableAmount(this.layer, this.id).div(10).floor().pow(2).max(3)
+            effect() { return getBuyableAmount('a', 11).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 11))
             },
             effectDisplay() {return format(buyableEffect(this.layer, this.id))},
-        }
+        },
+        12: {
+            title: "2nd Dimension",
+            unlocked() {
+                return true
+            },
+            cost() {let cost =  getBuyableAmount('a', 12).div(10).ceil().pow_base(10000)
+                return cost
+            },
+            display() {
+                let amount = getBuyableAmount('a', 12)
+                return `
+                <br /> Generates D1's.
+                <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
+                <br /><b><h3>Currently generating </h3></b><h2> ${this.effectDisplay(temp.a.buyables[12].effect)}</h2><h3> D1's.</h3>
+                <br /><b><h3>Cost:</h3></b> ${format(temp.a.buyables[12].cost)} Antimatter`
+            },
+            canAfford() {
+                return player.points.gte(this.cost())
+            },
+            buy() {
+                player.points = player.points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            effect() { return getBuyableAmount('a', 12).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 12))
+            },
+            effectDisplay() {return format(buyableEffect(this.layer, this.id))},
+        },
     },
 })
