@@ -20,6 +20,15 @@ addLayer("a", {
         return new Decimal(1)
     },
     layerShown() { return true },          // Returns a bool for if this layer's node should be visible in the tree.
+    tabFormat: {
+        "Antimatter Dimensions":{
+            content: [
+                ["display-text", () => "You have " + colored("a", format(player.points)) + " Antimatter"],
+                "blank",
+                "buyables",
+            ]
+        },
+    },
     buyables: {
         11: {
             title: "1st Dimension",
