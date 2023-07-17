@@ -149,6 +149,7 @@ addLayer("s", {
         if (hasMilestone('p', 0) && !inChallenge('b', 12)) mult = mult.times(10)
         if (hasMilestone('b', 1)) mult = mult.times(100)
         if (hasUpgrade('b', 13)) mult = mult.times((upgradeEffect('b', 13)))
+        if (hasUpgrade('m', 15)) mult = mult.times(50)
         if (player.s.points.gte(1e20)) mult = mult.log10().div(20).pow(0.25).times(20)
         if (player.s.points.gte(1e50)) mult = mult.log10().div(50).pow(0.125).times(50)
         return mult
@@ -521,14 +522,22 @@ addLayer("m", {
             currencyInternalName: "messages",
             currencyLayer: "m",
         },
+        15: {
+            title: "\\frac{\\textup{sig}=\\frac{821}{149}}{bpm\\approx533}",
+            description: "Did Kurokotei join your server? Boost song gain by the upgrade character length (50), and raise note gain by ^(1+((821/149)/10)), and raise message gain by ^1.0533. (Guess why the cost is the way it is!)",
+            cost: new Decimal(293686),
+            currencyDisplayName: "Messages",
+            currencyInternalName: "messages",
+            currencyLayer: "m",
+        },
     },
     challenges: {
         11: {
             name: "Inabakumori",
             challengeDescription: "A powerful presence has been spotted, you notice your notes starting to lag, and your note gain lags out every other beat, with it being nerfed.",
             goalDescription() { return `Convince the Lagtrain to commence operation and bring Inabakumori to your server with ${format(tmp['m'].challenges[11].goal)} notes.`},
-            goal() { return new Decimal(1.47e14)},
-            canComplete: function() {return player.points.gte(1.47e14)},
+            goal() { return new Decimal(1.47e24)},
+            canComplete: function() {return player.points.gte(1.47e24)},
             onEnter() {
                 player.m.lag = new Decimal(0)
             },
@@ -592,6 +601,7 @@ addLayer("m", {
         if (hasMilestone('b', 0)) messageGain = messageGain.times(100)
         if (hasMilestone('b', 5)) messageGain = messageGain.pow(1.234)
         if (hasUpgrade('b', 14)) messageGain = messageGain.pow(upgradeEffect('b', 14))
+        if (hasUpgrade('m', 15)) messageGain = messageGain.pow(1.0533)
         player.m.messages = player.m.messages.add(messageGain.times(diff))
         let lagGain = new Decimal(0)
         if (inChallenge('m', 11)) lagGain = new Decimal(2.45)
