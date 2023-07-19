@@ -41,7 +41,7 @@ addLayer("a", {
                 let amount = getBuyableAmount('a', 11).add(player.a.nd1Gen)
                 return `
                 <br /> Generates Antimatter.
-                <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}+${formatWhole(nd1Gen)}
+                <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
                 <br /><b><h3>Currently creating </h3></b><h2> ${this.effectDisplay(temp.a.buyables[11].effect)}</h2><h3> Antimatter.</h3>
                 <br /><b><h3>Cost:</h3></b> ${format(temp.a.buyables[11].cost)} Antimatter`
             },
@@ -52,7 +52,7 @@ addLayer("a", {
                 player.points = player.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
-            effect() { return getBuyableAmount('a', 11).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 11))
+            effect() { return getBuyableAmount('a', 11).add(player.a.nd1Gen).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 11))
             },
             effectDisplay() {return format(buyableEffect(this.layer, this.id))},
         },
@@ -65,7 +65,7 @@ addLayer("a", {
                 return cost
             },
             display() {
-                let amount = getBuyableAmount('a', 12)
+                let amount = getBuyableAmount('a', 12).add(player.a.ng2Gen)
                 return `
                 <br /> Generates D1's.
                 <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
@@ -79,14 +79,42 @@ addLayer("a", {
                 player.points = player.points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
-            effect() { return getBuyableAmount('a', 12).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 12))
+            effect() { return getBuyableAmount('a', 12).add(player.a.ng2Gen).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 12))
+            },
+            effectDisplay() {return format(buyableEffect(this.layer, this.id))},
+        },
+        13: {
+            title: "3rd Dimension",
+            unlocked() {
+                return true
+            },
+            cost() {let cost =  getBuyableAmount('a', 13).div(10).floor().pow_base(100000).times(1000)
+                return cost
+            },
+            display() {
+                let amount = getBuyableAmount('a', 13)
+                return `
+                <br /> Generates D2's.
+                <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
+                <br /><b><h3>Currently generating </h3></b><h2> ${this.effectDisplay(temp.a.buyables[13].effect)}</h2><h3> D2's.</h3>
+                <br /><b><h3>Cost:</h3></b> ${format(temp.a.buyables[13].cost)} Antimatter`
+            },
+            canAfford() {
+                return player.points.gte(this.cost())
+            },
+            buy() {
+                player.points = player.points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            effect() { return getBuyableAmount('a', 13).div(10).ceil().pow_base(3).times(getBuyableAmount('a', 13))
             },
             effectDisplay() {return format(buyableEffect(this.layer, this.id))},
         },
     },
     update(diff) {
-        let nd1Gen = getBuyableAmount('a', 12)
-        nd1Gen 
-
+        let nd1GenGain = buyableEffect('a', 12)
+        player.a.nd1Gen = player.a.nd1Gen.add(nd1GenGain.times(diff)) 
+        let nd2GenGain = buyableEffect('a', 13) 
+        player.a.nd2Gen = player.a.nd2Gen.add(nd2GenGain.times(diff))
     }
 })
