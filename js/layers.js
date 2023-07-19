@@ -1,9 +1,8 @@
 addLayer("a", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,                     // You can add more variables here to add them to your layer.
-        nd1Absolute: new Decimal(0),
         nd1Gen: new Decimal(0),
-        nd2Absolute: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        nd2Gen: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "antimatter",            // The name of this layer's main prestige resource.
@@ -35,14 +34,14 @@ addLayer("a", {
             unlocked() {
                 return true
             },
-            cost() {let cost =  getBuyableAmount('a', 11).div(10).ceil().pow_base(1000)
+            cost() {let cost =  getBuyableAmount('a', 11).div(10).floor().pow_base(1000).times(10)
                 return cost
             },
             display() {
-                let amount = getBuyableAmount('a', 11)
+                let amount = getBuyableAmount('a', 11).add(player.a.nd1Gen)
                 return `
                 <br /> Generates Antimatter.
-                <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}
+                <br /><b><h3>Amount:</h3></b> ${formatWhole(amount)}+${formatWhole(nd1Gen)}
                 <br /><b><h3>Currently creating </h3></b><h2> ${this.effectDisplay(temp.a.buyables[11].effect)}</h2><h3> Antimatter.</h3>
                 <br /><b><h3>Cost:</h3></b> ${format(temp.a.buyables[11].cost)} Antimatter`
             },
@@ -62,7 +61,7 @@ addLayer("a", {
             unlocked() {
                 return true
             },
-            cost() {let cost =  getBuyableAmount('a', 12).div(10).ceil().pow_base(10000)
+            cost() {let cost =  getBuyableAmount('a', 12).div(10).floor().pow_base(10000).times(100)
                 return cost
             },
             display() {
@@ -85,4 +84,9 @@ addLayer("a", {
             effectDisplay() {return format(buyableEffect(this.layer, this.id))},
         },
     },
+    update(diff) {
+        let nd1Gen = getBuyableAmount('a', 12)
+        nd1Gen 
+
+    }
 })
