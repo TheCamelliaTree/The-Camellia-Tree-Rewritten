@@ -112,18 +112,16 @@ var systemComponents = {
 			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
-		<span v-if="player.points.lt('1e1e1e6')"  class="overlayThing">You have </span>
-		<h2  class="overlayThing" id="points">{{format(player.points, 3)}}</h2>
-		<span v-if="player.points.lt('1e1e1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
+		<span v-if="player.points.gte(0)"  class="overlayThing"><h3>Current Endgame: 1e33/1 Dc Antimatter.</h3> </span>
 		<br>
-		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
+		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
 	</div>
 	`
     },
 
     'info-tab': {
-        template: `
+      template: `
         <div>
         <h2>{{modInfo.name}}</h2>
         <br>
@@ -228,12 +226,12 @@ var systemComponents = {
 				</div>
 				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>
 			</button>
-			<button class="opt" onclick="adjustNOTE()">
+			<button class="opt" onclick="changeNotation()">
 				<div class="key-desc">
 					<div class="key">Notation</div>
-					<div class="desc">Switch between notations</div>
+					<div class="desc">Change notations (Standard, Scientific, and Engineering.)</div>
 				</div>
-				<div class="value">{{ NOTE_DIS[NOTE_SET.indexOf(options.notation)]}}</div>
+				<div class="value">{{ player.notation }}</div>
 			</button>
 
         </div>`

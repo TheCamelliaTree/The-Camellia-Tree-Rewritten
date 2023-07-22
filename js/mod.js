@@ -61,7 +61,7 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [() => `Current Endgame: 1e33/1 Dc Antimatter.`]
+var displayThings = [() => `You have <h2>${format(player.points)}</h2> Antimatter.`]
 
 // Determines when the game "ends"
 function isEndgame() {
