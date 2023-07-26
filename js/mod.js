@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "Antreematter NG+3C",
-	id: "ang3cc",
+	name: "Tree = Tree + 1",
+	id: "bpm",
 	author: "ArcanaEden (rotating_ilot)",
-	pointsName: "antimatter",
+	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "ArcanaEden's Trees",
@@ -14,7 +14,7 @@ let modInfo = {
 // Set your version in num and name
 let VERSION = {
 	num: "0.1",
-	name: "NG+3C? WHAT DOES IT MEAN!?",
+	name: "BPM",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -29,9 +29,9 @@ Credit to pg132's changelog format.<br>
 <br>
 	<h3>v0.1</h3><br>
 		- What do you expect from the first release of this tree? ToL? <br>
-		- Added Antimatter and some Dimensions.`
+		- Added Beat Points`
 
-let winText = `Your Antimatter became so powerful that you went poof.`
+let winText = `Your BPM was so fast that not even Kobaryo can explain.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -52,7 +52,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
-gain = buyableEffect('a', 11)
+	if (hasUpgrade('a', 11)) gain = upgradeEffect('a', 11).div(100)
 	return gain
 }
 
@@ -61,7 +61,7 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [() => `You have <h2>${format(player.points)}</h2> Antimatter.`]
+var displayThings = [() => `You have <h2>${format(player.points)}</h2> points.`]
 
 // Determines when the game "ends"
 function isEndgame() {
@@ -72,6 +72,15 @@ function isEndgame() {
 
 // Less important things beyond this point!
 function colored(layer, text, tag='h2') { return `<${tag} style='color:${temp[layer].color};text-shadow:${temp[layer].color} 0px 0px 10px;'>${text}</${tag}>` }
+function bpmIncremental() {
+    let BPM = 100;
+    function print_and_increment() {
+      BPM += 1;
+      console.log(BPM);
+      if (BPM <= 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
+    }
+    print_and_increment();
+  }
 // Style for the background, can be a function
 var backgroundStyle = {
 
