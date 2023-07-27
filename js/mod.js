@@ -52,7 +52,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
-	if (hasUpgrade('a', 11)) gain = upgradeEffect('a', 11).div(100)
+	gain = upgradeEffect('a', 11)
 	return gain
 }
 
@@ -72,15 +72,6 @@ function isEndgame() {
 
 // Less important things beyond this point!
 function colored(layer, text, tag='h2') { return `<${tag} style='color:${temp[layer].color};text-shadow:${temp[layer].color} 0px 0px 10px;'>${text}</${tag}>` }
-function bpmIncremental() {
-    let BPM = 100;
-    function print_and_increment() {
-      BPM += 1;
-      console.log(BPM);
-      if (BPM <= 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
-    }
-    print_and_increment();
-  }
 // Style for the background, can be a function
 var backgroundStyle = {
 

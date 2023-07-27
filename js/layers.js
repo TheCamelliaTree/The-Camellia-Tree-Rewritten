@@ -2,7 +2,8 @@ addLayer("a", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,
         points: new Decimal(0),
-        trina: new Decimal(0),                     // You can add more variables here to add them to your layer.
+        trina: new Decimal(0),  
+        bpm: bpmIncremental(),                   // You can add more variables here to add them to your layer.
     }},
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "Beat Points",            // The name of this layer's main prestige resource.
@@ -36,7 +37,7 @@ addLayer("a", {
             description: "The BPM is rapidly esacalating... Generate points based on the current song BPM.",
             cost: new Decimal(1),
             onPurchase() {bpmIncremental()},
-            effect() {return bpmIncremental()},
+            effect() {return player.a.bpm},
         },
     },
     update(diff) {
@@ -46,3 +47,13 @@ addLayer("a", {
         if (player.a.trina.gte(137.83)) player.a.trina = new Decimal(0)
     }
 })
+function bpmIncremental() {
+    let BPM = 100;
+    function print_and_increment() {
+    setTimeout(bpmIncremental, 2500)
+    BPM += 1;  
+    console.log(BPM);
+      if (BPM <= 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
+    }
+    print_and_increment();
+  }
