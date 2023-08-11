@@ -2,8 +2,7 @@ addLayer("a", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,
         points: new Decimal(0),
-        trina: new Decimal(0),  
-        bpm: bpmIncremental(),                   // You can add more variables here to add them to your layer.
+        trina: new Decimal(0),                    // You can add more variables here to add them to your layer.
     }},
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "Beat Points",            // The name of this layer's main prestige resource.
@@ -36,8 +35,12 @@ addLayer("a", {
             title: "BPM = BPM + 1",
             description: "The BPM is rapidly esacalating... Generate points based on the current song BPM.",
             cost: new Decimal(1),
-            onPurchase() {bpmIncremental()},
-            effect() {return player.a.bpm},
+            onPurchase() {function print_and_increment() {
+                BPM += 1;  
+                console.log(BPM);
+                  if (BPM < 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
+                }
+                setTimeout(print_and_increment, 2550);},
         },
     },
     update(diff) {
@@ -45,15 +48,18 @@ addLayer("a", {
         if (hasUpgrade('a', 11)) trinaGain = new Decimal(1)
         player.a.trina = player.a.trina.add(trinaGain.times(diff))
         if (player.a.trina.gte(137.83)) player.a.trina = new Decimal(0)
-    }
+    },
+    hotkeys: [
+        {key: "b", description: "B: Increase your Beat Points.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
 })
+BPM = 100;
 function bpmIncremental() {
-    let BPM = 100;
     function print_and_increment() {
-    setTimeout(bpmIncremental, 2500)
     BPM += 1;  
     console.log(BPM);
       if (BPM <= 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
     }
-    print_and_increment();
+    setTimeout(print_and_increment, 2550);
   }
+bpmIncremental()
