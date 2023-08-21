@@ -54,11 +54,3 @@ addLayer("a", {
         {key: "b", description: "B: Increase your Beat Points.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
 })
-BPM = 100;
-function bpmIncremental() {
-    function print_and_increment() {
-    BPM += 1;  
-      if (BPM <= 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
-    }
-  }
-bpmIncremental()
