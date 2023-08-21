@@ -2,7 +2,8 @@ addLayer("a", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,
         points: new Decimal(0),
-        trina: new Decimal(0),                    // You can add more variables here to add them to your layer.
+        trina: new Decimal(0),
+        bpm: new Decimal(100),                    // You can add more variables here to add them to your layer.
     }},
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "Beat Points",            // The name of this layer's main prestige resource.
@@ -57,9 +58,7 @@ BPM = 100;
 function bpmIncremental() {
     function print_and_increment() {
     BPM += 1;  
-    console.log(BPM);
       if (BPM <= 300) setTimeout(print_and_increment, (60_000 / BPM) * 2);
     }
-    setTimeout(print_and_increment, 2550);
   }
 bpmIncremental()
