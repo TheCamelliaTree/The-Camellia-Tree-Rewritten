@@ -37,7 +37,7 @@ addLayer("a", {
             title: "BPM = BPM + 1",
             description: "The BPM is rapidly esacalating... Generate points based on the current song BPM.",
             cost: new Decimal(1),
-            effect() { return player.a.bpm.div(100)},
+            effect() { return player[this.layer].bpm.div(100)},
             effectDisplay() {
                 return format(upgradeEffect(this.layer, this.id)) + "/s"
             }
@@ -48,10 +48,10 @@ addLayer("a", {
             cost: new Decimal(3),
         },
         13: {
-            title: "BPM = log3(x) * 2(BPM + 1)",
+            title: "BPM = 2(BPM + 1)(a^0.5)",
             description: "Multiply gain by the amount of Beat Points you have.",
             cost: new Decimal(10),
-            effect() {return player.a.points.log(3).max(1)},
+            effect() {return player[this.layer].points.pow(0.5).add(1)},
             effectDisplay() {
                 return format(upgradeEffect(this.layer, this.id)) + "x"
             }
