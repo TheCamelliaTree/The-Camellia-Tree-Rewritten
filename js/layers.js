@@ -51,7 +51,11 @@ addLayer("a", {
             title: "BPM = 2(BPM + 1)(a^0.5)",
             description: "Multiply gain by the amount of Beat Points you have.",
             cost: new Decimal(10),
+<<<<<<< Updated upstream
             effect() {return player[this.layer].points.pow(0.5).add(1)},
+=======
+            effect() {return player.a.points.max(1)},
+>>>>>>> Stashed changes
             effectDisplay() {
                 return format(upgradeEffect(this.layer, this.id)) + "x"
             }
