@@ -55,6 +55,7 @@ function getPointGen() {
 	if (hasUpgrade('a', 11) && player.a.trina.gte(2.5)) gain = upgradeEffect('a', 11)
 	if (hasUpgrade('a', 12)) gain = gain.times(2)
 	if (hasUpgrade('a', 13)) gain = gain.times(upgradeEffect('a', 13))
+	if (hasUpgrade('a', 15)) gain = gain.times(upgradeEffect('a', 15))
 	return gain
 }
 

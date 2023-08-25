@@ -3,8 +3,7 @@ addLayer("a", {
         unlocked: true,
         points: new Decimal(0),
         trina: new Decimal(0),
-        bpm: new Decimal(100),
-        playingMusic: false                    // You can add more variables here to add them to your layer.
+        bpm: new Decimal(100),                   // You can add more variables here to add them to your layer.
     }},
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "Beat Points",            // The name of this layer's main prestige resource.
@@ -14,8 +13,10 @@ addLayer("a", {
     requires: new Decimal(10),              // The amount of the base needed to  gain 1 of the prestige currency.                                        // Also the amount required to unlock the layer.
     type: "normal",                         // Determines the formula used for calculating prestige currency.
     exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
-    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
-        return new Decimal(1)               // Factor in any bonuses multiplying gain here.
+    gainMult() {     
+        let mult = new Decimal(1)
+        if (hasUpgrade('a', 14)) mult = mult.times(upgradeEffect('a', 14))                      // Returns your multiplier to your gain of the prestige resource.
+        return mult           // Factor in any bonuses multiplying gain here.
     },
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
         return new Decimal(1)
@@ -38,7 +39,6 @@ addLayer("a", {
             title: "BPM = BPM + 1",
             description: "The BPM is rapidly esacalating... Generate points based on the current song BPM.",
             cost: new Decimal(1),
-            onPurchase() { return player.a.playingMusic = true},
             effect() { return player[this.layer].bpm.div(100)},
             effectDisplay() {
                 return format(upgradeEffect(this.layer, this.id)) + "/s"
@@ -55,6 +55,24 @@ addLayer("a", {
             cost: new Decimal(10),
             effect() { return player[this.layer].points.add(1).pow(0.5)},
             effectDisplay() {
+                return format(upgradeEffect(this.layer, this.id)) + "x"
+            }
+        },
+        14: {
+            title: "BP = log5(p)(a)",
+            description: "Multiply Beat Point gain by points.",
+            cost: new Decimal(15),
+            effect() { return player.points.log(5).max(1)},
+            effectDisplay() {
+                return format(upgradeEffect(this.layer, this.id)) + "x"
+            }
+        },
+        15: {
+            title: "BPM = 2(BPM + 1)(a^0.5)(log(p))",
+            description: "Multiply gain by points.",
+            cost: new Decimal(75),
+            effect() { return player.points.log(10).max(1)},
+            effectDisplay() { 
                 return format(upgradeEffect(this.layer, this.id)) + "x"
             }
         },
@@ -264,7 +282,7 @@ addLayer("a", {
         if (player.a.trina.gte(134.338) && player.a.trina.lt(134.74)) player.a.bpm = new Decimal(299)
         if (player.a.trina.gte(134.74)) player.a.bpm = new Decimal(300)
         player.a.trina = player.a.trina.add(trinaGain.times(diff))
-        if (player.a.trina.gte(137.83)) player.a.trina = new Decimal(0)
+        if (player.a.trina.gte(137.96)) player.a.trina = new Decimal(0)
     },
     hotkeys: [
         {key: "b", description: "B: Increase your Beat Points.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
