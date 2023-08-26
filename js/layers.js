@@ -77,6 +77,14 @@ addLayer("a", {
             }
         },
     },
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= this.row) return;
+        let keptUpgrades = []
+        if (layers[resettingLayer].row == 1) keptUpgrades.push(11)
+        let keep = [];
+        layerDataReset(this.layer, keep);
+        player[this.layer].upgrades.push(keptUpgrades)
+      },
     update(diff) {
         let trinaGain = new Decimal(0)
         if (hasUpgrade('a', 11)) trinaGain = new Decimal(1)
