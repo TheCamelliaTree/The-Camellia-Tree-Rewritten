@@ -80,7 +80,7 @@ addLayer("a", {
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= this.row) return;
         let keptUpgrades = []
-        if (layers[resettingLayer].row == 1) keptUpgrades.push(11)
+        if ((layers[resettingLayer].row == 1) && hasMilestone('b', 0)) keptUpgrades.push(11)
         let keep = [];
         layerDataReset(this.layer, keep);
         player[this.layer].upgrades.push(keptUpgrades)
@@ -295,4 +295,29 @@ addLayer("a", {
     hotkeys: [
         {key: "b", description: "B: Increase your Beat Points.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+})
+addLayer("b", {
+    startData() { return {                  // startData is a function that returns default data for a layer. 
+        unlocked: true,                     // You can add more variables here to add them to your layer.
+        points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+    }},
+    color: "#4BDC13",                       // The color for this layer, which affects many elements.
+    resource: "BOF",            // The name of this layer's main prestige resource.
+    row: 1,                                 // The row this layer is on (0 is the first row).
+    baseResource: "Beat Points",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.a.points },  // A function to return the current amount of baseResource.
+    requires: new Decimal(300),              // The amount of the base needed to  gain 1 of the prestige currency.
+    type: "static",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        return new Decimal(1)               // Factor in any bonuses multiplying gain here.
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        return new Decimal(1)
+    },
+    layerShown() { return true },          // Returns a bool for if this layer's node should be visible in the tree.
+
+    upgrades: {
+        // Look in the upgrades docs to see what goes here!
+    },
 })
