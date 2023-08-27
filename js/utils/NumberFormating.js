@@ -194,8 +194,47 @@ function format(decimal, precision=3) {
     if (player.notation == 'Standard') {
         return standard(decimal, precision)
     }
+    else if (player.notation == 'Letters') {
+		return letter(decimal, precision, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+	}
     else return formatSciEng(decimal, precision)
 }
+
+function letter(decimal, precision, str) { //AD NG+++
+	decimal = new Decimal(decimal)
+	let len = new Decimal(str.length);
+	let ret = ''
+	let power = decimal.log10().div(3).floor()
+	let m = decimal.div(Decimal.pow(1e3,power))
+	if (m.toStringWithDecimalPlaces(precision) == 1000) {
+		m = new Decimal(1)
+		power = power.add(1)
+	}
+	let skipped = Decimal.floor(Decimal.log10(power.mul(len.sub(1)).add(1)).div(Decimal.log10(len))).sub(10)
+	if (skipped.lt(4)) skipped = new Decimal(0)
+	// (power - () / (len - 1) * len) = Decimal.floor(power.sub(Decimal.pow(len,skipped).sub(1).div(len.sub(1)).mul(len)).div(Decimal.pow(len,skipped)))
+	else power = Decimal.floor(power.sub(Decimal.pow(len,skipped).sub(1).div(len.sub(1)).mul(len)).div(Decimal.pow(len,skipped)))
+	while (power.gt(0)) {
+		ret = str[(power.sub(1)).toNumber() % len.toNumber()] + ret
+		power = Decimal.ceil(power.div(len)).sub(1)
+	}
+	if (isNaN(skipped.sign)||isNaN(skipped.layer)||isNaN(skipped.mag)) skipped = new Decimal(0)
+	skipped = skipped.add(10)
+	let lett = Decimal.mul(1e9,Decimal.log10(len))
+	let s = slog(skipped).sub(slog(lett)).div(2).floor().add(1)
+	let sl = tet10(slog(skipped).sub(slog(skipped).sub(slog(lett)).div(2).floor().mul(2))).mul(Decimal.log(10,len))
+	if (decimal.layer >= 1e9) return '{'+formatWhole(s)+'}'
+	if (decimal.gte(tet10(slog(lett).add(8)))) return format(sl)+'{'+formatWhole(s)+'}'
+	if (skipped.gte(1e9)) return "["+letter(skipped, precision, str)+"]"
+	if (skipped.gt(10)) ret += "[" + commaFormat(skipped, 0) + "]"
+	if (decimal.gte("ee9")) return ret
+	if (decimal.gte(1e9)) return m.toStringWithDecimalPlaces(precision)+' '+ret
+	if (decimal.mag >= 1e3) return commaFormat(decimal, 0)
+	if (decimal.mag >= 0.001) return regularFormat(decimal, precision)
+	if (decimal.sign!=0) return '1/'+letter(decimal.recip(),precision,str)
+	return regularFormat(decimal,precision)
+}
+
 function standard(decimal, precision){
 	decimal = new Decimal(decimal)
 	if (decimal.sign < 0) return "-"+standard(decimal.neg(), precision)
@@ -287,4 +326,14 @@ function invertOOM(x){
     x = new Decimal(10).pow(e).times(m)
 
     return x
+}
+
+function tet10(n){
+	n = new Decimal(n)
+	return Decimal.tetrate(10,n)
+}
+
+function slog(n){ // slog10(x), .slog is bugged >=eee9e15
+	n = new Decimal(n)
+	return Decimal.add(n.layer,new Decimal(n.mag).slog())
 }
