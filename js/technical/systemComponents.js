@@ -112,7 +112,7 @@ var systemComponents = {
 			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
-		<span v-if="player.points.gte(0)"  class="overlayThing"><h2>Current Endgame: 1e33/1 Dc Points.</h2><br><h4>It is highly recommended to play with the sound on because it will make the Tree title and the mechanics easier to understand! </span>
+		<span v-if="player.points.gte(0)"  class="overlayThing"><h2>Current Endgame: Unlocking BOF Layer.</h2><br><h4>It is highly recommended to play with the sound on because it will make the Tree title and the mechanics easier to understand! </span>
 		<br>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>

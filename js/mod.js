@@ -29,9 +29,10 @@ Credit to pg132's changelog format.<br>
 <br>
 	<h3>v0.1</h3><br>
 		- What do you expect from the first release of this tree? ToL? <br>
-		- Added Beat Points`
+		- Added Beat Points. <br>
+		- Added BOF`
 
-let winText = `Your BPM was so fast that not even Kobaryo can explain.`
+let winText = `Your gain was so fast that not even Kobaryo can explain.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -56,6 +57,7 @@ function getPointGen() {
 	if (hasUpgrade('a', 12)) gain = gain.times(2)
 	if (hasUpgrade('a', 13)) gain = gain.times(upgradeEffect('a', 13))
 	if (hasUpgrade('a', 15)) gain = gain.times(upgradeEffect('a', 15))
+	if (hasMilestone('b', 0)) gain = gain.times(5)
 	return gain
 }
 
@@ -68,7 +70,7 @@ var displayThings = [() => `You have <h2>${format(player.points)}</h2> points.`]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(1e33)
+	return hasMilestone('b', 1)
 }
 
 

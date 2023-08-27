@@ -5,6 +5,7 @@ addLayer("a", {
         trina: new Decimal(0),
         bpm: new Decimal(100),                   // You can add more variables here to add them to your layer.
     }},
+    symbol: "BP",
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "Beat Points",            // The name of this layer's main prestige resource.
     row: 0,                                 // The row this layer is on (0 is the first row).
@@ -301,6 +302,7 @@ addLayer("b", {
         unlocked: false,                     // You can add more variables here to add them to your layer.
         points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
+    symbol: "BOF",
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
     resource: "BOF",            // The name of this layer's main prestige resource.
     row: 1,                                 // The row this layer is on (0 is the first row).
@@ -315,9 +317,13 @@ addLayer("b", {
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
         return new Decimal(1)
     },
-    layerShown() { return hasUpgrade('a', 15) || player.b. },          // Returns a bool for if this layer's node should be visible in the tree.
+    layerShown() { return hasUpgrade('a', 15) || player.b.unlocked},          // Returns a bool for if this layer's node should be visible in the tree.
 
-    upgrades: {
-        // Look in the upgrades docs to see what goes here!
+    milestones: {
+        0: {
+            requirementDescription: "The BMS of Fighters that will spark a new era of Music Competitions. (1 Total BOF Hosted)",
+            effectDescription: "Keep the first upgrade, and boost gain by 5x.",
+            done() { return player.b.total.gte(1)},
+        },
     },
 })
