@@ -70,7 +70,7 @@ var displayThings = [() => `You have <h2>${format(player.points)}</h2> points.`]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('b', 1)
+	return hasMilestone('b', 0)
 }
 
 

@@ -63,7 +63,7 @@ addLayer("a", {
             title: "BP = log5(p)(a)",
             description: "Multiply Beat Point gain by points.",
             cost: new Decimal(15),
-            effect() { return player.points.log(5).max(1)},
+            effect() { return player.points.add(1).log(5).max(1)},
             effectDisplay() {
                 return format(upgradeEffect(this.layer, this.id)) + "x"
             }
@@ -72,20 +72,12 @@ addLayer("a", {
             title: "BPM = 2(BPM + 1)(a^0.5)(log(p))",
             description: "Multiply gain by points.",
             cost: new Decimal(75),
-            effect() { return player.points.log(10).max(1)},
+            effect() { return player.points.add(1).log10().max(1)},
             effectDisplay() { 
                 return format(upgradeEffect(this.layer, this.id)) + "x"
             }
         },
     },
-    doReset(resettingLayer) {
-        if (layers[resettingLayer].row <= this.row) return;
-        let keptUpgrades = []
-        if ((layers[resettingLayer].row == 1) && hasMilestone('b', 0)) keptUpgrades.push(11)
-        let keep = [];
-        layerDataReset(this.layer, keep);
-        player[this.layer].upgrades.push(keptUpgrades)
-      },
     update(diff) {
         let trinaGain = new Decimal(0)
         if (hasUpgrade('a', 11)) trinaGain = new Decimal(1)
@@ -303,7 +295,7 @@ addLayer("b", {
         points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
     symbol: "BOF",
-    color: "#4BDC13",                       // The color for this layer, which affects many elements.
+    color: "#E0E1CC",                       // The color for this layer, which affects many elements.
     resource: "BOF",            // The name of this layer's main prestige resource.
     row: 1,                                 // The row this layer is on (0 is the first row).
     baseResource: "Beat Points",                 // The name of the resource your prestige gain is based on.
@@ -318,12 +310,28 @@ addLayer("b", {
         return new Decimal(1)
     },
     layerShown() { return hasUpgrade('a', 15) || player.b.unlocked},          // Returns a bool for if this layer's node should be visible in the tree.
-
     milestones: {
         0: {
             requirementDescription: "The BMS of Fighters that will spark a new era of Music Competitions. (1 Total BOF Hosted)",
-            effectDescription: "Keep the first upgrade, and boost gain by 5x.",
+            effectDescription: "Boost gain by 5x.",
             done() { return player.b.total.gte(1)},
         },
     },
+    tabFormat: {
+        "BOF's":{
+            content: [
+                ["display-text", () => "You have hosted " + colored("b", format(player.b.points)) + " BOFs"],
+                "prestige-button",
+                "blank",
+                "milestones",
+            ]
+        },
+    },
+    onPrestige() {
+        player.a.bpm = new Decimal(100)
+        player.a.trina = new Decimal(0)
+    },
+    hotkeys: [
+        {key: "f", description: "F: Host a BOF.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
 })
