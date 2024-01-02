@@ -37,13 +37,12 @@ addLayer("afk", {
         player.afk.t = player.afk.t.add(treeGain.times(diff))
         player.afk.m = player.afk.m.add(multiGain.times(diff))
     },
-    tabFormat: [
+    tabFormat: {
         "Stats": {
             content: [
         ["display-text", () => "You have " + player.afk.t + " points."]
         ["display-text", () => "You have " + player.afk.m + " multi."]
-        ["display-text", () => "You have " + player.afk.r + " rebirths."]
             ]
         }
-    ]
+}
 })
