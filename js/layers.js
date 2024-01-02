@@ -1,7 +1,10 @@
 addLayer("afk", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,                     // You can add more variables here to add them to your layer.
-        points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        points: new Decimal(0),
+        t: new Decimal(0),
+        m: new Decimal(1),
+        r: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
 
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
@@ -14,7 +17,7 @@ addLayer("afk", {
     requires: new Decimal(10),              // The amount of the base needed to  gain 1 of the prestige currency.
                                             // Also the amount required to unlock the layer.
 
-    type: "normal",                         // Determines the formula used for calculating prestige currency.
+    type: "none",                         // Determines the formula used for calculating prestige currency.
     exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
 
     gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
@@ -26,7 +29,15 @@ addLayer("afk", {
 
     layerShown() { return true },          // Returns a bool for if this layer's node should be visible in the tree.
 
-    upgrades: {
-        // Look in the upgrades docs to see what goes here!
+    update(diff) {
+        let treeGain = player.afk.m
+        let multiGain = player.afk.r.div(10)
+        if (player.afk.t.gte(100)) player.afk.t = new Decimal(0) && player.afk.m.add(1)
+        if (player.afk.m.gte(125)) player.afk.m = new Decimal(0) && player.afk.r.add(1)
+        player.afk.t = player.afk.t.add(treeGain.times(diff))
+        player.afk.m = player.afk.m.add(multiGain.times(diff))
     },
+    tabFormat: [
+        ["display-text"]
+    ]
 })
