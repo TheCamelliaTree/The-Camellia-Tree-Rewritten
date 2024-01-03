@@ -4,7 +4,7 @@ addLayer("afk", {
         points: new Decimal(0),
         t: new Decimal(0),
         m: new Decimal(1),
-        reb: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        b: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
 
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
@@ -31,10 +31,12 @@ addLayer("afk", {
 
     update(diff) {
         let treeGain = player.afk.m
-        let multiGain = player.afk.reb.div(10)
-        if (player.afk.t.gte(100)) player.afk.t = new Decimal(0) && player.afk.m.add(1)
-        if (player.afk.m.gte(125)) player.afk.m = new Decimal(1) && player.afk.r.add(1)
-        if (player.afk.r >= 1) player.afk.m = player.afk.m.add(multiGain.times(diff))
+        let multiGain = player.afk.b.div(10)
+        if (player.afk.t.gte(100)) player.afk.t = new Decimal(0) 
+        if (player.afk.t.gte(100)) player.afk.m.add(1)
+        if (player.afk.m.gte(125)) player.afk.m = new Decimal(1) 
+        if (player.afk.m.gte(125)) player.afk.b.add(1)
+        if (player.afk.b.gt(1)) player.afk.m = player.afk.m.add(multiGain.times(diff))
         player.afk.t = player.afk.t.add(treeGain.times(diff))
     },
     tabFormat: {
@@ -43,7 +45,7 @@ addLayer("afk", {
                 "main-display",
         ["display-text", () => "You have " + format(player.afk.t) + " points."],
         ["display-text", () => "You have " + format(player.afk.m) + " multi."],
-        ["display-text", () => "You have " + format(player.afk.reb) + " rebirths."],
+        ["display-text", () => "Your BPM is currently " + format(player.afk.reb) + " BPM."],
             ]
         }
 }
