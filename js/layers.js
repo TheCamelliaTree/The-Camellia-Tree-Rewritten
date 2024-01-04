@@ -32,11 +32,9 @@ addLayer("afk", {
     update(diff) {
         let treeGain = player.afk.m
         let multiGain = player.afk.b.div(10)
-        if (player.afk.t.gte(100)) player.afk.t = new Decimal(0) 
-        if (player.afk.t.gte(100)) player.afk.m.add(1)
-        if (player.afk.m.gte(125)) player.afk.m = new Decimal(1) 
-        if (player.afk.m.gte(125)) player.afk.b.add(1)
-        if (player.afk.b.gt(1)) player.afk.m = player.afk.m.add(multiGain.times(diff))
+        if (player.afk.t.gte(100)) {player.afk.t = new Decimal(0) ; player.afk.m.add(1)}
+        if (player.afk.m.gte(125)) {player.afk.m = new Decimal(1) ; player.afk.b.add(1)}
+        player.afk.m = player.afk.m.add(multiGain.times(diff))
         player.afk.t = player.afk.t.add(treeGain.times(diff))
     },
     tabFormat: {
