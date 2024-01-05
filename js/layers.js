@@ -30,20 +30,22 @@ addLayer("afk", {
     layerShown() { return true },          // Returns a bool for if this layer's node should be visible in the tree.
 
     update(diff) {
-        let treeGain = player.afk.m
-        let multiGain = player.afk.b.div(10)
-        if (player.afk.t.gte(100)) {player.afk.t = new Decimal(0) ; player.afk.m.add(1)}
-        if (player.afk.m.gte(125)) {player.afk.m = new Decimal(1) ; player.afk.b.add(1)}
-        player.afk.m = player.afk.m.add(multiGain.times(diff))
-        player.afk.t = player.afk.t.add(treeGain.times(diff))
-    },
+        let statnames = ["t", "m", "b"] // put more stats here
+        for (i in statnames) {
+          if (i === statnames.length-1) break
+          if (player.afk[statnames[i]].gte(new Decimal(100).mul(new Decimal(1.15).pow(i)))) {
+            player.afk[statnames[i]] = new Decimal(0)
+            player.afk[statnames[i+1]] = player.afk[statnames[i+1]].add(1)
+          }
+          player.afk[statnames[i]] = player.afk[statnames[i]].add(player.afk[statnames[i+1]].times(0.1)).times(diff/1000)
+        }},
     tabFormat: {
         "Stats": {
             content: [
                 "main-display",
         ["display-text", () => "You have " + format(player.afk.t) + " points."],
         ["display-text", () => "You have " + format(player.afk.m) + " multi."],
-        ["display-text", () => "Your BPM is currently " + format(player.afk.reb) + " BPM."],
+        ["display-text", () => "Your BPM is currently " + format(player.afk.b) + " BPM."],
             ]
         }
 }
