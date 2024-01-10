@@ -71,21 +71,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
-	if (hasMilestone('p', 0)) gain = new Decimal(1)
-	if (hasUpgrade('s', 11)) gain = new Decimal(1)
-	if (hasUpgrade('s', 12)) gain = gain.times(2)
-	if (hasUpgrade('s', 13)) gain = gain.times(upgradeEffect('s', 13))
-	if (hasUpgrade('s', 15)) gain = gain.times(upgradeEffect('s', 15))
-	if (hasUpgrade('p', 12) && !inChallenge('b', 12)) gain = gain.pow(1.05)
-	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
-	if (hasUpgrade('m', 12)) gain = gain.pow(1.2)
-	if (hasUpgrade('m', 13)) gain = gain.pow(upgradeEffect('m', 13))
-	if (hasUpgrade('s', 24)) gain = gain.times(1672) //Superluminal
-	if (hasUpgrade('b', 11)) gain = gain.pow(1.234)
-	if (hasUpgrade('b', 12)) gain = gain.pow(upgradeEffect('b', 12)) //reference to Bangin' Burst!'s bpm of 234
-	gain = gain.times(tmp.a.effect)
-	gain = gain.times(buyableEffect('p', 12))
-	if (inChallenge('b', 11)) gain = gain.pow(0.69) //nice
+	if (inChallenge('p', 11)) gain = new Decimal(1)
 	return gain
 }
 

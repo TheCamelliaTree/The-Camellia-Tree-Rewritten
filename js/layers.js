@@ -25,7 +25,7 @@ addLayer("p", {
         return new Decimal(1)
     },
 
-    layerShown() { return true },          // Returns a bool for if this layer's node should be visible in the tree.
+    layerShown() { return !inChallenge('p', 11) ? false : true},          // Returns a bool for if this layer's node should be visible in the tree.
     effect() {
         let eff = {};
 
@@ -39,6 +39,12 @@ addLayer("p", {
         }},
 
     challenges: {
-        
+        11: {
+            name: "͟͝͞Ⅱ́̕",
+            challengeDescription: "YOU CAN'T ESCAPE IT.",
+            goalDescription: "THERE IS NO TURNING BACK. ARE YOU SURE YOU WANT TO CLICK?",
+            canComplete: function() {return player.points.gte(1e50)},
+            timeLimit: 445
+        },
     },
 })
