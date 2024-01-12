@@ -28,7 +28,6 @@ addLayer("p", {
     layerShown() { return !inChallenge('p', 11) ? false : true},          // Returns a bool for if this layer's node should be visible in the tree.
     effect() {
         let eff = {};
-
         let chal = layers.p.challenges[player.p.activeChallenge];
         if (chal?.timeLimit) {
             eff.timeLimit = true;
