@@ -25,7 +25,10 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Endgame: Get the 12th stat<br>
 	<h3>v0.2: even more time to waste</h3><br>
 		- Added 8 more stats.<br>
-		- Endgame: 20th Stat`
+		- Endgame: 20th Stat<br>
+	<h3>v0.3: 30 stats already? I'm surprised how you all want to sit for that long<br>
+		- added 10 new stats... seriously this might get boring for you...<br>
+		- Endgame: 30th Stat, idk how you will wait this one out, speaking of which, isn't this just a timewall simulator?`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
@@ -77,6 +80,16 @@ function addedPlayerData() { return {
 		[new Decimal(0),"Tan Tan",false,new Decimal(0)],//18
 		[new Decimal(0),"V",false,new Decimal(0)],//19
 		[new Decimal(0),"Ⅱ́̕",false,new Decimal(0)],//20
+		[new Decimal(0),"Telescope",false,new Decimal(0)],//21
+		[new Decimal(0),"CHAO",false,new Decimal(0)],//22
+		[new Decimal(0),"Gear",false,new Decimal(0)],//23
+		[new Decimal(0),"Power",false,new Decimal(0)],//24
+		[new Decimal(0),"Blue",false,new Decimal(0)],//25
+		[new Decimal(0),"Zenith",false,new Decimal(0)],//26
+		[new Decimal(0),"Performance Point",false,new Decimal(0)],//27
+		[new Decimal(0),"Soul",false,new Decimal(0)],//28
+		[new Decimal(0),"Heart",false,new Decimal(0)],//29
+		[new Decimal(0),"Parallel Universe Shifter",false,new Decimal(0)],//30
     ],
 }}
 
