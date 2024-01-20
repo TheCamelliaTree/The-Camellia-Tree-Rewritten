@@ -1,28 +1,30 @@
 let modInfo = {
-	name: "AFK Incremental/Sim but not",
-	id: "afkbutnot",
-	author: "infiniteeden",
-	pointsName: "time wasted",
+	name: "Another AFK game that has so many stats that you wouldn't be able to complete it in 5 hours! Also this isn't a tree anymore and it's just two tabs full of text so is it really an AFK TMT mod or just an AFK game made with the TMT engine?",
+	id: "aagthsmstywbatcii5hatiataaijttfotsiiraatmojaagmwtte",
+	author: "Tsuki (original by Oleg)",
+	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
-	discordName: "The Camellia Tree",
-	discordLink: "https://discord.gg/BEa67qjXa4",
+	discordName: "",
+	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
-	offlineLimit: 2400,  // In hours
+	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
 	num: "0.1",
-	name: "AFK Inc/Sim but not",
+	name: "Another AFK game that has so many stats that you wouldn't be able to complete it in 5 hours! Also this isn't a tree anymore and it's just two tabs full of text so is it really an AFK TMT mod or just an AFK game made with the TMT engine? Also WHY IS THIS UPDATE NAME SO LONG LIKE THIS IS JUST IT'S RELEASE YOU DON'T NEED A WHOLE ESSAY AS THE NAME HOLY SHIT",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-			v0.1: AFK Incremental/Simulator but not probably garbage<br>
-			- Added stats<br>
-			- what else do I need to add, its just an AFK game lmao`
+	<h3>v0.1: Another AFK game that has so many stats that you wouldn't be able to complete it in 5 hours! Also this isn't a tree anymore and it's just two tabs full of text so is it really an AFK TMT mod or just an AFK game made with the TMT engine? Also WHY IS THIS UPDATE NAME SO LONG LIKE THIS IS JUST IT\'S RELEASE YOU DON\'T NEED A WHOLE ESSAY AS THE NAME HOLY SHIT</h3><br>
+		- Added 100 stats!<br>
+		- Completely died because of naming<br>
+		- Why is this name so long<br>
+		- Endgame: Get the 100th stat`
 
-let winText = `how did you reach this endscreen, you are suppose to be still in the game, not here`
+let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -42,37 +44,44 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(0)
-	return gain
+	let gain = new Decimal(1)
+    for(i=0;i<player.currencies.length;i++){
+        gain = gain.mul(player.currencies[i][0].mul(i+1).max(1))
+    }
+    return gain
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
+    currencies: [
+        [new Decimal(0),"Multi",true,new Decimal(0)],
+        [new Decimal(0),"Rebirth",false,new Decimal(0)],
+		[new Decimal(0),"Reincarnation",false,new Decimal(0)],
+		[new Decimal(0),"Ascension(s) to the Heaven",false,new Decimal(0)],
+		[new Decimal(0),"Kill",false,new Decimal(0)],
+		[new Decimal(0),"Metal",false,new Decimal(0)],
+		[new Decimal(0),"xi",false,new Decimal(0)],
+		[new Decimal(0),"7eaF",false,new Decimal(0)],
+		[new Decimal(0),"Camellia",false,new Decimal(0)],
+		[new Decimal(0),"Snipe",false,new Decimal(0)],
+		[new Decimal(0),"Doppelganger",false,new Decimal(0)],
+		[new Decimal(0),"TMT Mod",false,new Decimal(0)],
+    ],
 }}
 
-// Display extra things at the top of the page
-var displayThings = [() => `Current Endgame: Infinite Time Wasted`]
-
-// Determines when the game "ends"
-function isEndgame() {
-	return player.points.gte("1e999999999")
-}
-
-
-
-// Less important things beyond this point!
-function colored(layer, text, tag='h2') { return `<${tag} style='color:${temp[layer].color};text-shadow:${temp[layer].color} 0px 0px 10px;'>${text}</${tag}>` }
-// Style for the background, can be a function
 var backgroundStyle = {
 
 }
 
-// You can change this if you have things that can be messed up by long tick lengths
-function maxTickLength() {
-	return(727) // Default is 1 hour which is just arbitrarily large
+// Display extra things at the top of the page
+var displayThings = [
+]
+
+// Determines when the game "ends"
+function isEndgame() {
+	return false
 }
 
-// Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
-// you can cap their current resources with this.
-function fixOldSave(oldVersion){
+function maxTickLength() {
+	return(727) // Default is 1 hour which is just arbitrarily large
 }
