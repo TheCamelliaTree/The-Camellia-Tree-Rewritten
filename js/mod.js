@@ -54,18 +54,26 @@ function getPointGen() {
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
     currencies: [
-        [new Decimal(0),"Multi",true,new Decimal(0)],
-        [new Decimal(0),"Rebirth",false,new Decimal(0)],
-		[new Decimal(0),"Reincarnation",false,new Decimal(0)],
-		[new Decimal(0),"Ascension(s) to the Heaven",false,new Decimal(0)],
-		[new Decimal(0),"Kill",false,new Decimal(0)],
-		[new Decimal(0),"Metal",false,new Decimal(0)],
-		[new Decimal(0),"xi",false,new Decimal(0)],
-		[new Decimal(0),"7eaF",false,new Decimal(0)],
-		[new Decimal(0),"Camellia",false,new Decimal(0)],
-		[new Decimal(0),"Snipe",false,new Decimal(0)],
-		[new Decimal(0),"Doppelganger",false,new Decimal(0)],
-		[new Decimal(0),"TMT Mod",false,new Decimal(0)],
+        [new Decimal(0),"Multi",true,new Decimal(0)], //1
+        [new Decimal(0),"Rebirth",false,new Decimal(0)],//2
+		[new Decimal(0),"Reincarnation",false,new Decimal(0)],//3
+		[new Decimal(0),"Ascension(s) to the Heaven",false,new Decimal(0)],//4
+		[new Decimal(0),"Kill",false,new Decimal(0)],//5
+		[new Decimal(0),"Metal",false,new Decimal(0)],//6
+		[new Decimal(0),"xi",false,new Decimal(0)],//7
+		[new Decimal(0),"7eaF",false,new Decimal(0)],//8
+		[new Decimal(0),"Camellia",false,new Decimal(0)],//9
+		[new Decimal(0),"Snipe",false,new Decimal(0)],//10
+		[new Decimal(0),"Doppelganger",false,new Decimal(0)],//11
+		[new Decimal(0),"TMT Mod",false,new Decimal(0)],//12
+		[new Decimal(0),"Member",false,new Decimal(0)],//13
+		[new Decimal(0),"Booster",false,new Decimal(0)],//14
+		[new Decimal(0),"Bone",false,new Decimal(0)],//15
+		[new Decimal(0),"Gloom",false,new Decimal(0)],//16
+		[new Decimal(0),"Meme",false,new Decimal(0)],//17
+		[new Decimal(0),"Tan Tan",false,new Decimal(0)],//18
+		[new Decimal(0),"V",false,new Decimal(0)],//19
+		[new Decimal(0),"Ⅱ́̕",false,new Decimal(0)],//20
     ],
 }}
 
