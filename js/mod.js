@@ -19,10 +19,10 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.1: Another AFK game that has so many stats that you wouldn't be able to complete it in 5 hours! Also this isn't a tree anymore and it's just two tabs full of text so is it really an AFK TMT mod or just an AFK game made with the TMT engine? Also WHY IS THIS UPDATE NAME SO LONG LIKE THIS IS JUST IT\'S RELEASE YOU DON\'T NEED A WHOLE ESSAY AS THE NAME HOLY SHIT</h3><br>
-		- Added 100 stats!<br>
+		- Added 12 stats!<br>
 		- Completely died because of naming<br>
 		- Why is this name so long<br>
-		- Endgame: Get the 100th stat`
+		- Endgame: Get the 12th stat`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
