@@ -26,10 +26,10 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.2: even more time to waste</h3><br>
 		- Added 8 more stats.<br>
 		- Endgame: 20th Stat<br>
-	<h3>v0.3: 30 stats already? I'm surprised how you all want to sit for that long<br>
+	<h3>v0.3: 30 stats already? I'm surprised how you all want to sit for that long,</h3><br>
 		- added 10 new stats... seriously this might get boring for you...<br>
 		- Endgame: 30th Stat, idk how you will wait this one out, speaking of which, isn't this just a timewall simulator?<br>
-	<h3>v0.4: 40 stats... 4% of the way of finishing this tree/mod or idk<br>
+	<h3>v0.4: 40 stats... 4% of the way of finishing this tree/mod or idk</h3><br>
 		- added 10 new stats... again...<br>
 		- Endgame: 40th Stat, seriously, should I really be doing this`
 
