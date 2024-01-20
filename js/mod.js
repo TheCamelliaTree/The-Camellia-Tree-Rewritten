@@ -24,7 +24,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Why is this name so long<br>
 		- Endgame: Get the 12th stat<br>
 	<h3>v0.2: even more time to waste</h3><br>
-		- Added 8 more stats.
+		- Added 8 more stats.<br>
 		- Endgame: 20th Stat`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
@@ -95,4 +95,7 @@ function isEndgame() {
 
 function maxTickLength() {
 	return(727) // Default is 1 hour which is just arbitrarily large
+}
+
+function fixOldSave(oldVersion){
 }
