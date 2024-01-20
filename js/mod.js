@@ -28,7 +28,10 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Endgame: 20th Stat<br>
 	<h3>v0.3: 30 stats already? I'm surprised how you all want to sit for that long<br>
 		- added 10 new stats... seriously this might get boring for you...<br>
-		- Endgame: 30th Stat, idk how you will wait this one out, speaking of which, isn't this just a timewall simulator?`
+		- Endgame: 30th Stat, idk how you will wait this one out, speaking of which, isn't this just a timewall simulator?<br>
+	<h3>v0.4: 40 stats... 4% of the way of finishing this tree/mod or idk<br>
+		- added 10 new stats... again...<br>
+		- Endgame: 40th Stat, seriously, should I really be doing this`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
@@ -90,6 +93,16 @@ function addedPlayerData() { return {
 		[new Decimal(0),"Soul",false,new Decimal(0)],//28
 		[new Decimal(0),"Heart",false,new Decimal(0)],//29
 		[new Decimal(0),"Parallel Universe Shifter",false,new Decimal(0)],//30
+		[new Decimal(0),"SATELLITE",false,new Decimal(0)],//31
+		[new Decimal(0),"Death",false,new Decimal(0)],//32
+		[new Decimal(0),"Revival",false,new Decimal(0)],//33
+		[new Decimal(0),"Hammer",false,new Decimal(0)],//34
+		[new Decimal(0),"Circle",false,new Decimal(0)],//35
+		[new Decimal(0),"Song",false,new Decimal(0)],//36
+		[new Decimal(0),"Album",false,new Decimal(0)],//37
+		[new Decimal(0),"Seed",false,new Decimal(0)],//38
+		[new Decimal(0),"Tree",false,new Decimal(0)],//39
+		[new Decimal(0),"ANTINEUTRINO WITCHCRAFT",false,new Decimal(0)],//40
     ],
 }}
 
