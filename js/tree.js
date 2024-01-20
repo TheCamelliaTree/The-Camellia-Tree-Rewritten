@@ -27,6 +27,7 @@ addLayer("tree-tab", {
         for(i=0;i<player.currencies.length;i++){
             if(player.currencies[i][0].gte(1)) player.currencies[new Decimal(i+1).min(player.currencies.length-1)][2]=true
             player.currencies[i][3] = player.currencies[i][3].max(player.currencies[i][0])
+        }
         if(player.points.gte(tmp["tree-tab"].requirements[0])){
             player.points = new Decimal(0)
             let gain = new Decimal(1)
