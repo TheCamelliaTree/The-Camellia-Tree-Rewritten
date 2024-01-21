@@ -135,7 +135,7 @@ var backgroundStyle = {
 }
 
 // Display extra things at the top of the page
-var displayThings = [`${player.devSpeed >> 1``}`
+var displayThings = [`${player.devSpeed>1 ? `Oi... Why are you trying to cheat... Set your Dev Speed back to 1 or else you won't be able to progress! Also, Point cheating isn't available for you to do either >:3` : ''}`
 ]
 
 // Determines when the game "ends"
