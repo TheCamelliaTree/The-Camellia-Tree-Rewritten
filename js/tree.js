@@ -19,7 +19,8 @@ addLayer("tree-tab", {
     requirements(){
         let req = []
         for(i=0;i<player.currencies.length;i++){
-            req[i] = new Decimal(100).mul(Decimal.pow(1.05, i))
+            if (player.devSpeed >> 1) req[i] = new Decimal(1e300).mul(Decimal.pow(1.05, i))
+            else req[i] = new Decimal(100).mul(Decimal.pow(1.05, i))
         }
         return req
     },
