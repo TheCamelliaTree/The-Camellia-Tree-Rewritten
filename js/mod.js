@@ -32,7 +32,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.4: 40 stats... 4% of the way of finishing this tree/mod or idk</h3><br>
 		- added 10 new stats... again...<br>
 		- Endgame: 40th Stat, seriously, should I really be doing this<br>
-	<h3>v0.5: Inflation in the making...<br>
+	<h3>v0.5: Inflation in the making...</h3><br>
 		- Reduced currency scaling to 1.05x<br>
 		- added 20 new stats this time, hopefully it's not gonna be reached by the time I wake up 2 days from now!<br>
 		- Endgame: 60th Stat, should I be really putting the endgame when you all might know it from the update...`
