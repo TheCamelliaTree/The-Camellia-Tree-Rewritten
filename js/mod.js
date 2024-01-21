@@ -135,7 +135,7 @@ var backgroundStyle = {
 }
 
 // Display extra things at the top of the page
-var displayThings = [
+var displayThings = [`${player.devSpeed >> 1``}`
 ]
 
 // Determines when the game "ends"
