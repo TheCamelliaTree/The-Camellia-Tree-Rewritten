@@ -34,6 +34,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Endgame: 40th Stat, seriously, should I really be doing this<br>
 	<h3>v0.5: Inflation in the making...</h3><br>
 		- Reduced currency scaling to 1.05x<br>
+		- Added Anti-cheat, so you really can't cheat your way into making me push updates faster :3<br>
 		- added 20 new stats this time, hopefully it's not gonna be reached by the time I wake up 2 days from now!<br>
 		- Endgame: 60th Stat, should I be really putting the endgame when you all might know it from the update...`
 
@@ -135,7 +136,7 @@ var backgroundStyle = {
 }
 
 // Display extra things at the top of the page
-var displayThings = [`${player.devSpeed>1 ? `Oi... Why are you trying to cheat... Set your Dev Speed back to 1 or else you won't be able to progress! Also, Point cheating isn't available for you to do either >:3` : ''}`
+var displayThings = [() => `${player.devSpeed>1 ? `Oi... Why are you trying to cheat... Set your Dev Speed back to 1 or else you won't be able to progress! Also, Point cheating isn't available for you to do either >:3` : ''}`
 ]
 
 // Determines when the game "ends"
