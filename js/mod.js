@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "even more time to waste",
+	num: "0.4",
+	name: "40 stats... 4% of the way of finishing this tree/mod or idk",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
