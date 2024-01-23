@@ -66,7 +66,7 @@ addLayer("tree-tab", {
         },
         "Requirement List": {
             content: [["display-text", function(){
-                let desc = `<h3>Each next currency requires 1.15x more resource to obtain<br><br></h3>`
+                let desc = `<h3>Each next currency requires 1.05x more resource to obtain<br><br></h3>`
                 for(i=0;i<player.currencies.length;i++){
                     if(player.currencies[new Decimal(i).max(0)][2]){
                         if(i==0) {desc = desc+`<h2>Multi: ${formatWhole(tmp["tree-tab"].requirements[0])} Points <br>`}
