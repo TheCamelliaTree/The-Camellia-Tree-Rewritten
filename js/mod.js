@@ -8,13 +8,13 @@ let modInfo = {
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	offlineLimit: 999,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.5",
-	name: "Inflation in the making...",
+	num: "0.6",
+	name: "Why...",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -36,7 +36,10 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Reduced currency scaling to 1.05x<br>
 		- Added Anti-cheat, so you really can't cheat your way into making me push updates faster :3<br>
 		- added 20 new stats this time, hopefully it's not gonna be reached by the time I wake up 2 days from now!<br>
-		- Endgame: 60th Stat, should I be really putting the endgame when you all might know it from the update...`
+		- Endgame: 60th Stat, should I be really putting the endgame when you all might know it from the update...<br>
+	<h3>v0.6: Why...</h3><br>
+		- added 20 new stats... again...<br>
+		- Endgame: 80th stat, why is the stat name so long, REEK WHY SADFHJIOHIOAJOIEAJWFIFIOJWE`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
@@ -60,7 +63,7 @@ function getPointGen() {
 
 	let gain = new Decimal(1)
     for(i=0;i<player.currencies.length;i++){
-        gain = gain.mul(player.currencies[i][0].mul(i+1).max(1))
+        gain = gain.mul(player.currencies[i][0].mul(i+1).min(115).max(1))
     }
     return gain
 }
@@ -127,7 +130,27 @@ function addedPlayerData() { return {
 		[new Decimal(0),"Centimeter",false,new Decimal(0)],//57
 		[new Decimal(0),"Cake",false,new Decimal(0)],//58
 		[new Decimal(0),"Matter",false,new Decimal(0)],//59
-		[new Decimal(0),"Antimatter Dimension",false,new Decimal(0)],//60
+		[new Decimal(0),"Antimatter Dimension",false,new Decimal(0)],//60		
+		[new Decimal(0),"Duck",false,new Decimal(0)],//61
+		[new Decimal(0),"Present",false,new Decimal(0)],//62
+		[new Decimal(0),"Chicken",false,new Decimal(0)],//63
+		[new Decimal(0),"Year",false,new Decimal(0)],//64
+		[new Decimal(0),"Dinosaur",false,new Decimal(0)],//65
+		[new Decimal(0),"Node",false,new Decimal(0)],//66
+		[new Decimal(0),"Aincrad Floor",false,new Decimal(0)],//67
+		[new Decimal(0),"Sauce",false,new Decimal(0)],//68
+		[new Decimal(0),"Case",false,new Decimal(0)],//69 (nice)
+		[new Decimal(0),"Season",false,new Decimal(0)],//70
+		[new Decimal(0),"Error",false,new Decimal(0)],//71
+		[new Decimal(0),"Full Recall",false,new Decimal(0)],//72
+		[new Decimal(0),"Fast Forward",false,new Decimal(0)],//73
+		[new Decimal(0),"Skip",false,new Decimal(0)],//74
+		[new Decimal(0),"Bulletproof Vest",false,new Decimal(0)],//75
+		[new Decimal(0),"Gambler",false,new Decimal(0)],//76
+		[new Decimal(0),"Faceplant",false,new Decimal(0)],//77
+		[new Decimal(0),"UNO Reverse",false,new Decimal(0)],//78
+		[new Decimal(0),"Stack",false,new Decimal(0)],//79
+		[new Decimal(0),"How many times The Everlasting Calamity Shifts The Time-Space Continuum On A Nanosecondal Basis because of ReeK being a lazy motherf***er trying to make the longest song title",false,new Decimal(0)],//80
     ],
 }}
 
