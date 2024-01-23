@@ -39,7 +39,9 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Endgame: 60th Stat, should I be really putting the endgame when you all might know it from the update...<br>
 	<h3>v0.6: Why...</h3><br>
 		- added 20 new stats... again...<br>
-		- Endgame: 80th stat, why is the stat name so long, REEK WHY SADFHJIOHIOAJOIEAJWFIFIOJWE`
+		- Endgame: 80th stat, why is the stat name so long, REEK WHY SADFHJIOHIOAJOIEAJWFIFIOJWE<br>
+	<h3>v0.6.0.1: fixes, really?</h3><br>
+		- fixed a little error`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
