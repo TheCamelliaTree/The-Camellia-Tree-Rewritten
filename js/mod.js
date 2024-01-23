@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.6",
-	name: "Why...",
+	num: "0.7",
+	name: "NEW LONGEST STAT!?",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -41,7 +41,10 @@ let changelog = `<h1>Changelog:</h1><br>
 		- added 20 new stats... again...<br>
 		- Endgame: 80th stat, why is the stat name so long, REEK WHY SADFHJIOHIOAJOIEAJWFIFIOJWE<br>
 	<h3>v0.6.0.1: fixes, really?</h3><br>
-		- fixed a little error`
+		- fixed a little error<br>
+	<h3>v0.7: NEW LONGEST STAT!?</h3><br>
+		- added 20 stats, the last one being so long that it's not gonna fit that screen<br>
+		- Endgame: 100th Stat (FINAL UPDATE FOR THIS MONTH)`
 
 let winText = `how the fuck did you complete this tree, it was suppose to take 1000 hours not 1000 seconds`
 
@@ -152,7 +155,27 @@ function addedPlayerData() { return {
 		[new Decimal(0),"Faceplant",false,new Decimal(0)],//77
 		[new Decimal(0),"UNO Reverse",false,new Decimal(0)],//78
 		[new Decimal(0),"Stack",false,new Decimal(0)],//79
-		[new Decimal(0),"How many times The Everlasting Calamity Shifts The Time-Space Continuum On A Nanosecondal Basis because of ReeK being a lazy motherf***er trying to make the longest song title",false,new Decimal(0)],//80
+		[new Decimal(0),"How many times The Everlasting Calamity Shifts The Time-Space Continuum On A Nanosecondal Basis because of ReeK being a lazy motherf***er trying to make the longest song title",false,new Decimal(0)],//80		
+		[new Decimal(0),"Padoru",false,new Decimal(0)],//81
+		[new Decimal(0),"Bell",false,new Decimal(0)],//82
+		[new Decimal(0),"Miku",false,new Decimal(0)],//83
+		[new Decimal(0),"Vocaloid",false,new Decimal(0)],//84
+		[new Decimal(0),"Nebula Blast",false,new Decimal(0)],//85
+		[new Decimal(0),"paraxysm",false,new Decimal(0)],//86
+		[new Decimal(0),"[diffraction]",false,new Decimal(0)],//87
+		[new Decimal(0),"INSANE INFLAME",false,new Decimal(0)],//88
+		[new Decimal(0),"Blackmagik Blazing",false,new Decimal(0)],//89 (nice)
+		[new Decimal(0),"Xeroa",false,new Decimal(0)],//90
+		[new Decimal(0),"Dyscontrolled Galaxie",false,new Decimal(0)],//91
+		[new Decimal(0),"GALAXY BURST",false,new Decimal(0)],//92
+		[new Decimal(0),"NITROUS CANNON",false,new Decimal(0)],//93
+		[new Decimal(0),"Atomosphere",false,new Decimal(0)],//94
+		[new Decimal(0),"crystal",false,new Decimal(0)],//95
+		[new Decimal(0),"Light",false,new Decimal(0)],//96
+		[new Decimal(0),"Sketche",false,new Decimal(0)],//97
+		[new Decimal(0),"USAO",false,new Decimal(0)],//98
+		[new Decimal(0),"Kobaryo",false,new Decimal(0)],//99
+		[new Decimal(0),"The Amount of Tentacular Aliens' Extraterrestrial Jungle Dance Music In a Super-Ultra-Gigangtic-Mega U.F.O (it may be U.U.F.O.) flying over Illinois st. Destroying The Forest With A Would Be Machinegun Psystyle (And more genre switches) And A Blue-Eyed Skeleton With A Blue Jacket (It May Be Sans) Cycling through Baseballs And Base-Drops Entering The Jungle And Getting Fried From Furry Cannon From A Muzzle Facing (Long muzzled version) from Wacca Causing The May-be U.U.F.O Facing Wolves Thinking They Are Standing Towards Enemies, (From Lanota's not so hidden boss), And WYSI (When You See It) A New Challenger Approaches. Getting More Than 727 PP (M1LL10N PP) Compute It With Some Devilish Alchaolic Gears (or something im not sure) Getting GHOST-ed, (With GHOUL-ish Mixes) After The SLIME INCIDENT Trying To Purge My Existence From This World While Looking For Edge On Ground at AREA 52 Injecting The CICADA 3302 Villain Virus Liquating The Would Be Flamewall To Give Newspapers For Magicians In NIGHTMARE CITY While Having A Paroxysm With The Would Be U.U.F.O. Screaming The Immortal Scream In The Red Room While Spinning Eternally Exiting This Earths Atomosphere and Planet Shaping The Would Be Earths Atomosphere With A Nacreous Snowmelt and Lighting it up With a Crystallized KillerToy Flying Wit Me having Terabyte Connection That is Asking Why Do You Hate Me While Under Construxion With ΩΩPARTS While Inputting a Bad Access (From a Moe Maid) Into Their Spine While Creating a Nasty Nasty Spell That Blows Up a Nuclear Star Creating a Reality Distortion While Friending Nanahira On Bassbook Lol While Raising The BPM to 2021 While In The Bermuda Triangle While Creating another Nuclear Star Called #1f1e33 (#00102g Long Colored Version) While Trying To Break The Silence And Dance With Silence While Dealing With Completeness Under Incompleteness In A Blastix Riotz Asking R U Still xxxx? While Feeling Seasickness Going To The First Town Of This Journey While Dancing On The Mars And Trying To Find Proof Of A Hero (from a Monster Hunter) While Slicing Toxic Violet Cubes In Beat Saber While Volt Tackling a Galaxy Collision That Is A Dyscontrolled Galaxy Burst That Is Close To A Galaxy Collapse Leaving Scattered Faith Crosse",false,new Decimal(0)],//100
     ],
 }}
 
