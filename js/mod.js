@@ -277,7 +277,7 @@ function isEndgame() {
 }
 
 function maxTickLength() {
-	return(727) // Default is 1 hour which is just arbitrarily large
+	return(7270) // Default is 1 hour which is just arbitrarily large
 }
 
 function fixOldSave(oldVersion){
