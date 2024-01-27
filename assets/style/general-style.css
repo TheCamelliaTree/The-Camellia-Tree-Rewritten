@@ -92,22 +92,22 @@ h1, h2, h3, b, input {
 	justify-content: center;
 }
 #timer h1 {
-	opacity: .34;
+	opacity: .5;
 	font-size: 30vw;
 	user-select: none;
 	-webkit-user-select: none;
 	transform: skewX(-4deg);
 }
 #timer2 {
-	position: fixed;
+	position: static;
 	width: 100vw;
 	height: 100vh;
 	display: flex;
 	justify-content: center;
 }
 #timer2 h1 {
-	opacity: .23;
-	font-size: 30vw;
+	animation: pulse 0.4s infinite;
+	font-size: 32vw;
 	user-select: none;
 	-webkit-user-select: none;
 	transform: skewX(-4deg);
@@ -115,17 +115,18 @@ h1, h2, h3, b, input {
 @keyframes pulse {
 	0% {
 	  opacity: 0.5;
-	  width: 100vw;
-	  height: 100vh;
+
 	}
-	37.5%{
+	50%{
 	  opacity: 0.25;
-	  width: 125vw;
-	  height: 125vh;
+
 	}
-	75% {
+	99% {
 	  opacity: 0;
-	  width: 150vw;
-	  height: 150vh;
+
+	}
+	100% {
+		opacity: 0;
+
 	}
   }
