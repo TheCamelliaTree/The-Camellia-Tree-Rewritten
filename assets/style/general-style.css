@@ -83,3 +83,18 @@ h1, h2, h3, b, input {
 		opacity: 1;
 	}
 }
+
+#timer {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+#timer h1 {
+	opacity: .34;
+	font-size: 30vw;
+	user-select: none;
+	-webkit-user-select: none;
+	transform: skewX(-4deg);
+}

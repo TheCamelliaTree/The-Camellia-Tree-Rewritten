@@ -5,10 +5,10 @@ addLayer("p", {
         ii: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
 
-    color: "#4BDC13",                       // The color for this layer, which affects many elements.
-    resource: "prestige points",            // The name of this layer's main prestige resource.
+    color: "#D9381E",                       // The color for this layer, which affects many elements.
+    resource: "???",            // The name of this layer's main prestige resource.
     row: 0,                                 // The row this layer is on (0 is the first row).
-
+    symbol: "Ⅱ́̕",
     baseResource: "points",                 // The name of the resource your prestige gain is based on.
     baseAmount() { return player.points },  // A function to return the current amount of baseResource.
 
@@ -58,6 +58,15 @@ addLayer("p", {
         let iiGain = new Decimal(0)
         if (inChallenge('p', 11)) iiGain = new Decimal(1)
         player.p.ii = player.p.ii.add(iiGain.times(diff))
+        if (inChallenge('p', 11)) {
+            if (player.p.ii>445) {
+                alert("I'm sorry... Ivy...")
+                player.p.fail = 1
+                player.p.activeChallenge = null
+                doReset('p', true)
+                player.p.ii = 0
+            }
+        }
     }
 
 })
