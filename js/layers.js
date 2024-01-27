@@ -67,6 +67,8 @@ addLayer("p", {
                 player.p.ii = 0
             }
         }
-    }
-
+    },
+    tabFormat: {
+        "II"
+    },
 })
