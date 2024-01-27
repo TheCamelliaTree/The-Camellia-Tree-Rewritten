@@ -2,7 +2,7 @@ addLayer("p", {
     startData() { return {                  // startData is a function that returns default data for a layer. 
         unlocked: true,                     // You can add more variables here to add them to your layer.
         points: new Decimal(0),
-        ii: 0,             // "points" is the internal name for the main resource of the layer.
+        ii: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
 
     color: "#4BDC13",                       // The color for this layer, which affects many elements.
@@ -25,7 +25,7 @@ addLayer("p", {
         return new Decimal(1)
     },
 
-    layerShown() { return !inChallenge('p', 11) ? false : true},          // Returns a bool for if this layer's node should be visible in the tree.
+    layerShown() { return !inChallenge('p', 11) ? true : false},          // Returns a bool for if this layer's node should be visible in the tree.
     effect() {
         let eff = {};
         let chal = layers.p.challenges[player.p.activeChallenge];
@@ -44,7 +44,19 @@ addLayer("p", {
             challengeDescription: "YOU CAN'T ESCAPE IT.",
             goalDescription: "THERE IS NO TURNING BACK. ARE YOU SURE YOU WANT TO CLICK?",
             canComplete: function() {return player.points.gte(1e50)},
-            timeLimit: 445
+            timeLimit: 445,
+            onEnter() {
+                player.p.ii = new Decimal(0)
+            },
+            onExit() {
+                player.p.ii = new Decimal(0)
+            }
         },
     },
+    update(diff) {
+        let iiGain = new Decimal(0)
+        if (inChallenge('p', 11)) iiGain = new Decimal(1)
+        player.p.ii = player.p.ii.add(iiGain.times(diff))
+    }
+
 })
