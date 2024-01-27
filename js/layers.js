@@ -69,6 +69,6 @@ addLayer("p", {
         }
     },
     tabFormat: {
-        "II"
+        "II": 
     },
 })
