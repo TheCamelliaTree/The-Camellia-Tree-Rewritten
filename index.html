@@ -60,42 +60,6 @@
 					Math.floor(tmp.p.effect.timeLeft2 % 10).toLocaleString("en-US")
 				}}</span></h1>
 				</div>
-				<div v-if="tmp.p.effect.timeLimit3" id="timer3" class="fullWidth">
-					<h1><span>{{
-						Math.floor(tmp.p.effect.timeLeft3 / 60).toLocaleString("en-US")
-					}}</span>:<span>{{
-						Math.floor((tmp.p.effect.timeLeft3 / 10) % 6).toLocaleString("en-US")
-					}}</span><span>{{
-						Math.floor(tmp.p.effect.timeLeft3 % 10).toLocaleString("en-US")
-					}}</span></h1>
-					</div>
-					<div v-if="tmp.p.effect.timeLimit4" id="timer4" class="fullWidth">
-						<h1><span>{{
-							Math.floor(tmp.p.effect.timeLeft4 / 60).toLocaleString("en-US")
-						}}</span>:<span>{{
-							Math.floor((tmp.p.effect.timeLeft4 / 10) % 6).toLocaleString("en-US")
-						}}</span><span>{{
-							Math.floor(tmp.p.effect.timeLeft4 % 10).toLocaleString("en-US")
-						}}</span></h1>
-						</div>
-						<div v-if="tmp.p.effect.timeLimit5" id="timer5" class="fullWidth">
-							<h1><span>{{
-								Math.floor(tmp.p.effect.timeLeft5 / 60).toLocaleString("en-US")
-							}}</span>:<span>{{
-								Math.floor((tmp.p.effect.timeLeft5 / 10) % 6).toLocaleString("en-US")
-							}}</span><span>{{
-								Math.floor(tmp.p.effect.timeLeft5 % 10).toLocaleString("en-US")
-							}}</span></h1>
-							</div>
-							<div v-if="tmp.p.effect.timeLimit6" id="timer6" class="fullWidth">
-								<h1><span>{{
-									Math.floor(tmp.p.effect.timeLeft6 / 60).toLocaleString("en-US")
-								}}</span>:<span>{{
-									Math.floor((tmp.p.effect.timeLeft6 / 10) % 6).toLocaleString("en-US")
-								}}</span><span>{{
-									Math.floor(tmp.p.effect.timeLeft6 % 10).toLocaleString("en-US")
-								}}</span></h1>
-								</div>
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">
