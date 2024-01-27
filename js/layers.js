@@ -45,12 +45,13 @@ addLayer("p", {
             goalDescription: "THERE IS NO TURNING BACK. ARE YOU SURE YOU WANT TO CLICK?",
             canComplete: function() {return player.points.gte(1e50)},
             timeLimit: 445,
+            
             onEnter() {
                 player.p.ii = new Decimal(0)
             },
             onExit() {
                 player.p.ii = new Decimal(0)
-            }
+            },
         },
     },
     update(diff) {
