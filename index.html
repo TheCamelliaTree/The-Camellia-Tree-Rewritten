@@ -42,6 +42,7 @@
 		<div class="background"></div>
 		<div class="game-container">
 		<audio v-if="inChallenge('p', 11)" controls autoplay loop hidden><source src=music2/ii.mp3 type="audio/mp3"></audio>
+		<audio v-if="inChallenge('b', 11)" controls autoplay loop hidden><source src=music2/666.mp3 type="audio/mp3"></audio>
 		<div v-if="tmp.p.effect.timeLimit" id="timer" class="fullWidth">
 			<h1><span>{{
 				Math.floor(tmp.p.effect.timeLeft / 60).toLocaleString("en-US")
@@ -60,6 +61,24 @@
 					Math.floor(tmp.p.effect.timeLeft2 % 10).toLocaleString("en-US")
 				}}</span></h1>
 				</div>
+				<div v-if="tmp.b.effect.timeLimit3" id="timer3" class="fullWidth">
+					<h1><span>{{
+						Math.floor(tmp.b.effect.timeLeft3 / 60).toLocaleString("en-US")
+					}}</span>:<span>{{
+						Math.floor((tmp.b.effect.timeLeft3 / 10) % 6).toLocaleString("en-US")
+					}}</span><span>{{
+						Math.floor(tmp.b.effect.timeLeft3 % 10).toLocaleString("en-US")
+					}}</span></h1>
+					</div>
+					<div v-if="tmp.b.effect.timeLimit4" id="timer4" class="fullWidth">
+						<h1><span>{{
+							Math.floor(tmp.b.effect.timeLeft4 / 60).toLocaleString("en-US")
+						}}</span>:<span>{{
+							Math.floor((tmp.b.effect.timeLeft4 / 10) % 6).toLocaleString("en-US")
+						}}</span><span>{{
+							Math.floor(tmp.b.effect.timeLeft4 % 10).toLocaleString("en-US")
+						}}</span></h1>
+						</div>
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">

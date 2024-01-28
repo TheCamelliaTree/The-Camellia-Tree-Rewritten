@@ -96,7 +96,7 @@ h1, h2, h3, b, input {
 	font-size: 30vw;
 	user-select: none;
 	-webkit-user-select: none;
-	transform: skewX(-4deg);
+	transform: skewX(-10deg);
 }
 #timer2 {
 	position: static;
@@ -110,7 +110,35 @@ h1, h2, h3, b, input {
 	font-size: 32vw;
 	user-select: none;
 	-webkit-user-select: none;
-	transform: skewX(-4deg);
+	transform: skewX(-10deg);
+}
+#timer3 {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+#timer3 h1 {
+	opacity: .5;
+	font-size: 30vw;
+	user-select: none;
+	-webkit-user-select: none;
+	transform: skewX(-10deg);
+}
+#timer4 {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+#timer4 h1 {
+	animation: pulse 0.018s infinite;
+	font-size: 32vw;
+	user-select: none;
+	-webkit-user-select: none;
+	transform: skewX(-10deg);
 }
 @keyframes pulse {
 	0% {
