@@ -112,9 +112,7 @@ var systemComponents = {
 			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
-		<span v-if="player.points.lt('1e1000')"  class="overlayThing">You have </span>
-		<h2  class="overlayThing" id="points">{{format(player.points)}}</h2>
-		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
+		<span v-if="player.points.gte(0)"  class="overlayThing"><h3>You have wasted {{ formatTime(player.timePlayed) }} in this tree, what are you doing...</h3> </span>
 		<br>
 		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
@@ -228,6 +226,14 @@ var systemComponents = {
 				</div>
 				<div class="value">{{ options.forceTooltips?"ON":"OFF" }}</div>
 			</button>
+			<button class="opt" onclick="adjustNOTE()">
+				<div class="key-desc">
+					<div class="key">Notation</div>
+					<div class="desc">Switch between notations</div>
+				</div>
+				<div class="value">{{ NOTE_DIS[NOTE_SET.indexOf(options.notation)]}}</div>
+			</button>
+
         </div>`
     },
 
