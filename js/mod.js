@@ -27,7 +27,9 @@ d = bug/grammatical fixes.<br>
 Credit to pg132's changelog format.<br>
 <br>
 <br>
-	<h3>v0.1</h3><br>`
+	<h3>v0.1</h3><br>
+	- Created ze tree <br>
+	- Mokou and Kaguya are now having a fight`
 
 let winText = `You defeat Mokou and Kaguya so much that they decided to end the tree at this point so that you don't get any stronger lol`
 
