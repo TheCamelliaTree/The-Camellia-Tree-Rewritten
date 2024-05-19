@@ -4,7 +4,7 @@ addLayer("sc", {
         points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
 
-    color: "#4BDC13",                       // The color for this layer, which affects many elements.
+    color: "#FF0013",                       // The color for this layer, which affects many elements.
     resource: "Spell Cards",            // The name of this layer's main prestige resource.
     row: 0,                                 // The row this layer is on (0 is the first row).
 
@@ -25,4 +25,16 @@ addLayer("sc", {
     },
 
     layerShown() { return true },
+    upgrades: {
+        11: {
+            title: "The beginning of Gensokyo",
+            description: "Start gaining 1 MP/s.",
+            cost: new Decimal(1)
+        },
+        12: {
+            title: "Fantasy Seal",
+            description: "Double MP Gain.",
+            cost: new Decimal(1)
+        }
+    }
           })          // Returns a bool for if this layer's node should be visible in the tree.
