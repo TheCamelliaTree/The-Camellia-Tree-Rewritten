@@ -3,7 +3,7 @@ addLayer("sc", {
         unlocked: true,                     // You can add more variables here to add them to your layer.
         points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
     }},
-
+    symbol: "SC",
     color: "#FF0013",                       // The color for this layer, which affects many elements.
     resource: "Spell Cards",            // The name of this layer's main prestige resource.
     row: 0,                                 // The row this layer is on (0 is the first row).
@@ -35,6 +35,20 @@ addLayer("sc", {
             title: "Fantasy Seal",
             description: "Double MP Gain.",
             cost: new Decimal(1)
+        },
+        13: {
+            title: "Master Spark",
+            description: "Boost MP Gain based on Spell Cards",
+            cost: new Decimal(2),
+            effect() { return player.sc.points.pow(0.5).plus(1)},
+            effectDisplay() {return "Boosting MP gain by " + format(upgradeEffect(this.layer, this.id)) + "x"} 
         }
-    }
+    },
+    hotkeys: [
+        {
+            key: "s",
+            description: "S: Create a Spell Card.",
+            onPress() {if (player.sc.unlocked) doReset("sc")}
+        }
+    ]
           })          // Returns a bool for if this layer's node should be visible in the tree.
