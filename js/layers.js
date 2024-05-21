@@ -17,8 +17,10 @@ addLayer("sc", {
     type: "normal",                         // Determines the formula used for calculating prestige currency.
     exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
 
-    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
-        return new Decimal(1)               // Factor in any bonuses multiplying gain here.
+    gainMult() {      
+        let mult = new Decimal(1)
+        if (hasUpgrade('sc', 21)) mult = mult.times(upgradeEffect('sc', 21))                      // Returns your multiplier to your gain of the prestige resource.
+        return mult               // Factor in any bonuses multiplying gain here.
     },
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
         return new Decimal(1)
@@ -34,14 +36,24 @@ addLayer("sc", {
         12: {
             title: "Fantasy Seal",
             description: "Double MP Gain.",
-            cost: new Decimal(1)
+            cost: new Decimal(1),
+            unlocked() {return hasUpgrade('sc', 11)}
         },
         13: {
             title: "Master Spark",
-            description: "Boost MP Gain based on Spell Cards",
+            description: "Boost MP Gain based on Spell Cards. Formula: (sqrt(SC)+1)",
             cost: new Decimal(2),
             effect() { return player.sc.points.pow(0.5).plus(1)},
-            effectDisplay() {return "Boosting MP gain by " + format(upgradeEffect(this.layer, this.id)) + "x"} 
+            effectDisplay() {return "Boosting MP gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+            unlocked() {return hasUpgrade('sc', 11)}
+        },
+        21: {
+            title: "Moonlight Ray",
+            description: "Boost Spell Card Gain based on MP (just like every magic game lol)",
+            cost: new Decimal(5),
+            effect() { return player.points.pow(0.1).plus(1)},
+            effectDisplay() {return "Boosting Spell Card Gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+            unlocked() {return hasUpgrade('sc', 11)}
         }
     },
     hotkeys: [
