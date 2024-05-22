@@ -24,7 +24,7 @@ addLayer("sc", {
     },
     gainExp() {
         let exp = new Decimal(1)
-        if (hasUpgrade('sc', 31)) exp = exp.times(upgradeEffect('sc', 31))                             // Returns the exponent to your gain of the prestige resource.
+        if (hasUpgrade('sc', 31)) exp = exp.plus(0.1)                             // Returns the exponent to your gain of the prestige resource.
         return exp
     },
 
@@ -76,16 +76,9 @@ addLayer("sc", {
         },
         31: {
             title: "Akiba Summer",
-            description: "Spell Cards boosts its own gain log_10000(SC)+1.",
+            description: "Spell Cards gain exp is increased by 0.1.",
             cost: new Decimal(100),
             unlocked() {return hasUpgrade('sc', 11)},
-            effect() { let effect = player.sc.points.max(1).log(10000).plus(1)
-                let eTS = effect
-                if (eTS.gte(1.5)) effect = new Decimal(1.5).pow(effect.div(1.5)).log(10).pow(0.6).times(4)
-                return effect},
-            effectDisplay() { let display = "Boosting Spell Card Gain by ^" + format(upgradeEffect(this.layer, this.id)) + " (softcapped at ^1.5)"
-                return display
-            }
         },
     },
     hotkeys: [
