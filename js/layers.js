@@ -22,8 +22,10 @@ addLayer("sc", {
         if (hasUpgrade('sc', 21)) mult = mult.times(upgradeEffect('sc', 21))                      // Returns your multiplier to your gain of the prestige resource.
         return mult               // Factor in any bonuses multiplying gain here.
     },
-    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
-        return new Decimal(1)
+    gainExp() {
+        let exp = new Decimal(1)
+        if (hasUpgrade('sc', 31)) exp = exp.times(upgradeEffect('sc', 31))                             // Returns the exponent to your gain of the prestige resource.
+        return exp
     },
 
     layerShown() { return true },
@@ -43,7 +45,10 @@ addLayer("sc", {
             title: "Master Spark",
             description: "Boost MP Gain based on Spell Cards. Formula: (sqrt(SC)+1)",
             cost: new Decimal(2),
-            effect() { return player.sc.points.pow(0.5).plus(1)},
+            effect() { 
+                let effect = player.sc.points.pow(0.5).plus(1)
+                if (hasUpgrade('sc', 22)) effect = player.sc.points.pow(0.65).plus(1)
+                return effect},
             effectDisplay() {return "Boosting MP gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
             unlocked() {return hasUpgrade('sc', 11)}
         },
@@ -54,7 +59,34 @@ addLayer("sc", {
             effect() { return player.points.pow(0.1).plus(1)},
             effectDisplay() {return "Boosting Spell Card Gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
             unlocked() {return hasUpgrade('sc', 11)}
-        }
+        },
+        22: {
+            title: "Perfect Freeze",
+            description: "Master Spark's formula is a little better ((SC^0.65)+1).",
+            cost: new Decimal(9),
+            unlocked() {return hasUpgrade('sc', 11)}
+        },
+        23: {
+            title: "Colorful Rain",
+            description: "MP boosts its own gain.",
+            cost: new Decimal(15),
+            unlocked() {return hasUpgrade('sc', 11)},
+            effect() { return player.points.max(1).log(10).plus(1)},
+            effectDisplay() { return "Boosting MP Gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+        },
+        31: {
+            title: "Akiba Summer",
+            description: "Spell Cards boosts its own gain log_10000(SC)+1.",
+            cost: new Decimal(100),
+            unlocked() {return hasUpgrade('sc', 11)},
+            effect() { let effect = player.sc.points.max(1).log(10000).plus(1)
+                let eTS = effect
+                if (eTS.gte(1.5)) effect = new Decimal(1.5).pow(effect.div(1.5)).log(10).pow(0.6).times(4)
+                return effect},
+            effectDisplay() { let display = "Boosting Spell Card Gain by ^" + format(upgradeEffect(this.layer, this.id)) + " (softcapped at ^1.5)"
+                return display
+            }
+        },
     },
     hotkeys: [
         {
