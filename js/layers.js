@@ -80,6 +80,11 @@ addLayer("sc", {
             cost: new Decimal(100),
             unlocked() {return hasUpgrade('sc', 11)},
         },
+        32: {
+            title: "The World",
+            description: "Raise MP Gain ^1.1.",
+            cost: new Decimal(250),
+        }
     },
     hotkeys: [
         {
