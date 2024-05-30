@@ -54,11 +54,14 @@ function getPointGen() {
 	let gain = new Decimal(0)
 	if (hasUpgrade('sc', 11)) gain = new Decimal(1)
 	if (hasMilestone('bob', 0)) gain = new Decimal(1)
+	if (hasUpgrade('sc', 24)) gain = new Decimal(2)
 	if (hasUpgrade('sc', 12)) gain = gain.times(2)
 	if (hasUpgrade('sc', 13)) gain = gain.times(upgradeEffect('sc', 13))
 	if (hasUpgrade('sc', 23)) gain = gain.times(upgradeEffect('sc', 23))
 	if (hasUpgrade('sc', 32)) gain = gain.pow(1.1)
-	
+	if (hasMilestone('fs', 0)) gain = gain.times(1.3)
+	if (hasUpgrade('sc', 14)) gain = gain.times(4.444)
+	if (hasMilestone('fs', 1)) gain = gain.times(1.5)
 	return gain
 	
 }

@@ -20,7 +20,8 @@ addLayer("sc", {
     gainMult() {      
         let mult = new Decimal(1)
         if (hasMilestone('bob', 0)) mult = mult.times(2)
-        if (hasUpgrade('sc', 21)) mult = mult.times(upgradeEffect('sc', 21))                      // Returns your multiplier to your gain of the prestige resource.
+        if (hasUpgrade('sc', 21)) mult = mult.times(upgradeEffect('sc', 21))
+        if (hasUpgrade('sc', 14)) mult = mult.times(4.444)                      // Returns your multiplier to your gain of the prestige resource.
         return mult               // Factor in any bonuses multiplying gain here.
     },
     gainExp() {
@@ -28,7 +29,12 @@ addLayer("sc", {
         if (hasUpgrade('sc', 31)) exp = exp.plus(0.1)                             // Returns the exponent to your gain of the prestige resource.
         return exp
     },
-    passiveGeneration() { return hasMilestone('bob', 1) ? 0.01 : 0},
+    passiveGeneration() { let passive = 0
+        if (hasMilestone('bob', 1)) passive = 0.01
+        if (hasMilestone('fs', 0)) passive = 0.05
+        if (hasMilestone('fs', 1)) passive = 0.10
+        return passive
+    },
     layerShown() { return true },
     upgrades: {
         11: {
@@ -95,6 +101,23 @@ addLayer("sc", {
             cost: new Decimal(555),
             unlocked() {return hasUpgrade('sc', 11) || hasMilestone('bob', 0)},
         },
+        14: {
+            title: "Four of a Kind",
+            description: "Multiply MP and SC gain by 4.444x.",
+            cost: new Decimal(4444),
+            unlocked() {return hasMilestone('fs', 2)},
+        },
+        24: {
+            title: "Undulation Ray",
+            description: "Add 1 to base MP gain.",
+            cost: new Decimal(10000),
+            unlocked() {return hasMilestone('fs', 2)},
+        },
+        34: {
+            title: "Shikai Immortality",
+            description: "Fantasy Seals^2 multiply MP gain.",
+            cost: new Decimal()
+        }
     },
     hotkeys: [
         {
@@ -117,7 +140,7 @@ addLayer("bob", {
     baseAmount() { return player.sc.points },  // A function to return the current amount of baseResource.    
     requires: new Decimal(750),              // The amount of the base needed to  gain 1 of the prestige currency.
     type: "static",                         // Determines the formula used for calculating prestige currency.
-    exponent: 3,                          // "normal" prestige gain is (currency^exponent).
+    exponent: 6,                          // "normal" prestige gain is (currency^exponent).
     gainMult() {      
     let mult = new Decimal(1)
     return mult               // Factor in any bonuses multiplying gain here.
@@ -158,4 +181,51 @@ addLayer("bob", {
             onPress() {if (player.sc.unlocked) doReset("bob")}
         }
     ],
+    })
+    addLayer("fs", {
+        startData() { return {                  // startData is a function that returns default data for a layer. 
+            unlocked: false,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        }},
+        symbol: "FS",
+        color: "#FF2244",                       // The color for this layer, which affects many elements.
+        resource: "Fantasy Seals",            // The name of this layer's main prestige resource.
+        row: 1,                                 // The row this layer is on (0 is the first row).
+        baseResource: "Mana Points",                 // The name of the resource your prestige gain is based on.
+        baseAmount() { return player.points },  // A function to return the current amount of baseResource.
+        requires: new Decimal(2221),              // The amount of the base needed to  gain 1 of the prestige currency.
+                                                // Also the amount required to unlock the layer.
+        type: "static",                         // Determines the formula used for calculating prestige currency.
+        exponent: 3,                          // "normal" prestige gain is (currency^exponent).
+        gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+            return new Decimal(1)               // Factor in any bonuses multiplying gain here.
+        },
+        gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+            return new Decimal(1)
+        },
+        layerShown() { return player.bob.points.gte(2) || player.fs.unlocked },          // Returns a bool for if this layer's node should be visible in the tree.
+        milestones: {
+            0: {
+                requirementDescription: "Your first Fantasy Seal, except it's weak. (1 Fantasy Seal created)",
+                effectDescription: "Gain x1.3 more MP and passive SC gain is raised to 5%.",
+                done() { return player.fs.total.gte(1)}
+            },
+            1: {
+                requirementDescription: "The 2nd Fantasy Seal, and yet you are still weak. (2 Fantasy Seals created)",
+                effectDescription: "Passive SC gain is now 10%, and gain x1.5 more MP.",
+                done() { return player.fs.total.gte(2)}
+            },
+            2: {
+                requirementDescription: "3 Fantasy Seals? Nice job I guess, but not enough... (3 Fastasy Seals Created)",
+                effectDescription: "Unlock Fantasy Seal Upgrades, keep all previous upgrades, start gaining YinYang, and unlock 7 more upgrades in the Spell Card layer.",
+                done() { return player.fs.total.gte(3)}
+            },
+        },
+        hotkeys: [
+            {
+                key: "f",
+                description: "F: Create a Fantasy Seal",
+                onPress() { if (player.fs.unlocked) doReset("fs")}
+            }
+        ],
     })
