@@ -116,8 +116,9 @@ addLayer("sc", {
         34: {
             title: "Shikai Immortality",
             description: "Fantasy Seals^2 multiply MP gain.",
-            cost: new Decimal()
-        }
+            cost: new Decimal(111111),
+            effect() {return player.fs.points.pow(2)}
+        },
     },
     hotkeys: [
         {
