@@ -1,32 +1,28 @@
 addLayer("sc", {
-    startData() { return {                  // startData is a function that returns default data for a layer. 
-        unlocked: true,                     // You can add more variables here to add them to your layer.
-        points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
     }},
     symbol: "SC",
-    color: "#FF0013",                       // The color for this layer, which affects many elements.
-    resource: "Spell Cards",            // The name of this layer's main prestige resource.
-    row: 0,                                 // The row this layer is on (0 is the first row).
-
-    baseResource: "Mana Points",                 // The name of the resource your prestige gain is based on.
-    baseAmount() { return player.points },  // A function to return the current amount of baseResource.
-
-    requires: new Decimal(10),              // The amount of the base needed to  gain 1 of the prestige currency.
-                                            // Also the amount required to unlock the layer.
-
-    type: "normal",                         // Determines the formula used for calculating prestige currency.
-    exponent: 0.5,                          // "normal" prestige gain is (currency^exponent).
-
+    color: "#FF0013",
+    resource: "Spell Cards",
+    row: 0,
+    baseResource: "Mana Points",
+    baseAmount() { return player.points },
+    requires: new Decimal(10),
+    type: "normal",
+    exponent: 0.5,
     gainMult() {      
         let mult = new Decimal(1)
         if (hasMilestone('bob', 0)) mult = mult.times(2)
         if (hasUpgrade('sc', 21)) mult = mult.times(upgradeEffect('sc', 21))
-        if (hasUpgrade('sc', 14)) mult = mult.times(4.444)                      // Returns your multiplier to your gain of the prestige resource.
-        return mult               // Factor in any bonuses multiplying gain here.
+        if (hasUpgrade('sc', 14)) mult = mult.times(4.444)                      
+        if (hasUpgrade('sc', 41)) mult = mult.times(upgradeEffect('sc', 41))   
+        return mult             
     },
     gainExp() {
         let exp = new Decimal(1)
-        if (hasUpgrade('sc', 31)) exp = exp.plus(0.1)                             // Returns the exponent to your gain of the prestige resource.
+        if (hasUpgrade('sc', 31)) exp = exp.plus(0.1)
         return exp
     },
     passiveGeneration() { let passive = 0
@@ -117,8 +113,29 @@ addLayer("sc", {
             title: "Shikai Immortality",
             description: "Fantasy Seals^2 multiply MP gain.",
             cost: new Decimal(111111),
-            effect() {return player.fs.points.pow(2)}
+            effect() {return player.fs.points.pow(2)},
+            effectDisplay() { return "Boosting MP Gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+            unlocked() {return hasMilestone('fs', 2)},
         },
+        41: {
+            title: "Marionette Parrar",
+            description: "Shikai Immortality also affects SC gain at a reduced rate.",
+            cost: new Decimal(222222),
+            effect() {return upgradeEffect('sc', 34).pow(0.25)},
+            effectDisplay() { return "Boosting SC gain at a reduced rate of " + format(upgradeEffect(this.layer, this.id)) + "x"},
+            unlocked() {return hasMilestone('fs', 2)},
+        },
+        42: {
+            title: "Stradivarius",
+            description: "MP Gain is raised ^1.1.",
+            cost: new Decimal(1333333),
+        },
+    },
+    softcap: new Decimal(1000000),
+    softcapPower() {
+        let power = new Decimal(0.5)
+        if (player.sc.points.gte(1e9)) power = new Decimal(0.25)
+        return power
     },
     hotkeys: [
         {
@@ -126,7 +143,14 @@ addLayer("sc", {
             description: "S: Create a Spell Card.",
             onPress() {if (player.sc.unlocked) doReset("sc")}
         }
-    ]
+    ],
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+      
+        let keep = [];
+        if (hasMilestone('fs', 2)) keep.push("upgrades");
+        layerDataReset(this.layer, keep);
+      },
           })          // Returns a bool for if this layer's node should be visible in the tree.
 addLayer("bob", {
     startData() { return {                  // startData is a function that returns default data for a layer. 

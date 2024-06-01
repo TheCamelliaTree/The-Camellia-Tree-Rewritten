@@ -62,6 +62,7 @@ function getPointGen() {
 	if (hasMilestone('fs', 0)) gain = gain.times(1.3)
 	if (hasUpgrade('sc', 14)) gain = gain.times(4.444)
 	if (hasMilestone('fs', 1)) gain = gain.times(1.5)
+	if (hasUpgrade('sc', 34)) gain = gain.times(upgradeEffect('sc', 34))
 	return gain
 	
 }
