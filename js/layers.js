@@ -131,12 +131,8 @@ addLayer("sc", {
             cost: new Decimal(1333333),
         },
     },
-    softcap: new Decimal(1000000),
-    softcapPower() {
-        let power = new Decimal(0.5)
-        if (player.sc.points.gte(1e9)) power = new Decimal(0.25)
-        return power
-    },
+    softcap: new Decimal(100000),
+    softcapPower: new Decimal(0.5),
     hotkeys: [
         {
             key: "s",
@@ -210,7 +206,8 @@ addLayer("bob", {
     addLayer("fs", {
         startData() { return {                  // startData is a function that returns default data for a layer. 
             unlocked: false,                     // You can add more variables here to add them to your layer.
-            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+            points: new Decimal(0),
+            yypoints: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
         }},
         symbol: "FS",
         color: "#FF2244",                       // The color for this layer, which affects many elements.
@@ -228,7 +225,33 @@ addLayer("bob", {
         gainExp() {                             // Returns the exponent to your gain of the prestige resource.
             return new Decimal(1)
         },
-        layerShown() { return player.bob.points.gte(2) || player.fs.unlocked },          // Returns a bool for if this layer's node should be visible in the tree.
+        layerShown() { return player.bob.points.gte(2) || player.fs.unlocked },
+        tabFormat:{
+            "Milestones": {
+                content: [
+                    ["display-text", () => {return `You have created ${colored("fs", format(player.bob.points))} Fantasy Seals.`}],
+                    "blank",
+                    "prestige-button",
+                    "blank",
+                    ["display-text", function() {return `You have created a total of ${format(player.fs.total)} Fastasy Seals.`}],
+                    "blank",
+                    ["display-text", function() {return hasMilestone('fs', 2) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(10).plus(1))))}.` : ``}],
+                    "milestones",
+                ],
+            },
+            "Fantasy Seal Upgrades": {
+                content: [
+                    ["display-text", () => {return `You have created ${colored("fs", format(player.bob.points))} Fantasy Seals.`}],
+                    "blank",
+                    "prestige-button",
+                    "blank",
+                    ["display-text", function() {return `You have created a total of ${format(player.fs.total)} Fastasy Seals.`}],
+                    "blank",
+                    ["display-text", function() {return hasMilestone('fs', 2) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(10).plus(1))))}.` : ``}],
+                    "upgrades"
+                ]
+            }
+        },          // Returns a bool for if this layer's node should be visible in the tree.
         milestones: {
             0: {
                 requirementDescription: "Your first Fantasy Seal, except it's weak. (1 Fantasy Seal created)",
@@ -246,6 +269,13 @@ addLayer("bob", {
                 done() { return player.fs.total.gte(3)}
             },
         },
+        upgrades: {
+            11: {
+                title: "Dream Seal",
+                description: "YinYang Gain is 2x more."
+                
+            }
+        },
         hotkeys: [
             {
                 key: "f",
@@ -253,4 +283,9 @@ addLayer("bob", {
                 onPress() { if (player.fs.unlocked) doReset("fs")}
             }
         ],
+        update(diff) {
+            let yyGain = new Decimal(0)
+            if (hasMilestone('fs', 2)) yyGain = new Decimal(1)
+            player.fs.yypoints = player.fs.yypoints.plus(yyGain.times(diff))
+        }
     })
