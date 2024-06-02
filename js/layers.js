@@ -272,8 +272,11 @@ addLayer("bob", {
         upgrades: {
             11: {
                 title: "Dream Seal",
-                description: "YinYang Gain is 2x more."
-                
+                description: "YinYang Gain is 2x more.",
+                cost: new Decimal(10),
+                currencyResourceName: "YinYang",
+                currencyInternalName: "yypoints",
+                currencyLayer: "fs"
             }
         },
         hotkeys: [
