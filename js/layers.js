@@ -17,7 +17,8 @@ addLayer("sc", {
         if (hasMilestone('bob', 0)) mult = mult.times(2)
         if (hasUpgrade('sc', 21)) mult = mult.times(upgradeEffect('sc', 21))
         if (hasUpgrade('sc', 14)) mult = mult.times(4.444)                      
-        if (hasUpgrade('sc', 41)) mult = mult.times(upgradeEffect('sc', 41))   
+        if (hasUpgrade('sc', 41)) mult = mult.times(upgradeEffect('sc', 41))
+        if (hasUpgrade('fs', 12)) mult = mult.times(upgradeEffect('fs', 12))   
         return mult             
     },
     gainExp() {
@@ -29,6 +30,7 @@ addLayer("sc", {
         if (hasMilestone('bob', 1)) passive = 0.01
         if (hasMilestone('fs', 0)) passive = 0.05
         if (hasMilestone('fs', 1)) passive = 0.10
+        if (hasUpgrade('fs', 12)) passive = 0.25
         return passive
     },
     layerShown() { return true },
@@ -129,6 +131,7 @@ addLayer("sc", {
             title: "Stradivarius",
             description: "MP Gain is raised ^1.1.",
             cost: new Decimal(1333333),
+            unlocked() {return hasMilestone('fs', 2)},
         },
     },
     softcap: new Decimal(100000),
@@ -229,7 +232,7 @@ addLayer("bob", {
         tabFormat:{
             "Milestones": {
                 content: [
-                    ["display-text", () => {return `You have created ${colored("fs", format(player.bob.points))} Fantasy Seals.`}],
+                    ["display-text", () => {return `You have created ${colored("fs", format(player.fs.points))} Fantasy Seals.`}],
                     "blank",
                     "prestige-button",
                     "blank",
@@ -241,7 +244,7 @@ addLayer("bob", {
             },
             "Fantasy Seal Upgrades": {
                 content: [
-                    ["display-text", () => {return `You have created ${colored("fs", format(player.bob.points))} Fantasy Seals.`}],
+                    ["display-text", () => {return `You have created ${colored("fs", format(player.fs.points))} Fantasy Seals.`}],
                     "blank",
                     "prestige-button",
                     "blank",
@@ -277,7 +280,17 @@ addLayer("bob", {
                 currencyDisplayName: "YinYang",
                 currencyInternalName: "yypoints",
                 currencyLayer: "fs"
-            }
+            },
+            12: {
+                title: "Evil-Sealing Circle",
+                description: "YinYang also boosts SC gain at a nerfed rate, and SC passive gain is 25%.",
+                cost: new Decimal(25),
+                currencyDisplayName: "YinYang",
+                cuurencyInternalName: "yypoints",
+                cuurencyLayer: "fs",
+                effect() {return player.fs.yypoints.max(1).log(35).plus(1)},
+                effectDisplay() {return "Boosting SC gain by " + format(upgradeEffect(this.layer, this.id)) + "x"}
+            },
         },
         hotkeys: [
             {
