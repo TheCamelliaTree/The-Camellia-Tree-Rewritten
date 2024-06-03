@@ -274,7 +274,7 @@ addLayer("bob", {
                 title: "Dream Seal",
                 description: "YinYang Gain is 2x more.",
                 cost: new Decimal(10),
-                currencyResourceName: "YinYang",
+                currencyDisplayName: "YinYang",
                 currencyInternalName: "yypoints",
                 currencyLayer: "fs"
             }
@@ -289,6 +289,7 @@ addLayer("bob", {
         update(diff) {
             let yyGain = new Decimal(0)
             if (hasMilestone('fs', 2)) yyGain = new Decimal(1)
+            if (hasUpgrade('fs', 11)) yyGain = yyGain.times(2)
             player.fs.yypoints = player.fs.yypoints.plus(yyGain.times(diff))
         }
     })
