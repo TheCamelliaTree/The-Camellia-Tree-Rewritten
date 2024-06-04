@@ -221,7 +221,7 @@ addLayer("bob", {
         requires: new Decimal(2221),              // The amount of the base needed to  gain 1 of the prestige currency.
                                                 // Also the amount required to unlock the layer.
         type: "static",                         // Determines the formula used for calculating prestige currency.
-        exponent: 3,                          // "normal" prestige gain is (currency^exponent).
+        exponent: 2,                          // "normal" prestige gain is (currency^exponent).
         gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
             return new Decimal(1)               // Factor in any bonuses multiplying gain here.
         },
@@ -243,6 +243,9 @@ addLayer("bob", {
                 ],
             },
             "Fantasy Seal Upgrades": {
+                unlocked() {
+                    return hasMilestone('fs', 2)
+                },
                 content: [
                     ["display-text", () => {return `You have created ${colored("fs", format(player.fs.points))} Fantasy Seals.`}],
                     "blank",
@@ -285,11 +288,11 @@ addLayer("bob", {
                 title: "Evil-Sealing Circle",
                 description: "YinYang also boosts SC gain at a nerfed rate, and SC passive gain is 25%.",
                 cost: new Decimal(25),
-                currencyDisplayName: "YinYang",
-                cuurencyInternalName: "yypoints",
-                cuurencyLayer: "fs",
                 effect() {return player.fs.yypoints.max(1).log(35).plus(1)},
-                effectDisplay() {return "Boosting SC gain by " + format(upgradeEffect(this.layer, this.id)) + "x"}
+                effectDisplay() {return "Boosting SC gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+                currencyDisplayName: "YinYang",
+                currencyInternalName: "yypoints",
+                currencyLayer: "fs",
             },
         },
         hotkeys: [
