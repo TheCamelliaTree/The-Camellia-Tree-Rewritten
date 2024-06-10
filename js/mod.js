@@ -66,6 +66,8 @@ function getPointGen() {
 	if (hasUpgrade('sc', 34)) gain = gain.pow(1.1)
 	if (hasMilestone('fs', 2)) gain = gain.times(player.fs.yypoints.max(1).log(10).plus(1))
 	if (hasUpgrade('sc', 42)) gain = gain.pow(1.1)
+	if (hasUpgrade('sc', 44)) gain = gain.pow(1.09)
+	if (hasUpgrade('fs', 14)) gain = gain.pow(1.5)
 	return gain
 	
 }

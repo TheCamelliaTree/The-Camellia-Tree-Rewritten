@@ -31,6 +31,7 @@ addLayer("sc", {
         if (hasMilestone('fs', 0)) passive = 0.05
         if (hasMilestone('fs', 1)) passive = 0.10
         if (hasUpgrade('fs', 12)) passive = 0.25
+        if (hasUpgrade('fs', 13)) passive = 1
         return passive
     },
     layerShown() { return true },
@@ -121,7 +122,7 @@ addLayer("sc", {
         },
         41: {
             title: "Marionette Parrar",
-            description: "Shikai Immortality also affects SC gain at a reduced rate.",
+            description: "Shikai Immortality also affects SC gain at a reduced rate. (SI UE^0.25)",
             cost: new Decimal(222222),
             effect() {return upgradeEffect('sc', 34).pow(0.25)},
             effectDisplay() { return "Boosting SC gain at a reduced rate of " + format(upgradeEffect(this.layer, this.id)) + "x"},
@@ -133,9 +134,23 @@ addLayer("sc", {
             cost: new Decimal(1333333),
             unlocked() {return hasMilestone('fs', 2)},
         },
+        43: {
+            title: "Hino Phastasm",
+            description: "Gain more YinYang based on MP.",
+            cost: new Decimal(4444444),
+            unlocked() {return hasMilestone('fs', 2)},
+            effect() {return player.points.max(1).log(1000).plus(1)},
+            effectDisplay() {return "Boosting YinYang Gain by " + format(upgradeEffect(this.layer, this.id)) + "x"}
+        },
+        44: {
+            title: "Soul Noise Flow",
+            description: "Raise MP and YinYang gain ^1.09.",
+            cost: new Decimal(15555555),
+            unlocked() {return hasMilestone('fs', 2)}
+        },
     },
     softcap: new Decimal(100000),
-    softcapPower: new Decimal(0.5),
+    softcapPower() {return new Decimal(0.5).div(player.sc.points.sub(100000).max(1).log(100).add(1))},
     hotkeys: [
         {
             key: "s",
@@ -270,10 +285,15 @@ addLayer("bob", {
                 done() { return player.fs.total.gte(2)}
             },
             2: {
-                requirementDescription: "3 Fantasy Seals? Nice job I guess, but not enough... (3 Fastasy Seals Created)",
+                requirementDescription: "3 Fantasy Seals? Nice job I guess, but not enough... (3 Fastasy Seals created)",
                 effectDescription: "Unlock Fantasy Seal Upgrades, keep all previous upgrades, start gaining YinYang, and unlock 7 more upgrades in the Spell Card layer.",
                 done() { return player.fs.total.gte(3)}
             },
+            3: {
+                requirementDescription: "Now we're getting somewhere with these fastasy seals... (5 Fastasy Seals created)",
+                effectDescription: "YinYang gain is raised ^1.2.",
+                done() {return player.fs.total.gte(5)}
+            }
         },
         upgrades: {
             11: {
@@ -294,6 +314,24 @@ addLayer("bob", {
                 currencyInternalName: "yypoints",
                 currencyLayer: "fs",
             },
+            13: {
+                title: "Duplex Barrier",
+                description: "SC passive gain is now 100%, and YinYang boosts its own gain.",
+                cost: new Decimal(250),
+                effect() {return player.fs.yypoints.max(1).log(1000).plus(1)},
+                effectDisplay() {return "Boosting YinYang Gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+                currencyDisplayName: "YinYang",
+                currencyInternalName: "yypoints",
+                currencyLayer: "fs",
+            },
+            14: {
+                title: "Dream Orb",
+                description: "MP Gain is raised ^1.5.",
+                cost: new Decimal(1000),
+                currencyDisplayName: "YinYang",
+                currencyInternalName: "yypoints",
+                currencyLayer: "fs",
+            },
         },
         hotkeys: [
             {
@@ -306,6 +344,10 @@ addLayer("bob", {
             let yyGain = new Decimal(0)
             if (hasMilestone('fs', 2)) yyGain = new Decimal(1)
             if (hasUpgrade('fs', 11)) yyGain = yyGain.times(2)
+            if (hasUpgrade('sc', 43)) yyGain = yyGain.times(upgradeEffect('sc', 43))
+            if (hasUpgrade('fs', 13)) yyGain = yyGain.times(upgradeEffect('fs', 13))
+            if (hasMilestone('fs', 3)) yyGain = yyGain.pow(1.2)
+            if (hasUpgrade('sc', 44)) yyGain = yyGain.pow(1.09)
             player.fs.yypoints = player.fs.yypoints.plus(yyGain.times(diff))
         }
     })
