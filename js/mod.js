@@ -52,6 +52,7 @@ function getPointGen() {
 		return new Decimal(0)
 	
 	let gain = new Decimal(0)
+	let yyboost = player.fs.yypoints.max(1).log(10).plus(1)
 	if (hasUpgrade('sc', 11)) gain = new Decimal(1)
 	if (hasMilestone('bob', 0)) gain = new Decimal(1)
 	if (hasUpgrade('sc', 24)) gain = new Decimal(2)
@@ -64,10 +65,11 @@ function getPointGen() {
 	if (hasMilestone('fs', 1)) gain = gain.times(1.5)
 	if (hasUpgrade('sc', 34)) gain = gain.times(upgradeEffect('sc', 34))
 	if (hasUpgrade('sc', 34)) gain = gain.pow(1.1)
-	if (hasMilestone('fs', 2)) gain = gain.times(player.fs.yypoints.max(1).log(10).plus(1))
+	if (hasMilestone('fs', 2)) gain = gain.times(yyboost)
 	if (hasUpgrade('sc', 42)) gain = gain.pow(1.1)
 	if (hasUpgrade('sc', 44)) gain = gain.pow(1.09)
 	if (hasUpgrade('fs', 14)) gain = gain.pow(1.5)
+	if (hasUpgrade('fs', 15)) yyboost = player.fs.yypoints.max(1).log(8).plus(1)
 	return gain
 	
 }

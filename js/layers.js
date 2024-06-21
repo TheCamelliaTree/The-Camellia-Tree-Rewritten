@@ -200,6 +200,11 @@ addLayer("bob", {
             effectDescription: "Gain 1% of your Spell Card gain and unlock a new layer.",
             done() { return player.bob.points.gte(2)}
         },
+        2: {
+            requirementDescription: "The Third Battle of Bullets, I think you're getting the hang of it. (3 Battle of Bullets)",
+            effectDescription: "Unlock a new layer and BoB^3 boost MP, SC, and YinYang Gain. (Current Endgame)",
+            done() { return player.bob.points.gte(3)}
+        }
     },
     tabFormat:{
         "Milestones": {
@@ -253,7 +258,8 @@ addLayer("bob", {
                     "blank",
                     ["display-text", function() {return `You have created a total of ${format(player.fs.total)} Fastasy Seals.`}],
                     "blank",
-                    ["display-text", function() {return hasMilestone('fs', 2) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(10).plus(1))))}.` : ``}],
+                    ["display-text", function() {return hasMilestone('fs', 2) && !hasUpgrade('fs', 15) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(10).plus(1))))}.` : ``}],
+                    ["display-text", function() {return hasUpgrade('fs', 15) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(8).plus(1))))}.` : ``}],
                     "milestones",
                 ],
             },
@@ -268,7 +274,8 @@ addLayer("bob", {
                     "blank",
                     ["display-text", function() {return `You have created a total of ${format(player.fs.total)} Fastasy Seals.`}],
                     "blank",
-                    ["display-text", function() {return hasMilestone('fs', 2) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(10).plus(1))))}.` : ``}],
+                    ["display-text", function() {return hasMilestone('fs', 2) && !hasUpgrade('fs', 15) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(10).plus(1))))}.` : ``}],
+                    ["display-text", function() {return hasUpgrade('fs', 15) ?`You have ${colored("fs", format(player.fs.yypoints))} YinYang, which boosts MP gain by ${(colored("fs", format(player.fs.yypoints.max(1).log(8).plus(1))))}.` : ``}],
                     "upgrades"
                 ]
             }
@@ -293,7 +300,7 @@ addLayer("bob", {
                 requirementDescription: "Now we're getting somewhere with these fastasy seals... (5 Fastasy Seals created)",
                 effectDescription: "YinYang gain is raised ^1.2.",
                 done() {return player.fs.total.gte(5)}
-            }
+            },
         },
         upgrades: {
             11: {
@@ -332,6 +339,14 @@ addLayer("bob", {
                 currencyInternalName: "yypoints",
                 currencyLayer: "fs",
             },
+            15: {
+                title: "Omnidirectional Oni-Binding Circle",
+                description: "YinYang's boost is better.",
+                cost: new Decimal(10000),
+                currencyDisplayName: "YinYang",
+                currencyInternalName: "yypoints",
+                currencyLayer: "fs",
+            }
         },
         hotkeys: [
             {
