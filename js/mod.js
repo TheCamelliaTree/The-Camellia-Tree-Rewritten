@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "Ze Touhou Tree",
-	id: "fujiwaranomokou",
-	author: "Mokou and Kaguya",
-	pointsName: "Mana Points",
+	name: "vivid/stasis tree",
+	id: "omgallisonandstaurdayarelesbians",
+	author: "Saturday, Allison, Kotomi, Eri, Chiyo, Dawn, and THE WORLDKEEPER",
+	pointsName: "Points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "The Camellia Tree",
@@ -14,7 +14,7 @@ let modInfo = {
 // Set your version in num and name
 let VERSION = {
 	num: "0.1",
-	name: "Reimu's Discovery of TMT",
+	name: "Another Virtual World?",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -28,10 +28,10 @@ Credit to pg132's changelog format.<br>
 <br>
 <br>
 	<h3>v0.1</h3><br>
-	- Created ze tree <br>
-	- Mokou and Kaguya are now having a fight`
+	- Created the Tree <br>
+	- uhhhh, what is going on in the room right now`
 
-let winText = `You defeat Mokou and Kaguya so much that they decided to end the tree at this point so that you don't get any stronger lol`
+let winText = `Saturday's wallet was full to the point where Allison and her went-- never mind we're ending it here`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -52,26 +52,7 @@ function getPointGen() {
 		return new Decimal(0)
 	
 	let gain = new Decimal(0)
-	let yyboost = player.fs.yypoints.max(1).log(10).plus(1)
-	if (hasUpgrade('sc', 11)) gain = new Decimal(1)
-	if (hasMilestone('bob', 0)) gain = new Decimal(1)
-	if (hasUpgrade('sc', 24)) gain = new Decimal(2)
-	if (hasUpgrade('fs', 25)) gain = new Decimal(12)
-	if (hasUpgrade('sc', 12)) gain = gain.times(2)
-	if (hasUpgrade('sc', 13)) gain = gain.times(upgradeEffect('sc', 13))
-	if (hasUpgrade('sc', 23)) gain = gain.times(upgradeEffect('sc', 23))
-	if (hasUpgrade('sc', 32)) gain = gain.pow(1.1)
-	if (hasMilestone('fs', 0)) gain = gain.times(1.3)
-	if (hasUpgrade('sc', 14)) gain = gain.times(4.444)
-	if (hasMilestone('fs', 1)) gain = gain.times(1.5)
-	if (hasUpgrade('sc', 34)) gain = gain.times(upgradeEffect('sc', 34))
-	if (hasUpgrade('sc', 34)) gain = gain.pow(1.1)
-	if (hasMilestone('fs', 2)) gain = gain.times(yyboost)
-	if (hasUpgrade('sc', 42)) gain = gain.pow(1.1)
-	if (hasUpgrade('sc', 44)) gain = gain.pow(1.09)
-	if (hasUpgrade('fs', 14)) gain = gain.pow(1.5)
-	if (hasUpgrade('fs', 15)) yyboost = player.fs.yypoints.max(1).log(8).plus(1)
-	if (hasUpgrade('fs', 22)) gain = gain.pow(1.282)
+	if (hasUpgrade('b', 11)) gain = new Decimal(1)
 	return gain
 	
 }
@@ -81,11 +62,11 @@ function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
-var displayThings = [() => `You have <h2>${format(player.points)}</h2> Mana Points.`]
+var displayThings = [() => `You have <h2>${format(player.points)}</h2> Points in your Wallet.`]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('bob', 2)
+	return player.points.gte("1e3333")
 }
 
 

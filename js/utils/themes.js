@@ -1,12 +1,12 @@
 // ************ Themes ************
-var themes = ["reimu", "marisa",];
-let displayNames = ["Reimu", "Marisa"];
+var themes = ["dawn", "tsuki",];
+let displayNames = ["Dawn", "Tsuki...?"];
 
 function changeTheme() {
 	document.body.classList = "theme-default " + "theme-" + options.theme;
 }
 function getThemeName() {
-	let index = themes.indexOf(options.theme || "reimu");
+	let index = themes.indexOf(options.theme || "dawn");
 	return displayNames[index];
 }
 

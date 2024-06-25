@@ -11,7 +11,7 @@ body {
 /* General text */
 h1, h2, h3, b, input {
 	display: inline;
-	font-family: "Sawarabi Mincho", monospace;
+	font-family: "Pixelify Sans", monospace;
 }
 
 .background {
