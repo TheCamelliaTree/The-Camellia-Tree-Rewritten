@@ -43,6 +43,19 @@ addLayer("b", {
             description: "Start Earning 1 Point/s",
             cost: new Decimal(1)
         },
+        12: {
+            title: "Looking for a detective to check on the progress.",
+            description: "Double your point gain... Saturday is broke.",
+            cost: new Decimal(2)
+        },
+        13: {
+            title: "Getting no progress on the investigation.",
+            description: "Gain more points, based on batteries... How is that suppose to work?",
+            cost: new Decimal(3),
+            effect() {
+                return player.points.log(10).max(1)
+            }
+        },
     },
     hotkeys: [
         {
