@@ -53,7 +53,16 @@ addLayer("b", {
             description: "Gain more points, based on batteries... How is that suppose to work?",
             cost: new Decimal(3),
             effect() {
-                return player.points.log(10).max(1)
+                return player.b.points.max(1).log(10).plus(1)
+            },
+            effectDisplay() { return "Boosting point gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
+        },
+        14: {
+            title: "Meeting your very shy but mood swinging friend, Allison!",
+            description: "Gain more Batteries based on points... hold up, is the economy inflating or deflating?",
+            cost: new Decimal(5),
+            effect() {
+                return player.points.max(1).log(10).plus(1)
             }
         },
     },
@@ -61,7 +70,7 @@ addLayer("b", {
         {
             key: "b",
             description: "B: Get some Batteries",
-            onPress() {if (player.sc.unlocked) doReset("sc")}
+            onPress() {if (player.b.unlocked) doReset("b")}
         }
     ],
           })          // Returns a bool for if this layer's node should be visible in the tree.

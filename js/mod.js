@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "vivid/stasis tree",
-	id: "omgallisonandstaurdayarelesbians",
+	id: "omgallisonandsaturdayarelesbians",
 	author: "Saturday, Allison, Kotomi, Eri, Chiyo, Dawn, and THE WORLDKEEPER",
 	pointsName: "Points",
 	modFiles: ["layers.js", "tree.js"],
@@ -54,6 +54,7 @@ function getPointGen() {
 	let gain = new Decimal(0)
 	if (hasUpgrade('b', 11)) gain = new Decimal(1)
 	if (hasUpgrade('b', 12)) gain = gain.times(2)
+	if (hasUpgrade('b', 13)) gain = gain.times(upgradeEffect('b', 13))
 	return gain
 	
 }
