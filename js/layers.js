@@ -14,6 +14,7 @@ addLayer("b", {
     exponent: 0.5,
     gainMult() {      
         let mult = new Decimal(1)
+        if (hasUpgrade('b', 14)) mult = mult.times(upgradeEffect('b', 14))
         return mult             
     },
     gainExp() {
@@ -62,9 +63,13 @@ addLayer("b", {
             description: "Gain more Batteries based on points... hold up, is the economy inflating or deflating?",
             cost: new Decimal(5),
             effect() {
-                return player.points.max(1).log(10).plus(1)
-            }
+                return player.points.max(1).log(100).plus(1)
+            },
+            effectDisplay() { return "Boosting Battery gain by " + format(upgradeEffect(this.layer, this.id)) + "x"}
         },
+        15: {
+            title: "Seeing your older friend, Kotomi, walking around at the park."
+        }
     },
     hotkeys: [
         {
