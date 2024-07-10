@@ -19,6 +19,7 @@ addLayer("b", {
     },
     gainExp() {
         let exp = new Decimal(1)
+        if (hasUpgrade('b', 21)) exp = exp.add(0.1)
         return exp
     },
     passiveGeneration() { let passive = 0
@@ -40,17 +41,17 @@ addLayer("b", {
     layerShown() { return true },
     upgrades: {
         11: {
-            title: "Where did my sister run off to?",
+            title: "Missing Sister",
             description: "Start Earning 1 Point/s",
             cost: new Decimal(1)
         },
         12: {
-            title: "Looking for a detective to check on the progress.",
-            description: "Double your point gain... Saturday is broke.",
+            title: "Progress?",
+            description: "Double your point gain... Wow, you are broke.",
             cost: new Decimal(2)
         },
         13: {
-            title: "Getting no progress on the investigation.",
+            title: "No progress, what a bummer.",
             description: "Gain more points, based on batteries... How is that suppose to work?",
             cost: new Decimal(3),
             effect() {
@@ -59,7 +60,7 @@ addLayer("b", {
             effectDisplay() { return "Boosting point gain by " + format(upgradeEffect(this.layer, this.id)) + "x"},
         },
         14: {
-            title: "Meeting your very shy but mood swinging friend, Allison!",
+            title: "Meeting up with one of your friends.",
             description: "Gain more Batteries based on points... hold up, is the economy inflating or deflating?",
             cost: new Decimal(5),
             effect() {
@@ -68,7 +69,18 @@ addLayer("b", {
             effectDisplay() { return "Boosting Battery gain by " + format(upgradeEffect(this.layer, this.id)) + "x"}
         },
         15: {
-            title: "Seeing your older friend, Kotomi, walking around at the park."
+            title: "Running into one of your other friends by chance.",
+            description: "Gain more points, based on... points? Ok, did someone call for inflation or is the currency value going up?",
+            cost: new Decimal(10),
+            effect() {
+                return player.points.max(1).log(1000).plus(1)
+            },
+            effectDisplay() { return "Boosting Point gain by " + format(upgradeEffect(this.layer, this.id)) + "x"}
+        },
+        21: {
+            title: "Checking out the Office for some clues about your sister's disappearance.",
+            description: "Gain 100x points and add 0.1 to Battery Gain exp... Yay, you're not broke anymore, I guess?",
+            cost: new Decimal(25),
         }
     },
     hotkeys: [
