@@ -37,7 +37,7 @@ addLayer("a", {
     },
     upgrades: {
         11: {
-            title: "BPM = BPM + 1",
+            title: "BPM = BPM + D",
             description: "The BPM is rapidly esacalating... Generate points based on the current song BPM.",
             cost: new Decimal(1),
             effect() { return player[this.layer].bpm.div(100)},
