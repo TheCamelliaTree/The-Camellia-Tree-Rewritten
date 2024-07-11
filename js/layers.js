@@ -2,6 +2,7 @@ addLayer("b", {
     startData() { return {
         unlocked: true,
         points: new Decimal(0),
+        saturday: ''
     }},
     symbol: "B",
     color: "#164AD6",
@@ -35,6 +36,19 @@ addLayer("b", {
                 ["display-text", function() {return `You have collected a total of ${format(player.b.total)} Batteries`}],
                 "blank",
                 "upgrades"
+            ]
+        },
+        "Something": {
+            unlocked() {return hasUpgrade('b', 23)},
+            content: [
+                ["display-text", () => {return `Welcome to the ARG part of this layer. Hopefully you know what ARGs are so have fun trying to get the answer! (If you do find the answer, please do not share it with other players as it will ruin the fun of the ARG.)`}],
+                "blank",
+                "challenges",
+                function() {
+                    if (inChallenge('b', 11))return [
+                        "text-input", 'saturday'
+                    ]
+                },
             ]
         }
     },
@@ -81,7 +95,29 @@ addLayer("b", {
             title: "Checking out the Office for some clues about your sister's disappearance.",
             description: "Gain 100x points and add 0.1 to Battery Gain exp... Yay, you're not broke anymore, I guess?",
             cost: new Decimal(25),
-        }
+        },
+        22: {
+            title: "Seeing a weird file/website on her computer called shrinereport.xyz.",
+            description: "1658502732... what does that mean? (Will reset everything, but unlock a new upgrade.)",
+            cost: new Decimal(1000),
+            onPurchase() {
+                player.points = new Decimal(10)
+                player.b.points = new Decimal(0)
+            }
+        },
+        23: {
+            title: "???",
+            description: "Unlock Something.",
+            cost: new Decimal(1),
+            unlocked() {return hasUpgrade('b', 22)}
+        },
+    },
+    challenges: {
+        11: {
+        name: "???",
+        challengeDescription: "Find the answers within all my other trees.",
+        canComplete() {return true ? player.b.saturday === "VIVIDWAVE" : false}
+    },
     },
     hotkeys: [
         {
