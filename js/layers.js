@@ -199,7 +199,7 @@ addLayer("p", {
         },
         13: {
             title: "[e-]",
-            description: "Track 3 of Paroxysm. Raise song gain by ^1.171 (get it, because e is a function and 1 is taken away because of the minus sign).",
+            description: "Track 3 of Paroxysm. Raise song gain by ^1.1VI (get it, because e is a function and 1 is taken away because of the minus sign).",
             cost: new Decimal(4)
         },
         14: {
