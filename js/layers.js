@@ -116,7 +116,8 @@ addLayer("b", {
         11: {
         name: "???",
         challengeDescription: "Find the answers within all my other trees.",
-        canComplete() {return true ? player.b.saturday === "VIVIDWAVE" : false}
+        canComplete() {return true ? player.b.saturday === "VIVIDWAVE" : false},
+        onEnter() {return console.log(player.b.saturday)}
     },
     },
     hotkeys: [
