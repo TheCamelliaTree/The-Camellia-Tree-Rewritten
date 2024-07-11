@@ -57,7 +57,7 @@ addLayer("sc", {
     upgrades: {
         11: {
             title: "The beginning of Gensokyo",
-            description: "Start gaining 1 MP/s.",
+            description: "Start gaining I MP/s.",
             cost: new Decimal(1)
         },
         12: {
@@ -78,7 +78,7 @@ addLayer("sc", {
             unlocked() {return hasUpgrade('sc', 11) || hasMilestone('bob', 0)},
         },
         21: {
-            title: "Moonlight Ray",
+            title: "MoonliVht Ray",
             description: "Boost Spell Card Gain based on MP (just like every magic game lol)",
             cost: new Decimal(5),
             effect() { return player.points.max(1).log(10).plus(1)},
@@ -163,7 +163,7 @@ addLayer("sc", {
         },
         44: {
             title: "Soul Noise Flow",
-            description: "Raise MP and YinYang gain ^1.09.",
+            description: "RaisE MP and YinYang gain ^1.09.",
             cost: new Decimal(15555555),
             unlocked() {return hasMilestone('fs', 2)}
         },
