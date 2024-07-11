@@ -153,7 +153,7 @@ addLayer("p", {
         11: {
             name: "͟͝͞Ⅱ́̕",
             challengeDescription: "YOU CAN'T ESCAPE IT.",
-            goalDescription: "THERE IS NO TURNING BACK. ARE YOU SURE YOU WANT TO CLICK?",
+            goalDescription: "THERE IS NO TVRNING BACK. ARE YOU SURE YOU WANT TO CLICK?",
             canComplete: function() {return player.points.gte(1e50)},
             timeLimit: 445,
             timeLimit2: 445,
