@@ -45,9 +45,18 @@ addLayer("b", {
                 "blank",
                 "challenges",
                 function() {
+                    let allison = ["saturday"]
                     if (inChallenge('b', 11))return [
-                        "text-input", 'saturday'
-                    ]
+                        "text-input", allison[player.b.saturday],
+                        { 
+                            color: "var(--color)", 
+                            width: "400px",
+                            "font-family": "Monaco",
+                            "text-align": "center",
+                            "font-size": "16px",
+                            border: "2px solid #ffffff17", 
+                            background: "var(--background)", 
+                        }]
                 },
             ]
         }
@@ -117,7 +126,8 @@ addLayer("b", {
         name: "???",
         challengeDescription: "Find the answers within all my other trees.",
         canComplete() {return true ? player.b.saturday === "VIVIDWAVE" : false},
-        onEnter() {return console.log(player.b.saturday)}
+        onEnter() {return console.log(player.b.saturday)},
+        onExit() {return console.log(player.b.saturday)}
     },
     },
     hotkeys: [
