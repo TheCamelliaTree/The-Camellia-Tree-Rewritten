@@ -112,7 +112,7 @@ var systemComponents = {
 			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
-		<span v-if="player.points.gte(0)"  class="overlayThing"><h3>Current Endgame: Have Allison and Saturday make out</h3> </span>
+		<span v-if="player.points.gte(0)"  class="overlayThing"><h3>Current Endgame: Completing the ARG.</h3> </span>
 		<br>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
