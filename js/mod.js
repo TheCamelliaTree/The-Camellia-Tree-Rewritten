@@ -71,7 +71,7 @@ var displayThings = [() => `You have <h2>${format(player.points)}</h2> Points in
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte("1e3333")
+	return hasChallenge('b', 11)
 }
 
 

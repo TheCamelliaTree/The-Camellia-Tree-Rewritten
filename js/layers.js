@@ -45,9 +45,8 @@ addLayer("b", {
                 "blank",
                 "challenges",
                 function() {
-                    let allison = ["saturday"]
                     if (inChallenge('b', 11))return [
-                        "text-input", allison[player.b.saturday],
+                        "text-input", 'saturday',
                         { 
                             color: "var(--color)", 
                             width: "400px",
