@@ -1,13 +1,18 @@
 * {
 	transition-duration: 0.5s;
 	text-align: center;
-	font-family: "Monaco";
+	font-family: vividstasis;
 	font-weight: bold;
 	table-align: center;
 	margin: auto;
 	-webkit-text-size-adjust: none;
 	text-size-adjust: none;
 
+}
+
+@font-face {
+	font-family: vividstasis;
+	src: url(monaco.ttf);
 }
 
 *:focus {

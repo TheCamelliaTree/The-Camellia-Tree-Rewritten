@@ -11,7 +11,12 @@ body {
 /* General text */
 h1, h2, h3, b, input {
 	display: inline;
-	font-family: "Monaco";
+	font-family: vividstasis;
+}
+
+@font-face {
+	font-family: vividstasis;
+	src: url(monaco.ttf);
 }
 
 .background {

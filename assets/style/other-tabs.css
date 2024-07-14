@@ -72,10 +72,15 @@ a {
 	font-size: 20px;
 	color: #41f5f5;
 	cursor: pointer;
-	font-family: "Monaco";
+	font-family: vividstasis;
 	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: #02f2f2;
 	text-decoration: none;
+}
+
+@font-face {
+	font-family: vividstasis;
+	src: url(monaco.ttf);
 }
 
 .link:hover {
