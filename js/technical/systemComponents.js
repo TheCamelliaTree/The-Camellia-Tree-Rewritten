@@ -135,7 +135,7 @@ var systemComponents = {
 		<a href="https://ducdat0507.github.io/" target="_blank" class="link inline">duducat</a>
         <br>
 		additional CSS help from
-		<a href="https://flux.moe/" target="_blank" class="link inline" title="If I have a dollar every time I see a notable person in the rhythm game community somehow having involvment with a TMT mod I'd have two dollars, which is not much but it's weird that it happened twice">Flustix</a>
+		<a href="https://flux.moe/" target="_blank" class="link inline" title="If I have a dollar every time I see a notable person in the rhythm game community somehow having involvement with a TMT mod I'd have two dollars, which is not much but it's weird that it happened twice">Flustix</a>
         <hr style="width: 200px; margin: 4px auto 2px auto; border: none; height: 2px; background: var(--color)">
         using The Modding Tree 
 		<a href="https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md" target="_blank" class="link inline">{{TMT_VERSION.tmtNum}}</a> by 
