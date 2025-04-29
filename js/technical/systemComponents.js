@@ -135,7 +135,7 @@ var systemComponents = {
 		<a href="https://ducdat0507.github.io/" target="_blank" class="link inline">duducat</a>
         <br>
 		additional CSS help from
-		<a href="https://flustix.foxes4life.net/" target="_blank" class="link inline">Flustix</a>
+		<a href="https://flux.moe/" target="_blank" class="link inline" title="If I have a dollar every time I see a notable person in the rhythm game community somehow having involvment with a TMT mod I'd have two dollars, which is not much but it's weird that it happened twice">Flustix</a>
         <hr style="width: 200px; margin: 4px auto 2px auto; border: none; height: 2px; background: var(--color)">
         using The Modding Tree 
 		<a href="https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md" target="_blank" class="link inline">{{TMT_VERSION.tmtNum}}</a> by 
@@ -170,7 +170,7 @@ var systemComponents = {
     'options-tab': {
         template: `
         <div class="options-tab">
-            <button class="opt" onclick="save()">
+            <button class="opt" onclick="save(false, true)">
 				<div class="key-desc">
 					<h3 class="key">Save</h3>
 					<div class="desc">Save your game</div>
@@ -295,7 +295,7 @@ var systemComponents = {
 
 	'particle': {
 		props: ['data', 'index'],
-		template: `<div><div class='particle instant' v-bind:style="[constructParticleStyle(data), data.style]" 
+		template: `<div><div class='particle instant' :class="data.class" v-bind:style="[constructParticleStyle(data), data.style]" 
 			v-on:click="run(data.onClick, data)"  v-on:mouseenter="run(data.onMouseOver, data)" v-on:mouseleave="run(data.onMouseLeave, data)" ><span v-html="data.text"></span>
 		</div>
 		<svg version="2" v-if="data.color">

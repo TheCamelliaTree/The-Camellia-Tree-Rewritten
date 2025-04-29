@@ -28,7 +28,7 @@
 }
 
 .achievement h3 {
-	font-family: "Courier New", Courier, monospace;
+	font-family: "Chakra Petch", "Courier New", Courier, monospace;
 }
 
 .buyable {
@@ -523,7 +523,42 @@
 	border-top: none;
 }
 
+.recorder {
+	margin-top: 10px;
+}
 
+.recorder .info {
+	background: rgba(0, 0, 0, 0.5);
+	width: 500px;
+	padding: 8px 15px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+}
+.recorder .info > * {
+	margin: 0;
+	font-size: 14px;
+}
+.recorder .info > .amount {
+	margin-left: auto;
+}
+
+.recorder #wave-canvas {
+	background: rgba(0, 0, 0, 0.3);
+	display: block;
+}
+.recorder #rec-canvas {
+	background: rgba(0, 0, 0, 0.5);
+	display: block;
+}
+
+.recorder button {
+	width: 500px;
+	min-height: 50px;
+	box-sizing: border-box;
+	font-size: 13px;
+	border-radius: 0;
+}
 
 .big-music-player .controls {
 	margin: -10px -20px 0 -20px;

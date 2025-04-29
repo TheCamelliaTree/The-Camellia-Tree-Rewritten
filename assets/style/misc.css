@@ -111,3 +111,7 @@
     user-select: none;
     -webkit-user-select: none;
 }
+
+.judgment {
+    text-shadow: 0 0 5px #000, 0 0 5px #000, 0 0 5px #000;
+}

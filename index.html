@@ -4,7 +4,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="assets/style/import.css" />
 
-	<link href="https://fonts.googleapis.com/css2?family=Inconsolata&family=Chakra+Petch&family=Material+Symbols+Outlined" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&family=Chakra+Petch:wght@400;600&family=Material+Symbols+Outlined:wght@400;600" rel="stylesheet">
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 	<script src="js/technical/break_eternity.js"></script>
@@ -43,6 +43,12 @@
 		<div class="background"></div>
 		<div class="bg2" v-bind:style="tmp.backgroundStyle"></div>
 
+		<div v-if="false" id="loadingSection" class="fullWidth">
+			<div>
+				<h1>Loading... (If this takes too long it means there was a serious error!)</h1>
+			</div>
+		</div>
+
 		<div class="game-container">
 			<div v-if="tmp.world.effect.timeLimit" id="timer" class="fullWidth">
 				<h1><span>{{
@@ -58,9 +64,6 @@
 
 			<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 
-			<div v-if="false" id="loadingSection" class="fullWidth">
-				<h1>Loading... (If this takes too long it means there was a serious error!)</h1>
-			</div>
 			<div class="vl"
 				v-if="player.navTab !== 'none' && tmp.other.splitScreen && player.tab!='none' && !(tmp.gameEnded && !player.keepGoing)">
 			</div>
@@ -137,7 +140,10 @@
 					<img v-if="currentMusic.data?.mainPicture !== undefined" v-bind:src="currentMusic.data?.mainPicture"></img>
 					<div></div>
 				</button>
-				<div class="info">
+				<div class="info" v-bind:style="{
+						'': player?.time,
+						'--progress': currentMusic.player.currentTime / currentMusic.player.duration * 100 + '%',
+					}">
 					<h2>{{currentMusic.data?.trackTitle}}</h2>
 					<i>{{currentMusic.data?.trackAuthor}}</i>
 				</div>
@@ -152,9 +158,9 @@
 			<transition-group name="fade">
 				<div v-for="popup,index in activePopups" class="popup" v-bind:class="popup.type"
 					v-bind:key="'p' + popup.id" v-on:click="() => {activePopups.splice(index, 1)}"
-					v-bind:style="popup.color ? {'background-color': popup.color} : {}">
-					<h3>{{popup.title}}</h3><br>
-					<h2 v-html="popup.message"></h2>
+					v-bind:style="popup.color ? {'border-color': popup.color} : {}">
+					{{popup.title}}<br>
+					<h3 v-html="popup.message"></h3>
 				</div>
 			</transition-group>
 		</div>

@@ -47,6 +47,18 @@ let worldCollab = {
     },
 }
 
+let gameNames = [
+    "Cybeat",
+    "Sound Tunnel",
+    "Dynamic",
+    
+    "Treemo",
+    "Lanote",
+
+    "flavor beat",
+    "Muse Runner",
+]
+
 addLayer("world", {
     name: "The Outside World",
 
@@ -69,9 +81,15 @@ addLayer("world", {
         unlocked: true,
         totalQuality: new Decimal(0),
         tickTime: 0,
+
         songs: [],
+
         selectedCollab: "0x0",
         totalCollabs: 0,
+
+        commName: "Shoshin Beat",
+        commCooldown: 0,
+        totalComms: 0,
     }},
 
     effect() {
@@ -109,6 +127,7 @@ addLayer("world", {
 
     update(delta) {
         player.world.tickTime += delta / 2;
+        player.world.commCooldown -= delta;
 
         if (player.world.tickTime >= 1) {
             for (let song of player.world.songs) {
@@ -425,6 +444,99 @@ addLayer("world", {
                 return Decimal.gte(tmp.tracks.effect.quality, 2500);
             },
         },
+        "c0x2": {
+            ...worldCollab,
+            collaber: "Nanahira",
+            challengeDescription: `
+                [placeholder]
+            `,
+            goalSummary: "5,000 record quality",
+            goalList: [
+                "Make a song with 5,000 quality... of something..."
+            ],
+            caveatList: [
+                "????????",
+            ],
+            rewardList: [
+                "????????"
+            ],
+            neighbors: ["c-1x1", "c0x1", "c1x1"],
+            canComplete() {
+                return Decimal.gte(tmp.record.effect.quality, 5000);
+            },
+        },
+        "c1x3": {
+            ...worldCollab,
+            collaber: "Neko Hacker",
+            challengeDescription: `
+                [placeholder]
+            `,
+            goalSummary: "5,000 record quality & 10,000 song quality",
+            goalList: [
+                "Make a song with 10,000 song quality and 5,000 record quality."
+            ],
+            caveatList: [
+                "Auto-Record is always active",
+            ],
+            rewardList: [
+                "The first row of record upgrades resets to 1 instead of 0 upon making a new song."
+            ],
+            unlocked() {
+                return hasChallenge("world", "c0x2")
+            },
+            neighbors: ["c0x2"],
+            canComplete() {
+                return Decimal.gte(tmp.record.effect.quality, 5000) && Decimal.gte(tmp.tracks.effect.quality, 10000);
+            },
+        },
+
+        "m": {
+            ...worldTask,
+            name: () => "Commission for " + player.world.commName,
+            challengeDescription: () => `
+                A company has contacted you to make a song for their latest rhythm game, ${player.world.commName}.
+                They would gladly pay you a lot of money, as long as your song is worth adding to their song list.
+            `,
+            completionLimit: Infinity,
+            goalSummary: "6,000 song quality",
+            goalList: [
+                "Make a song with at least 6,000 quality."
+            ],
+            caveatList: [
+                "No caveats",
+            ],
+            rewardList: [
+                () => "¥2,500+ money, based on your song quality" + (hasChallenge("world", "c1x3") ? " and record quality" : "") + ".",
+            ],
+            unlocked() {
+                return hasMilestone("player", "9") && player.world.commCooldown <= 0;
+            }, 
+            canComplete() {
+                return Decimal.gte(tmp.tracks.effect.quality, 6000);
+            },
+            onComplete() {
+                player.player.money = Decimal.add(player.player.money, tmp[this.layer].challenges[this.id].runWorth);
+                player.world.totalComms++;
+                player.commName = gameNames[Math.floor(Math.random() * gameNames.length)];
+                player.world.commCooldown = 1800;
+            },
+            runWorth() {
+                let x = Decimal.div(tmp.tracks.effect.quality, 6000);
+                return Decimal.sub(x, 1).mul(Decimal.div(tmp.record.effect.quality, 1000).pow(0.5)).add(1).mul(x).mul(2500);
+            },
+            runWorthText() {
+                let worth = tmp[this.layer].challenges[this.id].runWorth;
+                return "Submit now for ¥" + formatWhole(worth);
+            }
+        },
+    },
+
+    upgrades: {
+        "du": {
+            fullDisplay: "Unlock the Doujin mechanic.<br><br>Requirement: 200,000 total song quality",
+            canAfford() { return Decimal.gte(player.world.totalQuality, 200000) },
+            pay() {},
+        }
     },
 
     clickables: {
@@ -482,6 +594,21 @@ addLayer("world", {
                         ["blank", "10px"],
                     ] : []],
                     ["task", () => "c" + player.world.selectedCollab],
+                    ["column", () => hasMilestone("player", "9") ? [
+                        ["blank", "20px"],
+                        ["raw-html", `You've completed ${colored("world", formatWhole(player.world.totalComms))} commissions.`],
+                        ["blank", "10px"],
+                        ["raw-html", player.world.commCooldown > 0 ? `A new commission will appear in ${formatTime(player.world.commCooldown)}` : ""],
+                    ] : []],
+                    ["task", "m"],
+                ],
+            },
+            doujins: {
+                title: "Doujins",
+                unlocked() {return player.world.totalComms > 0},
+                content: [
+                    ["blank", "10px"],
+                    ["upgrade", "du"],
                 ],
             },
         },

@@ -1,9 +1,12 @@
 // ************ Save stuff ************
-function save(force) {
+function save(force, manual) {
 	NaNcheck(player)
 	if (NaNalert && !force) return
 	localStorage.setItem(modInfo.id, btoa(unescape(encodeURIComponent(JSON.stringify(player)))));
 	localStorage.setItem(modInfo.id+"_options", btoa(unescape(encodeURIComponent(JSON.stringify(options)))));
+	if (manual) {
+		doPopup("", "", "Game saved");
+	}
 
 }
 function startPlayerBase() {
@@ -263,13 +266,17 @@ function exportSave() {
 	//if (NaNalert) return
 	let str = btoa(JSON.stringify(player));
 
-	const el = document.createElement("textarea");
-	el.value = str;
-	document.body.appendChild(el);
-	el.select();
-	el.setSelectionRange(0, 99999);
-	document.execCommand("copy");
-	document.body.removeChild(el);
+	// const el = document.createElement("textarea");
+	// el.value = str;
+	// document.body.appendChild(el);
+	// el.select();
+	// el.setSelectionRange(0, 99999);
+	// document.execCommand("copy");
+	// document.body.removeChild(el);
+	navigator.clipboard.writeText(str).then(() => {
+		doPopup("", "", "Save exported to clipboard");
+	})
+
 }
 function importSave(imported = undefined, forced = false) {
 	if (imported === undefined)

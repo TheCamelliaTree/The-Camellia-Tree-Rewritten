@@ -150,5 +150,5 @@ addLayer("movie", {
         "clip-inventory",
     ],
 
-    layerShown(){ return hasAchievement("journal", "4x1") }
+    layerShown(){ return hasAchievement("journal", "4x1") && !player.world.activeChallenge }
 })

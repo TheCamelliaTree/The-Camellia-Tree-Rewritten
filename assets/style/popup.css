@@ -1,42 +1,42 @@
 .popup {
-	border: 4px solid;
 	border-radius: 7px;
-	width: 300px;
-	min-height: 60px;
-	color: #000000;
+	border-left: 7px solid white;
+	width: 263px;
+	color: var(--color);
 	display: block;
-	margin-top: 30px;
-	padding-top: 15px;
-	padding-bottom: 15px;
-	border-color: rgba(0, 0, 0, 0.25);
+	margin-top: 15px;
+	padding: 15px;
+	background: rgba(0, 0, 0, 0.6);
+	text-align: left;
+	transform: translateX(0);
 }
 
 
 .popup-container {
 	position: absolute;
 	z-index: 9999999999999999999999999999999999;
-	right: 30px;
+	right: 15px;
 	width: 300px;
 }
 
 .achievement-popup {
-	background: #7182BC;
+	border-color: #7182BC;
 }
 
 .milestone-popup {
-	background: #D1C23C;
+	border-color: #D1C23C;
 }
 
 .fade-enter-active, .fade-leave-active {
-	transition: opacity .3s
+	transition: transform .3s
 }
 
 .fade-transition {
-	transition: opacity .3s
+	transition: transform .3s
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	opacity: 0
+.fade-enter, .fade-leave-to {
+	transform: translateX(320px);
 }
 
 .redtext {

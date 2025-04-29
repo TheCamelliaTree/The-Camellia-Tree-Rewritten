@@ -144,6 +144,24 @@ addLayer("journal", {
             tooltip: () => `Collaborate with Ujico*.`,
             done: () => hasChallenge("world", "c1x1"),
         },
+        "4x4": {
+            ...journalAchievement,
+            name: "Would you like to friend me on base quality increase?",
+            tooltip: () => `Collaborate with Nanahira.`,
+            done: () => hasChallenge("world", "c0x2"),
+        },
+        "4x5": {
+            ...journalAchievement,
+            name: "Pop Star Singer",
+            tooltip: () => `Make 20 perfect recording hits in a row.`,
+            done: () => player.record.streak >= 20,
+        },
+        "5x1": {
+            ...journalAchievement,
+            name: "Circles",
+            tooltip: () => `Unlock the doujin mechanic.`,
+            done: () => hasUpgrade("world", "du"),
+        },
 
         "s1x1": {
             ...journalSecretAchievement,
@@ -209,7 +227,7 @@ addLayer("journal", {
                 title: "Normal",
                 content: [
                     ["blank", "10px"],
-                    ["achievements", [1, 2, 3, 4]],
+                    ["achievements", [1, 2, 3, 4, 5]],
                 ],
             },
             secret: {
@@ -225,7 +243,7 @@ addLayer("journal", {
     tabFormat: [
         ["raw-html", () => `
             You have ${colored("journal", formatWhole(player.journal.potential))} potential.<br/>
-            You gain 1 potential for each achievement and story entry you unlocked.<br/>
+            You gain 1 potential for each achievement you unlocked.<br/>
             Secret achievements also count toward the potential counter.
         `],
         ["blank", "20px"],

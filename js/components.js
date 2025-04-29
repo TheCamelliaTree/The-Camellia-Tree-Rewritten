@@ -505,7 +505,6 @@ function loadVue() {
 			<span v-for="(node, id) in row" style = "{width: 0px}">
 				<tree-node :layer='node' :prev='layer' :abb='tmp[node].symbol' :key="key + '-' + r + '-' + id"></tree-node>
 			</span>
-			<tr><table><button class="treeNode hidden"></button></table></tr>
 		</span></div>
 
 	`
@@ -645,20 +644,24 @@ function loadVue() {
 				<button class="info" onclick="player.tracks.fullView = !player.tracks.fullView">
 					<h3>Track {{formatWhole(+data + 1)}}</h3><br/>
 					
-					{{
-						data == 0 ? "+" : "×"
-					}}<template v-if="player.tracks.fullView">{{
-						Decimal.gt(player.tracks.extraMulti[data], 0) 
+					<template v-if="player.tracks.fullView">{{
+						(data == 0 ? "+" : "×") + (Decimal.gt(player.tracks.extraMulti[data], 0) 
 							? "(" + format(tmp.tracks.effect.trackBase[data]) + " + " + format(player.tracks.extraMulti[data]) + ")"
-							: format(tmp.tracks.effect.trackBase[data])
+							: format(tmp.tracks.effect.trackBase[data]))
 						}}<br/><i v-if="Decimal.gt(tmp.tracks.effect.trackPower[data], 1)">{{
 							" ^" + format(tmp.tracks.effect.trackPower[data])
-						}}</i><span v-else>{{
+						}}</i><span v-if="+data + 1 < tmp.tracks.effect.limit">{{
+							" × T" + formatWhole(+data + 2)
+						}}</span><span v-else-if="Decimal.lte(tmp.tracks.effect.trackPower[data], 1)">{{
 							data == 0 ? "ideas per second" : "above track's multi"
-					}}</span></template><template v-else>{{
-							format(tmp.tracks.effect.trackBoost[data])
+					}}</span></template><template v-else-if="player.tracks.actionMode == 'add'">{{
+							(data == 0 ? "+" : "×") + format(tmp.tracks.effect.trackBoost[data])
 						}}<br/>{{
 							data == 0 ? "ideas per second" : "above track's multi"
+					}}</template><template v-else-if="player.tracks.actionMode == 'master'">{{
+							"^" + format(tmp.tracks.effect.trackPower[data])
+						}}<br/>{{
+							"this track's multi"
 					}}</template>
 				</button>
 				<div class="bar">
@@ -689,7 +692,7 @@ function loadVue() {
 		props: ['layer', 'data'],
 		template: `
 		<div v-if="tmp[layer].challenges" class="upgTable">
-			<task v-for="(_, id) in tmp[layer].challenges" v-if="!tmp[layer].challenges[id].collaber && !(maxedChallenge(layer, id) && !inChallenge(layer, id))" :layer="layer" :data="id" v-bind:style="tmp[layer].componentStyles.challenge"></task>
+			<task v-for="(_, id) in tmp[layer].challenges" v-if="id.startsWith('s') && !(maxedChallenge(layer, id) && !inChallenge(layer, id))" :layer="layer" :data="id" v-bind:style="tmp[layer].componentStyles.challenge"></task>
 		</div>
 		`
 	})
@@ -949,6 +952,56 @@ function loadVue() {
 			</button>
 	`
 	})
+	
+	Vue.component('record-info', {
+		props: ['layer'],
+		template: `
+			<div class="song-info">
+				<div class="info">
+					<h5>NOW RECORDING FOR</h5>
+					<h3>Untitled Song #1</h3><br/>
+					<span>cametek</span>
+				</div>
+				<div class="quality">
+					<h5>RECORD QUALITY</h5>
+					<h2>{{formatWhole(player.record.quality)}}</h2>
+				</div>
+			</div>
+	`
+	})
+	
+	
+	Vue.component('the-recorder', {
+		props: ['layer'],
+		methods: {
+			buttonText() {
+				if (!currentRecording) return "Start recording";
+				let time = player.time - currentRecording.startTime;
+				let length = currentRecording.times.length;
+				if (time < 0) return "Get ready...";
+				if (!length && time > currentRecording.duration) return "Recording ended";
+				return (player.record.autoRecord ? "Auto-recording..." : "Hit!") + " (" + formatWhole(length) + " remaining)";
+			},
+		},
+		template: `
+			<div class="recorder">
+				<div class="info">
+					<h3 class="name">Recording #1</h3>
+					<div class="amount">
+						{{formatWhole(player.record.lastQuality)}}
+						<span class="symbol">magic_button</span>
+					</div>
+				</div>
+				<canvas id="wave-canvas" width="500" height="80"></canvas>
+				<canvas id="rec-canvas" width="500" height="180"></canvas>
+				<button class="upg" v-on:click="startRecordingChallenge()" 
+					v-on:pointerdown="if (!player.record.autoRecord) registerRecord()" 
+					v-on:keydown="if (!player.record.autoRecord) registerRecord()">
+					{{player.time && buttonText()}}
+				</button>
+			</div>
+	`
+	})
 
 
 	Vue.component('music-player', {
@@ -1003,6 +1056,7 @@ function loadVue() {
 			</div>
 		`
 	})
+	
 
 	// SYSTEM COMPONENTS
 	Vue.component('node-mark', systemComponents['node-mark'])
@@ -1074,6 +1128,8 @@ function loadVue() {
 			getClipQuality,
 			getClipScrapValue,
 			getClipUpgradeCost,
+			currentRecording,
+			startRecordingChallenge,
 			currentMusic,
 		},
 	})

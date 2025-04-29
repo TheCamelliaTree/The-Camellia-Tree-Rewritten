@@ -280,14 +280,17 @@ addLayer("player", {
         7: {
             requirementDescription: "100,000 streams",
             effectDescription() { return "Unlock the ability to scrap movie clips and upgrade them." },
-            effect() { return Decimal.pow(player.world.totalQuality, 0.4) },
             done() { return player.player.totalStreams.gte(100000) }
         },
         8: {
             requirementDescription: "200,000 streams",
             effectDescription() { return "Unlock a funding upgrade." },
-            effect() { return Decimal.pow(player.world.totalQuality, 0.4) },
             done() { return player.player.totalStreams.gte(200000) }
+        },
+        9: {
+            requirementDescription: "600,000 streams",
+            effectDescription() { return "Unlock commissions." },
+            done() { return player.player.totalStreams.gte(600000) }
         },
     },
 

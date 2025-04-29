@@ -3,6 +3,7 @@ function canAddNotesToTrack(id) {
     if (player.tracks.actionMode == "add") {
         if (id != 0 && Decimal.lte(player.tracks.notes[0], 0)) return false;
         if (tmp.tracks.effect.autoLimit > +id) return false;
+        if (Decimal.mul(player.points, tmp.tracks.effect.trackGain?.[id] ?? 1).lt(1)) return false;
     } else if (player.tracks.actionMode == "master") {
         if (Decimal.lte(tmp.tracks.effect.masterGain?.[id] || 0, player.tracks.masters[id])) return false;
     }
@@ -57,7 +58,7 @@ addLayer("tracks", {
     effect() {
         let eff = {};
 
-        eff.limit = 1 + new Decimal(getBuyableAmount("tracks", "r1")).toNumber();
+        eff.limit = 1 + Decimal.add(getBuyableAmount("tracks", "r1"), getBuyableAmount("tracks", "r2")).toNumber();
         if (hasChallenge("world", "c0x0")) {
             let time = 300;
             if (hasChallenge("world", "c1x-2")) time -= 60;
@@ -140,16 +141,16 @@ addLayer("tracks", {
         player.tracks.masterTime = 0;
 
         layers.movie.doReset();
+        layers.record.doReset();
     },
 
     clickables: {
         "f1": {
             display() {
-                let amt = getBuyableAmount("tracks", "r1");
                 let temp = tmp[this.layer].clickables[this.id];
                 return `<h3>Finish</h3> 
 
-                    Close the song, and never touch it again. (Unless, you want to continue on, with a twist.)
+                    Close the project, and never touch it again.
 
                     ${temp.canClick ? 
                    `Gain
@@ -159,7 +160,7 @@ addLayer("tracks", {
                 `
             },
             effect() {
-                let quality = tmp.tracks.effect.quality;
+                let quality = Decimal.add(tmp.tracks.effect.quality, tmp.record.effect.quality);
                 if (hasUpgrade("player", 42)) quality = Decimal.add(quality, clickableEffect("tracks", "f2"));
                 let gain = Decimal.add(quality, 1).log10().pow_base(quality).floor();
                 gain = gain.mul(buyableEffect("player", 12));
@@ -187,7 +188,6 @@ addLayer("tracks", {
         },
         "f2": {
             display() {
-                let amt = getBuyableAmount("tracks", "r1");
                 let temp = tmp[this.layer].clickables[this.id];
                 return `<h3>Release</h3> 
 
@@ -201,7 +201,7 @@ addLayer("tracks", {
                 `
             },
             effect() {
-                let gain = Decimal.add(tmp.tracks.effect.quality, tmp.movie.effect.quality);
+                let gain = Decimal.add(tmp.tracks.effect.quality, tmp.movie.effect.quality).add(tmp.record.effect.quality);
                 if (hasUpgrade("player", 25)) gain = gain.mul(1.5);
                 return gain;
             },
@@ -209,7 +209,7 @@ addLayer("tracks", {
                 return hasAchievement("journal", "2x3") && !player.world.activeChallenge;
             },
             canClick() { 
-                return tmp.tracks.effect.limit >= 7 && Decimal.gte(tmp.tracks.effect.quality, 300);
+                return tmp.tracks.effect.limit >= 7 && Decimal.gte(tmp.tracks.effect.quality, 300) && player.world.songs.length < 5;
             },
             onClick() {
                 let temp = tmp[this.layer].clickables[this.id];
@@ -226,14 +226,12 @@ addLayer("tracks", {
         },
         "fc": {
             display() {
-                let amt = getBuyableAmount("tracks", "r1");
-                let temp = tmp[this.layer].clickables[this.id];
                 let chal = tmp.world.challenges[player.world.activeChallenge];
                 return `<h3>Complete</h3> 
 
                     Complete the task.
 
-                    Requires ${chal?.goalSummary}
+                    ${chal.canComplete && chal.runWorthText ? chal.runWorthText : `Requires ${chal?.goalSummary}`}
                 `
             },
             unlocked() { 
@@ -274,6 +272,41 @@ addLayer("tracks", {
             },
             canAfford() { 
                 return Decimal.gte(player.tracks.notes[tmp.tracks.effect.limit - 1] ?? 0, this.cost());
+            },
+            buy() {
+                trackReseterReset();
+                player.tracks.masters = [];
+                player.tracks.expandTime = 0;
+                player.tracks.masterTime = 0;
+
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1));
+            },
+            style: {
+                width: "150px",
+                height: "100px",
+                "border-radius": 0,
+            }
+        },
+        "r2": {
+            cost(x) {
+                return Decimal.pow(3, x).mul(5000)
+            },
+            display() {
+                let amt = getBuyableAmount("tracks", "r2");
+                let cost = this.cost(amt);
+                return `<h3>Expand</h3> 
+
+                    Add +1 more track that persists between songs
+
+                    Requires ${formatWhole(cost)}
+                    song quality
+                `
+            },
+            unlocked() {
+                return hasUpgrade("player", 35);
+            },
+            canAfford() { 
+                return Decimal.gte(tmp.tracks.effect.quality ?? 0, this.cost());
             },
             buy() {
                 trackReseterReset();
@@ -333,7 +366,7 @@ addLayer("tracks", {
         ] : []],
         ["column", () => Array.from(Array(tmp.tracks.effect.limit).keys()).map(x => ["note-track", x]), { width: "500px" }],
         ["blank", "10px"],
-        ["row", [["buyable", "r1"]]],
+        ["row", [["buyable", "r1"], ["buyable", "r2"]]],
     ],
 
     layerShown(){return true}

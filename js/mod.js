@@ -6,8 +6,11 @@ let modInfo = {
 	modFiles: [
 		"tree.js",
 		"layers/journal.js",
+
+		"layers/record.js",
 		"layers/tracks.js",
 		"layers/movie.js",
+
 		"layers/player.js",
 		"layers/world.js",
 	],
@@ -20,28 +23,34 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.1",
-	name: "I WANNA BE THE KAMILLER",
+	num: "1.2",
+	name: "Can you friend me on base multi increase? lol",
 }
 
 let changelog = `<div class="changelog"><h1>Changelog:</h1><br>
 	<br>
+	<h2>v1.2</h2><br>
+	<i>- Can you friend me on base multi increase? lol -</i><ul>
+		<li class="added"><input type="checkbox" class="spoiler">Added a new workstation mechanic: The Recorder!</li>
+		<li class="changed">Changelog spoiler covers are now harder to be seen through.</li>
+		<li class="changed">More CSS and aesthetics improvements.</li>
+	</ul><br>
 	<h2>v1.1</h2><ul>
-		<li class="added"><input type="checkbox" class="spoiler"></input>Added the Collab Tree! How many artists' names can you recognize?</li>
-		<li class="added"><input type="checkbox" class="spoiler"></input>Added the Movie Maker! Now you can create your own music video!</li>
-		<li class="added"><input type="checkbox" class="spoiler"></input>The background can now dance to your music. (added a music visualizer.)</li>
+		<li class="added"><input type="checkbox" class="spoiler">Added the Collab Tree! How many artists' names can you recognize?</li>
+		<li class="added"><input type="checkbox" class="spoiler">Added the Movie Maker! Now you can create your own music video!</li>
+		<li class="added"><input type="checkbox" class="spoiler">The background can now dance to your music. (added a music visualizer.)</li>
 		<li class="added">Added a secret. Shhhhh...</li>
 		<li class="added">Added extra content for existing mechanics.</li>
 		<li class="changed">The Workstation is renamed to The Tracker.</li>
 		<li class="changed">CSS and styling tweaks and improvements.</li>
 	</ul><br>
 	<h2>v1.0</h2><br>
-	<i>- I WANNA BE THE KAMILLER -</i><ul>
+	<i>- I wanna be the Kamiller -</i><ul>
 		<li class="breaking">Rewritten <i><u>BASICALLY EVERYTHING</u></i>.</li>
 	</ul>
 </div>`
 
-let winText = `Your songs went viral, too viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)<br>
+let winText = `Your songs went viral, so viral that you completed the tree! (Camellia if you see this I spent too long making this, so please tell me if this is good...)<br>
 			Please make sure to join Camellia's Official Discord Server if you support his music and possibly the tree as well!<br>
 			https://discord.gg/camellia`
 

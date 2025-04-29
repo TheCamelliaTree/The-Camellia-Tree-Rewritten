@@ -211,6 +211,18 @@ ul {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	z-index: 2147483647;
+}
+
+#loadingSection > div {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#loadingSection ~ * {
+	display: none;
 }
 
 .treeOverlay {
