@@ -2,20 +2,20 @@
 <html lang="en" prefix="og:https://ogp.me/ns">
 
 <head>
-	<link rel="stylesheet" type="text/css" href="assets/style/import.css" />
-
-	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&family=Chakra+Petch:wght@400;600&family=Material+Symbols+Outlined:wght@400;600" rel="stylesheet">
-
 	<script>
 		function scriptError(event) {
 			document.body.innerText(
-				"One of the script files necessary needed to run this game failed to load."
+				"You're seeing this message because one of the resource files needed to run this game failed to load."
 				+ "\nThis is likely because the server is being overloaded and limiting requests."
 				+ "\nIf this error doesn't go away after a hard reload (Ctrl+Shift+F5) you might need to try again after a few minutes."
 				+ "\nI'm working on this issue, sorry for the inconvenience."
 			);
 		}
 	</script>
+
+	<link rel="stylesheet" onerror="scriptError(event)" type="text/css" href="assets/style/import.css" />
+
+	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&family=Chakra+Petch:wght@400;600&family=Material+Symbols+Outlined:wght@400;600" rel="stylesheet">
 
 	<script onerror="scriptError(event)" src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 	<script onerror="scriptError(event)" src="js/technical/break_eternity.js"></script>
