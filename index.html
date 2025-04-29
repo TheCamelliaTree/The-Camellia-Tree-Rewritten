@@ -6,28 +6,38 @@
 
 	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&family=Chakra+Petch:wght@400;600&family=Material+Symbols+Outlined:wght@400;600" rel="stylesheet">
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-	<script src="js/technical/break_eternity.js"></script>
-	<script src="js/technical/layerSupport.js"></script>
+	<script>
+		function scriptError(event) {
+			document.body.innerText(
+				"One of the scripts necessary needed to run this game failed to load."
+				+ " This is likely because the server is being overloaded and limiting requests."
+				+ " If this error doesn't go away after a hard reload (Ctrl+Shift+F5) you might need to try again after a few minutes."
+			);
+		}
+	</script>
 
-	<script src="js/mod.js"></script>
-	<script src="js/technical/loader.js"></script>
+	<script onerror="scriptError(event)" src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+	<script onerror="scriptError(event)" src="js/technical/break_eternity.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/layerSupport.js"></script>
 
-	<script src="js/technical/temp.js"></script>
-	<script src="js/technical/displays.js"></script>
+	<script onerror="scriptError(event)" src="js/mod.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/loader.js"></script>
 
-	<script src="js/game.js"></script>
-	<script src="js/utils.js"></script>
-	<script src="js/utils/easyAccess.js"></script>
-	<script src="js/technical/systemComponents.js"></script>
-	<script src="js/components.js"></script>
-	<script src="js/technical/canvas.js"></script>
-	<script src="js/technical/particleSystem.js"></script>
-	<script src="js/utils/NumberFormating.js"></script>
-	<script src="js/utils/options.js"></script>
-	<script src="js/utils/save.js"></script>
-	<script src="js/utils/themes.js"></script>
-	<script src="js/utils/music.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/temp.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/displays.js"></script>
+
+	<script onerror="scriptError(event)" src="js/game.js"></script>
+	<script onerror="scriptError(event)" src="js/utils.js"></script>
+	<script onerror="scriptError(event)" src="js/utils/easyAccess.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/systemComponents.js"></script>
+	<script onerror="scriptError(event)" src="js/components.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/canvas.js"></script>
+	<script onerror="scriptError(event)" src="js/technical/particleSystem.js"></script>
+	<script onerror="scriptError(event)" src="js/utils/NumberFormating.js"></script>
+	<script onerror="scriptError(event)" src="js/utils/options.js"></script>
+	<script onerror="scriptError(event)" src="js/utils/save.js"></script>
+	<script onerror="scriptError(event)" src="js/utils/themes.js"></script>
+	<script onerror="scriptError(event)" src="js/utils/music.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
