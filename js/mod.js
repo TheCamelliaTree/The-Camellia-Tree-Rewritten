@@ -1,8 +1,7 @@
 let modInfo = {
-	name: "The Camellia Tree",
-	id: "Camellia",
-	author: "Not Cametek (Halloweeb#4371 collabing with Flustix#5433 (foreshadowing something))",
-	pointsName: "notes",
+	name: "The ??? Tree",
+	author: "nobody",
+	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "The Camellia Tree",
